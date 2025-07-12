@@ -26,4 +26,65 @@ data_senyawa = {
     "Iodometri": {
         "Na2S2O3·5H2O": (248.18, 124.09),
         "KIO3": (214.00, 42.8),
-        "Asam askorbat": (176.12, 88.0
+        "Asam askorbat": (176.12, 88.06),
+        "CuSO4·5H2O": (249.68, 124.84),
+        "KI (Kalium Iodida)": (166.00, 166.00)
+    },
+    "EDTA": {
+        "CaCO3": (100.09, 50.045),
+        "MgSO4·7H2O": (246.47, 123.24),
+        "ZnSO4·7H2O": (287.56, 143.78),
+        "CaCl2·2H2O": (147.01, 73.505),
+        "MgCl2·6H2O": (203.30, 101.65)
+    }
+}
+
+# Fungsi perhitungan
+def hitung_normalitas(gram, BE, volume, faktor):
+    if BE == 0 or volume == 0 or faktor == 0:
+        return 0.0
+    return gram / (BE * volume * faktor)
+
+def hitung_molaritas(gram, BM, volume, faktor):
+    if BM == 0 or volume == 0 or faktor == 0:
+        return 0.0
+    return gram / (BM * volume * faktor)
+
+# Input pengguna
+st.markdown("### ⚙️ Pilihan Metode dan Senyawa")
+metode = st.selectbox("Metode Titrasi", list(data_senyawa.keys()))
+senyawa = st.selectbox("Senyawa yang Ditimbang", list(data_senyawa[metode].keys()))
+BM, BE = data_senyawa[metode][senyawa]
+st.success(f"Berat Molekul (BM): `{BM}` | Berat Ekivalen (BE): `{BE}`")
+
+st.markdown("### ✏️ Input Data Standarisasi")
+
+col1, col2 = st.columns(2)
+with col1:
+    gram_zat = st.number_input("⚖️ Bobot zat yang ditimbang (g)", min_value=0.0, format="%.4f")
+    faktor_pengali = st.number_input(
+        "🧮 Faktor Pengali",
+        min_value=0.0001,
+        value=1000.0,
+        step=0.1,
+        help="Biasanya 1000 jika volume dalam mL."
+    )
+with col2:
+    volume = st.number_input("📏 Volume larutan (mL)", min_value=0.0, format="%.2f")
+
+st.markdown("---")
+
+if st.button("▶️ Hitung"):
+    if gram_zat == 0 or volume == 0 or faktor_pengali == 0:
+        st.warning("❗ Mohon isi semua input dengan benar (tidak boleh nol).")
+    else:
+        with st.spinner("🔬 Menghitung hasil standarisasi..."):
+            time.sleep(1.5)
+            N = hitung_normalitas(gram_zat, BE, volume, faktor_pengali)
+            M = hitung_molaritas(gram_zat, BM, volume, faktor_pengali)
+
+        st.success("✅ Perhitungan selesai!")
+        st.markdown(f"**📘 Metode:** `{metode}`")
+        st.markdown(f"**🧪 Senyawa:** `{senyawa}`")
+        st.markdown(f"**🔬 Normalitas (N):** `{N:.4f} N`")
+        st.markdown(f"**🧫 Molaritas (M):** `{M:.4f} mol/L`")
