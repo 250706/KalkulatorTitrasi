@@ -52,7 +52,7 @@ def hitung_molaritas(gram, BM, volume, faktor):
 # Input pengguna
 st.markdown("### ⚙️ Pilihan Metode dan Senyawa")
 metode = st.selectbox("🔬 Metode Titrasi", list(data_senyawa.keys()))
-senyawa = st.selectbox("🧪 Senyawa yang Ditimbang", list(data_senyawa[metode].keys()))
+senyawa = st.selectbox("🧪 Senyawa Titran", list(data_senyawa[metode].keys()))
 BM, BE = data_senyawa[metode][senyawa]
 st.success(f"**Berat Molekul (BM):** `{BM}` | **Berat Ekivalen (BE):** `{BE}`")
 
