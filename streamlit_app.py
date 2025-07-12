@@ -40,7 +40,5 @@ st.markdown("### 🔬 Pilih Metode dan Senyawa")
 metode = st.selectbox("Metode Titrasi", list(data_senyawa.keys()))
 senyawa = st.selectbox("Senyawa yang Ditimbang", list(data_senyawa[metode].keys()))
 
-# Ambil BM dan BE otomatis
-BM, BE = data_senyawa[metode][senyawa]
-st.info(f"**Berat Molekul (BM):** {BM} | **Berat Ekivalen (BE):** {BE}")
+
 
