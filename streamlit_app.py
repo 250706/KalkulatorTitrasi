@@ -77,4 +77,6 @@ col3, col4 = st.columns(2)
 with col3:
     volume_titran1 = st.number_input("🔁 Volume Titran 1 (mL)", min_value=0.0, format="%.2f")
 with col4:
-    volume_titran2 = st.number_
+    with col4:
+    volume_titran2 = st.number_input("🔁 Volume Titran 2 (mL)", min_value=0.0, format="%.2f")
+
