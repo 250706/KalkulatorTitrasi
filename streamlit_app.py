@@ -47,7 +47,7 @@ def hitung_molaritas(gram, BM, volume_mL, faktor):
 
 def hitung_rpd(nilai1, nilai2):
     try:
-        return abs(nilai1 - nilai2) / 2  # Sesuai permintaan: pembagi = 2
+        return abs(nilai1 - nilai2) / 2  # pembagi sesuai permintaan
     except ZeroDivisionError:
         return 0.0
 
@@ -60,30 +60,7 @@ st.success(f"Berat Molekul (BM): `{BM}` | Berat Ekivalen (BE): `{BE}`")
 
 # Input data perhitungan
 st.markdown("### ✏️ Input Data Standarisasi")
-
 col1, col2 = st.columns(2)
 with col1:
     gram_zat = st.number_input("⚖️ Bobot zat yang ditimbang (g)", min_value=0.0, format="%.4f")
     faktor_pengali = st.number_input("🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1,
-                                     help="Misal 1000 jika volume dalam mL.")
-with col2:
-    volume_mL = st.number_input("📏 Volume larutan (mL)", min_value=0.0, format="%.2f")
-
-st.markdown("### 🔁 Input Data Volume Titran (untuk RPD)")
-
-col3, col4 = st.columns(2)
-with col3:
-    volume_titran1 = st.number_input("🔁 Volume Titran 1 (mL)", min_value=0.0, format="%.2f")
-with col4:
-    volume_titran2 = st.number_input("🔁 Volume Titran 2 (mL)", min_value=0.0, format="%.2f")
-
-# Tombol hitung
-st.markdown("---")
-if st.button("▶️ Hitung Sekarang"):
-    if gram_zat == 0 or volume_mL == 0 or faktor_pengali == 0:
-        st.warning("❗ Mohon isi semua input dengan benar (tidak boleh nol).")
-    else:
-        with st.spinner("🔬 Menghitung hasil standarisasi..."):
-            time.sleep(1.5)
-            N = hitung_normalitas(gram_zat, BE, volume_mL, faktor_pengali)
-            M = hitung_molaritas(gram_zat, BM, volume_mL, fakto_
