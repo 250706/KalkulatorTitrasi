@@ -63,4 +63,4 @@ st.markdown("### ✏️ Input Data Standarisasi")
 col1, col2 = st.columns(2)
 with col1:
     gram_zat = st.number_input("⚖️ Bobot zat yang ditimbang (g)", min_value=0.0, format="%.4f")
-    faktor_pengali = st.number_input("🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1,
+    faktor_pengali = st.number_input("🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1,)
