@@ -47,7 +47,7 @@ def hitung_molaritas(gram, BM, volume_mL, faktor):
 
 def hitung_rpd(nilai1, nilai2):
     try:
-        return abs(nilai1 - nilai2) / 2  # pembagi sesuai permintaan
+        return abs(nilai1 - nilai2) / 2  # sesuai permintaan
     except ZeroDivisionError:
         return 0.0
 
@@ -63,8 +63,10 @@ st.markdown("### ✏️ Input Data Standarisasi")
 col1, col2 = st.columns(2)
 with col1:
     gram_zat = st.number_input("⚖️ Bobot zat yang ditimbang (g)", min_value=0.0, format="%.4f")
-    faktor_pengali = st.number_input("🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1,)
-                                     help="Misal 1000 jika volume dalam mL.")
+    faktor_pengali = st.number_input(
+        "🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1,
+        help="Misal 1000 jika volume dalam mL."
+    )
 with col2:
     volume_mL = st.number_input("📏 Volume larutan (mL)", min_value=0.0, format="%.2f")
 
