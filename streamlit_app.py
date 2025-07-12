@@ -61,42 +61,20 @@ senyawa = st.selectbox("Senyawa yang Ditimbang", list(data_senyawa[metode].keys(
 BM, BE = data_senyawa[metode][senyawa]
 st.success(f"Berat Molekul (BM): `{BM}` | Berat Ekivalen (BE): `{BE}`")
 
-# Input data standarisasi
+# Input data utama
 st.markdown("### ✏️ Input Data Standarisasi")
 col1, col2 = st.columns(2)
 with col1:
     gram_zat = st.number_input("⚖️ Bobot zat ditimbang (g)", min_value=0.0, format="%.4f")
-    faktor_pengali = st.number_input("🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1, help="Biasanya 1 jika volume dalam liter, atau 1000 jika volume dalam mL.")
+    faktor_pengali = st.number_input("🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1,
+                                     help="Biasanya 1 jika volume dalam liter, atau 1000 jika volume dalam mL.")
 with col2:
     volume = st.number_input("📏 Volume larutan (L)", min_value=0.0, format="%.4f")
 
-# Input untuk RPD
-st.markdown("### 📊 Data Ulangan untuk %RPD")
+# Volume titran untuk RPD
+st.markdown("### 📊 Volume Titran untuk %RPD")
 col3, col4 = st.columns(2)
 with col3:
-    hasil1 = st.number_input("🔁 Ulangan ke-1", min_value=0.0, format="%.4f")
+    volume_titran1 = st.number_input("🔁 Volume Titran 1 (mL)", min_value=0.0, format="%.2f")
 with col4:
-    hasil2 = st.number_input("🔁 Ulangan ke-2", min_value=0.0, format="%.4f")
-
-st.markdown("---")
-
-# Tombol Hitung
-if st.button("▶️ Hitung Standarisasi"):
-    if gram_zat == 0 or volume == 0 or faktor_pengali == 0:
-        st.warning("❗ Mohon isi semua input dengan benar (tidak boleh nol).")
-    else:
-        with st.spinner("🔬 Menghitung hasil standarisasi..."):
-            time.sleep(1.5)
-            N = hitung_normalitas(gram_zat, BE, volume, faktor_pengali)
-            M = hitung_molaritas(gram_zat, BM, volume, faktor_pengali)
-            RPD = hitung_rpd(hasil1, hasil2)
-
-        st.success("✅ Perhitungan selesai!")
-        st.markdown(f"**📘 Metode:** `{metode}`")
-        st.markdown(f"**🧪 Senyawa:** `{senyawa}`")
-        st.markdown(f"**📦 Berat Zat:** `{gram_zat:.4f} g`")
-        st.markdown(f"**📏 Volume:** `{volume:.4f} L` (× Faktor: {faktor_pengali})")
-        st.markdown("---")
-        st.markdown(f"**🧪 Normalitas (N):** `{N:.4f} N`")
-        st.markdown(f"**🧫 Molaritas (M):** `{M:.4f} mol/L`")
-        st.markdown(f"**📉 %RPD:** `{RPD:.2f}%`")
+    volume_titran2 = st.number_
