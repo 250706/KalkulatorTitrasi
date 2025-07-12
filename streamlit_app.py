@@ -118,27 +118,27 @@ elif st.session_state.page == "hasil":
     with st.spinner("📡 Sedang memproses perhitungan..."):
         time.sleep(2)
 
-        if st.session_state.mode == "volume":
+        if st.session_state.get("mode") == "volume":
             N = hitung_normalitas(
-                st.session_state.volume_titran,
-                st.session_state.normalitas_titran,
-                st.session_state.volume_sampel
+                st.session_state.get("volume_titran", 0),
+                st.session_state.get("normalitas_titran", 0),
+                st.session_state.get("volume_sampel", 0)
             )
         else:
             N = hitung_normalitas_dari_gram(
-                st.session_state.gram_zat,
-                st.session_state.mr,
-                st.session_state.volume_sampel
+                st.session_state.get("gram_zat", 0),
+                st.session_state.get("mr", 0),
+                st.session_state.get("volume_sampel", 0)
             )
 
-        M = hitung_molaritas(N, st.session_state.valensi)
-        RPD = hitung_rpd(st.session_state.hasil1, st.session_state.hasil2)
+        M = hitung_molaritas(N, st.session_state.get("valensi", 1))
+        RPD = hitung_rpd(st.session_state.get("hasil1", 0), st.session_state.get("hasil2", 0))
 
     st.success("✅ Perhitungan selesai!")
 
-    st.markdown(f"**🔬 Metode Titrasi:** `{st.session_state.metode}`")
-    st.markdown(f"**🧪 Titran yang digunakan:** `{st.session_state.titran}`")
-    st.markdown(f"**📗 Mode Perhitungan:** `{st.session_state.mode}`")
+    st.markdown(f"**🔬 Metode Titrasi:** `{st.session_state.get('metode', '-')}`")
+    st.markdown(f"**🧪 Titran yang digunakan:** `{st.session_state.get('titran', '-')}`")
+    st.markdown(f"**📗 Mode Perhitungan:** `{st.session_state.get('mode', '-')}`")
     st.markdown(f"**🧪 Normalitas (N):** `{N:.4f} N`")
     st.markdown(f"**🧫 Molaritas (M):** `{M:.4f} mol/L`")
     st.markdown(f"**📉 %RPD:** `{RPD:.2f}%`")
