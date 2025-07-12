@@ -39,16 +39,16 @@ if st.session_state.page == "input":
     hasil2 = st.number_input("Hasil titrasi ulangan 2", min_value=0.0, format="%.4f")
 
     if st.button("Hitung"):
-        # Simpan data ke session_state
-        st.session_state.volume_titran = volume_titran
-        st.session_state.normalitas_titran = normalitas_titran
-        st.session_state.volume_sampel = volume_sampel
-        st.session_state.valensi = valensi
-        st.session_state.hasil1 = hasil1
-        st.session_state.hasil2 = hasil2
-        st.session_state.metode = metode
-        st.session_state.page = "hasil"
-        st.experimental_rerun()
+    # Simpan data ke session_state
+    st.session_state.volume_titran = volume_titran
+    st.session_state.normalitas_titran = normalitas_titran
+    st.session_state.volume_sampel = volume_sampel
+    st.session_state.valensi = valensi
+    st.session_state.hasil1 = hasil1
+    st.session_state.hasil2 = hasil2
+    st.session_state.metode = metode
+    st.session_state.page = "hasil"
+    st.rerun()  # GANTI DARI st.experimental_rerun()
 
 # Halaman Hasil
 elif st.session_state.page == "hasil":
@@ -73,5 +73,5 @@ elif st.session_state.page == "hasil":
     st.markdown(f"**%RPD:** {RPD:.2f}%")
 
     if st.button("🔁 Hitung Ulang"):
-        st.session_state.page = "input"
-        st.experimental_rerun()
+    st.session_state.page = "input"
+    st.rerun()  # GANTI DARI st.experimental_rerun()
