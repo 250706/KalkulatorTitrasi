@@ -72,5 +72,13 @@ if st.button("▶️ Hitung"):
             N = hitung_normalitas(gram_zat, BE, volume, faktor_pengali)
             M = hitung_molaritas(gram_zat, BM, volume, faktor_pengali)
 
-        st.success("✅ Perhitungan selesai!")
-        st.markdown(f"**📘 Metode:** `{m
+                st.success("✅ Perhitungan selesai!")
+        st.markdown(f"**📘 Metode:** `{metode}`")
+        st.markdown(f"**🧪 Senyawa:** `{senyawa}`")
+        st.markdown(f"**📈 Normalitas (N):** `{N:.4f} N`")
+        st.markdown(f"**🧫 Molaritas (M):** `{M:.4f} mol/L`")
+
+        st.markdown("---")
+        if st.button("🔁 Reset"):
+            st.experimental_rerun()
+
