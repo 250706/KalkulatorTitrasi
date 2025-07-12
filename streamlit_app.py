@@ -2,68 +2,56 @@ import streamlit as st
 import time
 
 # Konfigurasi halaman
-st.set_page_config(page_title="Standarisasi Titrasi", layout="centered", page_icon="⚗️")
+st.set_page_config(page_title="Kalkulator Standarisasi Titrasi", layout="centered", page_icon="🧪")
+st.title("🧪 Kalkulator Standarisasi Titrasi")
+st.markdown("Hitung **Normalitas** dan **Molaritas** berdasarkan berat zat & volume larutan.")
 
-st.markdown("<h1 style='text-align: center;'>⚗️ KALKULATOR STANDARISASI TITRASI</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: gray;'>Hitung Normalitas dan Molaritas berdasarkan massa dan volume</p>", unsafe_allow_html=True)
-st.divider()
-
-# Data senyawa (contoh saja, bisa dikembangkan)
-senyawa_dict = {
+# Data senyawa: {metode: {nama_senyawa: (BM, BE)}}
+data_senyawa = {
     "Asam-Basa": {
-        "Na2CO3": {"BE": 53, "BM": 106},
-        "KHP": {"BE": 204.22, "BM": 204.22},
+        "Na2CO3": (105.99, 52.995),
+        "HCl": (36.46, 36.46),
+        "NaOH": (40.00, 40.00),
+        "CH3COOH": (60.05, 60.05),
     },
     "Permanganometri": {
-        "FeSO4·7H2O": {"BE": 278.01 / 1, "BM": 278.01},
-        "Oxalat": {"BE": 45, "BM": 90},
+        "Oxalat (C2O4)": (88.02, 44.01),
+        "Fe2+": (55.85 * 2, 55.85),
+        "KMnO4": (158.04, 31.608),
     },
     "Iodometri": {
-        "Na2S2O3·5H2O": {"BE": 248.18 / 1, "BM": 248.18},
-        "KI": {"BE": 166, "BM": 166},
+        "Na2S2O3": (158.11, 79.06),
+        "I2": (253.81, 126.90),
+        "Vitamin C (Asam Askorbat)": (176.12, 88.06),
     },
     "EDTA": {
-        "CaCO3": {"BE": 50, "BM": 100},
-        "MgSO4": {"BE": 60.31 / 1, "BM": 120.62},
+        "CaCO3": (100.09, 50.045),
+        "MgSO4": (120.37, 60.185),
+        "ZnSO4": (161.47, 80.735),
     }
 }
 
-# Fungsi perhitungan
-def hitung_normalitas(gram, BE, volume, faktor):
-    if volume == 0 or BE == 0 or faktor == 0:
-        return 0.0
-    return gram / (BE * volume * faktor)
+# Pilih metode
+st.markdown("### 🔬 Pilih Metode Titrasi & Senyawa")
+metode = st.selectbox("Metode Titrasi", list(data_senyawa.keys()))
 
-def hitung_molaritas(gram, BM, volume, faktor):
-    if volume == 0 or BM == 0 or faktor == 0:
-        return 0.0
-    return gram / (BM * volume * faktor)
+# Pilih senyawa berdasarkan metode
+senyawa_terpilih = st.selectbox("Senyawa", list(data_senyawa[metode].keys()))
 
-# Halaman input
-st.markdown("### ⚙️ Input Data Standarisasi")
+# Ambil BM dan BE otomatis
+BM, BE = data_senyawa[metode][senyawa_terpilih]
+st.success(f"📘 Berat Molekul (BM): **{BM}**, Berat Ekivalen (BE): **{BE}**")
 
-metode = st.selectbox("🧪 Pilih Metode Titrasi", list(senyawa_dict.keys()))
-senyawa = st.selectbox("🔍 Pilih Senyawa", list(senyawa_dict[metode].keys()))
-
-info = senyawa_dict[metode][senyawa]
-BE = info["BE"]
-BM = info["BM"]
-
+# Input pengguna
+st.markdown("### 🧪 Input Data Standarisasi")
 col1, col2 = st.columns(2)
 with col1:
-    gram = st.number_input("⚖️ Massa zat ditimbang (g)", min_value=0.0, format="%.4f")
-    volume = st.number_input("🧴 Volume larutan (L)", min_value=0.0, format="%.4f")
+    gram_zat = st.number_input("Berat zat (gram)", min_value=0.0, format="%.4f")
+    faktor_pengali = st.number_input("Faktor Pengali", min_value=0.0, value=1000.0, format="%.1f", help="Biasanya 1000 untuk mengubah volume dari mL ke L")
 with col2:
-    faktor = st.number_input("📐 Faktor pengali", min_value=0.0001, value=1.0, step=0.1, format="%.4f", help="Biasanya 1 atau 1000 untuk konversi mL ke L.")
+    volume_larutan = st.number_input("Volume larutan (mL)", min_value=0.0, format="%.2f")
 
-st.markdown("---")
+# Tombol hitung
 if st.button("▶️ Hitung Sekarang"):
-    if gram == 0 or volume == 0 or faktor == 0:
-        st.warning("❗ Harap isi semua data dengan benar!")
-    else:
-        with st.spinner("🧪 Menghitung..."):
-            time.sleep(2)
-            N = hitung_normalitas(gram, BE, volume, faktor)
-            M = hitung_molaritas(gram, BM, volume, faktor)
-
-        st.success("✅ Perhitungan Selesai!")
+    if gram_zat == 0 or volume_larutan == 0 or BE == 0 or BM == 0 or faktor_pengali == 0:
+        st.err
