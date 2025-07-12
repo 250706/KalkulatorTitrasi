@@ -58,7 +58,10 @@ if st.session_state.page == "input":
         hasil2 = st.number_input("Ulangan ke-2", min_value=0.0, format="%.4f")
 
     st.markdown("---")
-    if st.button("▶️ Hitung Sekarang"):
+   if st.button("▶️ Hitung Sekarang"):
+    if volume_titran == 0 or normalitas_titran == 0 or volume_sampel == 0 or valensi == 0:
+        st.warning("❗ Mohon lengkapi semua input (tidak boleh nol) sebelum menghitung.")
+    else:
         st.session_state.volume_titran = volume_titran
         st.session_state.normalitas_titran = normalitas_titran
         st.session_state.volume_sampel = volume_sampel
@@ -69,6 +72,7 @@ if st.session_state.page == "input":
         st.session_state.page = "hasil"
         st.rerun()
 
+
 # Halaman Hasil
 elif st.session_state.page == "hasil":
     st.markdown("## 📈 Hasil Perhitungan")
@@ -77,11 +81,11 @@ elif st.session_state.page == "hasil":
         time.sleep(2)  # Efek loading
  # rain(emoji="💧", font_size=20, falling_speed=5, animation_length="short")  Efek animasi hujan
 
-        N = hitung_normalitas(
-            st.session_state.volume_titran,
-            st.session_state.normalitas_titran,
-            st.session_state.volume_sampel
-        )
+       def hitung_normalitas(volume_titran, normalitas_titran, volume_sampel):
+    if volume_sampel == 0:
+        return 0.0  # atau bisa raise error
+    return (volume_titran * normalitas_titran) / volume_sampel
+
         M = hitung_molaritas(N, st.session_state.valensi)
         RPD = hitung_rpd(st.session_state.hasil1, st.session_state.hasil2)
 
