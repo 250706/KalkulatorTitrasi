@@ -5,7 +5,6 @@ import time
 st.set_page_config(page_title="STANDARISASI TITRASI", layout="centered", page_icon="🧪")
 st.title("🧪 KALKULATOR STANDARISASI TITRASI")
 st.caption("Hitung Normalitas & Molaritas dari hasil standarisasi titrasi")
-
 st.divider()
 
 # Database senyawa per metode
@@ -68,11 +67,10 @@ if st.button("▶️ Hitung"):
     else:
         with st.spinner("🔬 Menghitung hasil standarisasi..."):
             time.sleep(1.5)
-            volume_L = volume / 1000  # konversi ke Liter jika perlu
             N = hitung_normalitas(gram_zat, BE, volume, faktor_pengali)
             M = hitung_molaritas(gram_zat, BM, volume, faktor_pengali)
 
-                st.success("✅ Perhitungan selesai!")
+        st.success("✅ Perhitungan selesai!")
         st.markdown(f"**📘 Metode:** `{metode}`")
         st.markdown(f"**🧪 Senyawa:** `{senyawa}`")
         st.markdown(f"**📈 Normalitas (N):** `{N:.4f} N`")
@@ -81,4 +79,3 @@ if st.button("▶️ Hitung"):
         st.markdown("---")
         if st.button("🔁 Reset"):
             st.experimental_rerun()
-
