@@ -3,6 +3,12 @@ import time
 
 # Konfigurasi halaman
 st.set_page_config(page_title="KALKULATOR TITRASI", layout="centered", page_icon="🧪")
+# Inisialisasi nilai default session_state
+if "page" not in st.session_state:
+    st.session_state.page = "input"
+
+if "mode" not in st.session_state:
+    st.session_state.mode = None
 
 # Header
 st.markdown("<h1 style='text-align: center;'>🧪 KALKULATOR TITRASI</h1>", unsafe_allow_html=True)
