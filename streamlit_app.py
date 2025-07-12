@@ -68,4 +68,10 @@ elif st.session_state.page == "hasil":
     st.success("✅ Perhitungan selesai!")
 
     st.markdown(f"**Metode Titrasi:** {st.session_state.metode}")
-    st.markdown(f"**Normalitas (N):** {N
+    st.markdown(f"**Normalitas (N):** {N:.4f} N")
+    st.markdown(f"**Molaritas (M):** {M:.4f} mol/L")
+    st.markdown(f"**%RPD:** {RPD:.2f}%")
+
+    if st.button("🔁 Hitung Ulang"):
+        st.session_state.page = "input"
+        st.experimental_rerun()
