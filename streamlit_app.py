@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from streamlit_extras.let_it_rain import rain
+# from streamlit_extras.let_it_rain import rain
 
 # Konfigurasi halaman
 st.set_page_config(page_title="KALKULATOR TITRASI", layout="centered", page_icon="🧪")
@@ -75,7 +75,7 @@ elif st.session_state.page == "hasil":
 
     with st.spinner("📡 Sedang memproses perhitungan..."):
         time.sleep(2)  # Efek loading
-        rain(emoji="💧", font_size=20, falling_speed=5, animation_length="short")  # Efek animasi hujan
+ # rain(emoji="💧", font_size=20, falling_speed=5, animation_length="short")  Efek animasi hujan
 
         N = hitung_normalitas(
             st.session_state.volume_titran,
