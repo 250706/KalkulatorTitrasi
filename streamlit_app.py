@@ -1,20 +1,24 @@
 import streamlit as st
 import time
-# from streamlit_extras.let_it_rain import rain
+from streamlit_extras.let_it_rain import rain
 
 # Konfigurasi halaman
 st.set_page_config(page_title="KALKULATOR TITRASI", layout="centered", page_icon="🧪")
 
-# Header dengan logo atau ikon
+# Header
 st.markdown("<h1 style='text-align: center;'>🧪 KALKULATOR TITRASI</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: gray;'>Hitung Normalitas, Molaritas, dan %RPD dari titrasi dengan mudah</p>", unsafe_allow_html=True)
 st.divider()
 
 # Fungsi perhitungan
 def hitung_normalitas(volume_titran, normalitas_titran, volume_sampel):
+    if volume_sampel == 0:
+        return 0.0
     return (volume_titran * normalitas_titran) / volume_sampel
 
 def hitung_molaritas(normalitas, valensi):
+    if valensi == 0:
+        return 0.0
     return normalitas / valensi
 
 def hitung_rpd(nilai1, nilai2):
@@ -23,7 +27,7 @@ def hitung_rpd(nilai1, nilai2):
     except ZeroDivisionError:
         return 0.0
 
-# Navigasi antar halaman
+# Navigasi halaman
 if "page" not in st.session_state:
     st.session_state.page = "input"
 
@@ -77,14 +81,14 @@ elif st.session_state.page == "hasil":
     st.markdown("## 📈 Hasil Perhitungan")
 
     with st.spinner("📡 Sedang memproses perhitungan..."):
-        time.sleep(2)  # Efek loading
- # rain(emoji="💧", font_size=20, falling_speed=5, animation_length="short")  Efek animasi hujan
+        time.sleep(2)
+        rain(emoji="💧", font_size=20, falling_speed=5, animation_length="short")
 
-       def hitung_normalitas(volume_titran, normalitas_titran, volume_sampel):
-    if volume_sampel == 0:
-        return 0.0  # atau bisa raise error
-    return (volume_titran * normalitas_titran) / volume_sampel
-
+        N = hitung_normalitas(
+            st.session_state.volume_titran,
+            st.session_state.normalitas_titran,
+            st.session_state.volume_sampel
+        )
         M = hitung_molaritas(N, st.session_state.valensi)
         RPD = hitung_rpd(st.session_state.hasil1, st.session_state.hasil2)
 
