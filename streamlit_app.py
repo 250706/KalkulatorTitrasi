@@ -64,3 +64,36 @@ col1, col2 = st.columns(2)
 with col1:
     gram_zat = st.number_input("⚖️ Bobot zat yang ditimbang (g)", min_value=0.0, format="%.4f")
     faktor_pengali = st.number_input("🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1,)
+                                     help="Misal 1000 jika volume dalam mL.")
+with col2:
+    volume_mL = st.number_input("📏 Volume larutan (mL)", min_value=0.0, format="%.2f")
+
+# Input volume titran 1 & 2 untuk RPD
+st.markdown("### 🔁 Input Volume Titran (untuk %RPD)")
+col3, col4 = st.columns(2)
+with col3:
+    volume_titran1 = st.number_input("🔁 Volume Titran 1 (mL)", min_value=0.0, format="%.2f")
+with col4:
+    volume_titran2 = st.number_input("🔁 Volume Titran 2 (mL)", min_value=0.0, format="%.2f")
+
+# Tombol hitung
+st.markdown("---")
+if st.button("▶️ Hitung Sekarang"):
+    if gram_zat == 0 or volume_mL == 0 or faktor_pengali == 0:
+        st.warning("❗ Mohon isi semua input dengan benar (tidak boleh nol).")
+    else:
+        with st.spinner("🔬 Menghitung hasil standarisasi..."):
+            time.sleep(1.5)
+            N = hitung_normalitas(gram_zat, BE, volume_mL, faktor_pengali)
+            M = hitung_molaritas(gram_zat, BM, volume_mL, faktor_pengali)
+            RPD = hitung_rpd(volume_titran1, volume_titran2)
+
+        st.success("✅ Perhitungan selesai!")
+        st.markdown(f"**📘 Metode:** `{metode}`")
+        st.markdown(f"**🧪 Senyawa:** `{senyawa}`")
+        st.markdown(f"**📏 Volume larutan:** `{volume_mL:.2f} mL`")
+        st.markdown(f"**🧮 Faktor pengali:** `{faktor_pengali}`")
+        st.markdown("---")
+        st.markdown(f"**🧫 Normalitas (N):** `{N:.4f} N`")
+        st.markdown(f"**🔬 Molaritas (M):** `{M:.4f} mol/L`")
+        st.markdown(f"**📉 %RPD:** `{RPD:.2f}`")
