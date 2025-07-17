@@ -83,6 +83,20 @@ def konversi_suhu(nilai, dari, ke):
     elif dari == "Kelvin (K)":
         return nilai - 273.15 if ke == "Celsius (°C)" else (nilai - 273.15) * 9/5 + 32
 
+# ============== Presisi Desimal Berdasarkan Kategori ==============
+
+presisi = {
+    "🔥 Suhu": 2,
+    "🧪 Tekanan": 3,
+    "⚖ Massa": 4,
+    "📏 Panjang": 4,
+    "⏱ Waktu": 2,
+    "⚡ Energi": 3,
+    "💨 Kecepatan": 3,
+    "💡 Daya": 2,
+    "🧊 Volume": 3
+}
+
 # ================ UI Input ==========================
 
 kategori = st.selectbox("📂 Pilih jenis konversi", list(konversi_data.keys()) + ["🔥 Suhu"])
@@ -92,16 +106,9 @@ nilai_input = st.text_input("Masukkan nilai yang ingin dikonversi")
 col1, col2 = st.columns(2)
 
 with col1:
-    if kategori == "🔥 Suhu":
-        satuan_asal = st.selectbox("Dari satuan", satuan_suhu)
-    else:
-        satuan_asal = st.selectbox("Dari satuan", list(konversi_data[kategori].keys()))
-
+    satuan_asal = st.selectbox("Dari satuan", satuan_suhu if kategori == "🔥 Suhu" else list(konversi_data[kategori].keys()))
 with col2:
-    if kategori == "🔥 Suhu":
-        satuan_tujuan = st.selectbox("Ke satuan", satuan_suhu)
-    else:
-        satuan_tujuan = st.selectbox("Ke satuan", list(konversi_data[kategori].keys()))
+    satuan_tujuan = st.selectbox("Ke satuan", satuan_suhu if kategori == "🔥 Suhu" else list(konversi_data[kategori].keys()))
 
 # ================= Tombol dan Output =================
 
@@ -110,8 +117,7 @@ if st.button("🔄 Konversi"):
         st.warning("⚠️ Harap masukkan nilai terlebih dahulu.")
     else:
         try:
-            # Gantikan koma (,) dengan titik (.) agar bisa diubah ke float
-            nilai = float(nilai_input.replace(",", "."))
+            nilai = float(nilai_input.replace(",", "."))  # Mengubah koma menjadi titik
             with st.spinner("⏳ Menghitung konversi..."):
                 time.sleep(2)
                 if kategori == "🔥 Suhu":
@@ -119,6 +125,9 @@ if st.button("🔄 Konversi"):
                 else:
                     hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_data[kategori])
 
-            st.success(f"✅ {nilai} {satuan_asal} = {hasil:.6g} {satuan_tujuan}")
+            # Terapkan presisi per kategori
+            desimal = presisi.get(kategori, 2)
+            hasil_str = f"{hasil:.{desimal}f}"
+            st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
         except ValueError:
             st.error("❌ Nilai yang dimasukkan harus berupa angka (contoh: 3.5 atau 3,5).")
