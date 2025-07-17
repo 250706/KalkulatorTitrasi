@@ -87,7 +87,7 @@ def konversi_suhu(nilai, dari, ke):
 
 kategori = st.selectbox("📂 Pilih jenis konversi", list(konversi_data.keys()) + ["🔥 Suhu"])
 
-nilai = st.number_input("Masukkan nilai yang ingin dikonversi")
+nilai_input = st.text_input("Masukkan nilai yang ingin dikonversi")
 
 col1, col2 = st.columns(2)
 
@@ -106,11 +106,18 @@ with col2:
 # ================= Tombol dan Output =================
 
 if st.button("🔄 Konversi"):
-    with st.spinner("⏳ Menghitung konversi..."):
-        time.sleep(2)
-        if kategori == "🔥 Suhu":
-            hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-        else:
-            hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_data[kategori])
+    if not nilai_input:
+        st.warning("⚠️ Harap masukkan nilai terlebih dahulu.")
+    else:
+        try:
+            nilai = float(nilai_input)
+            with st.spinner("⏳ Menghitung konversi..."):
+                time.sleep(2)
+                if kategori == "🔥 Suhu":
+                    hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
+                else:
+                    hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_data[kategori])
 
-    st.success(f"✅ {nilai} {satuan_asal} = {hasil:.6g} {satuan_tujuan}")
+            st.success(f"✅ {nilai} {satuan_asal} = {hasil:.6g} {satuan_tujuan}")
+        except ValueError:
+            st.error("❌ Nilai yang dimasukkan harus berupa angka.")
