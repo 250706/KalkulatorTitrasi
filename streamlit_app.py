@@ -1,101 +1,120 @@
 import streamlit as st
 import time
 
-# Konfigurasi halaman
-st.set_page_config(page_title="STANDARISASI TITRASI", layout="centered", page_icon="🧪")
-st.title("🧪 KALKULATOR STANDARISASI TITRASI")
-st.caption("Hitung Normalitas, Molaritas, dan %RPD dari hasil standarisasi titrasi")
-st.divider()
+st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
+st.markdown("<h1 style='text-align: center; color: #4B8BBE;'>🔁 KALKULATOR KONVERSI SATUAN FISIKA</h1>", unsafe_allow_html=True)
+st.markdown("---")
 
-# Database senyawa per metode (BM = Berat Molekul, BE = Berat Ekivalen)
-data_senyawa = {
-    "Asam-Basa": {
-        "Na2CO3 (larutan)": (105.99, 53.00),
-        "KHP (Kalium Hidrogen Ftalat)": (204.22, 204.22),
-        "Boraks (Na2B4O7·10H2O)": (381.37, 190.685),
-        "HCl": (36.46, 36.46),
-        "NaOH (larutan)": (40.00, 40.00)
-    },
-    "Permanganometri": {
-        "FeSO4·7H2O": (278.01, 139.00),
-        "Asam Oksalat (H2C2O4·2H2O)": (126.07, 63.035),
-        "Na2C2O4": (134.00, 67.00),
-        "KMnO4": (158.04, 31.61)
-    },
-    "Iodometri": {
-        "Na2S2O3·5H2O": (248.18, 124.09),
-        "KIO3": (214.00, 42.80),
-        "Asam Askorbat": (176.12, 88.06)
-    },
-    "EDTA": {
-        "CaCO3": (100.09, 50.045),
-        "MgSO4·7H2O": (246.47, 123.24),
-        "ZnSO4·7H2O": (287.56, 143.78)
-    }
+# ================== Data Konversi ==================
+
+konversi_panjang = {
+    "Meter (m)": 1,
+    "Kilometer (km)": 1000,
+    "Centimeter (cm)": 0.01,
+    "Milimeter (mm)": 0.001,
+    "Inci (inch)": 0.0254,
+    "Kaki (foot)": 0.3048
 }
 
-# Fungsi perhitungan
-def hitung_normalitas(gram, BE, volume_mL, faktor):
-    if BE == 0 or volume_mL == 0 or faktor == 0:
-        return 0.0
-    return gram / (BE * volume_mL * faktor)
+konversi_massa = {
+    "Kilogram (kg)": 1,
+    "Gram (g)": 0.001,
+    "Miligram (mg)": 0.000001,
+    "Pound (lb)": 0.453592,
+    "Ons (oz)": 0.0283495
+}
 
-def hitung_molaritas(gram, BM, volume_mL, faktor):
-    if BM == 0 or volume_mL == 0 or faktor == 0:
-        return 0.0
-    return gram / (BM * volume_mL * faktor)
+konversi_waktu = {
+    "Detik (s)": 1,
+    "Menit (min)": 60,
+    "Jam (h)": 3600
+}
 
-def hitung_rpd(nilai1, nilai2):
-    try:
-        return abs(nilai1 - nilai2) / 2  # sesuai permintaan
-    except ZeroDivisionError:
-        return 0.0
+konversi_energi = {
+    "Joule (J)": 1,
+    "Kalori (cal)": 4.184,
+    "Kilowatt-jam (kWh)": 3.6e6
+}
 
-# Input metode dan senyawa
-st.markdown("### ⚙️ Pilih Metode & Senyawa")
-metode = st.selectbox("Metode Titrasi", list(data_senyawa.keys()))
-senyawa = st.selectbox("Senyawa yang Ditimbang", list(data_senyawa[metode].keys()))
-BM, BE = data_senyawa[metode][senyawa]
-st.success(f"Berat Molekul (BM): `{BM}` | Berat Ekivalen (BE): `{BE}`")
+konversi_gaya = {
+    "Newton (N)": 1,
+    "Dyne": 1e-5,
+    "Kilogram-gaya (kgf)": 9.80665
+}
 
-# Input data perhitungan
-st.markdown("### ✏️ Input Data Standarisasi")
+satuan_suhu = ["Celsius (°C)", "Fahrenheit (°F)", "Kelvin (K)"]
+
+# ================ Fungsi Konversi ===================
+
+def konversi_satuan(nilai, dari, ke, data_satuan):
+    nilai_dalam_standar = nilai * data_satuan[dari]
+    return nilai_dalam_standar / data_satuan[ke]
+
+def konversi_suhu(nilai, dari, ke):
+    if dari == ke:
+        return nilai
+    if dari == "Celsius (°C)":
+        return nilai * 9/5 + 32 if ke == "Fahrenheit (°F)" else nilai + 273.15
+    if dari == "Fahrenheit (°F)":
+        return (nilai - 32) * 5/9 if ke == "Celsius (°C)" else (nilai - 32) * 5/9 + 273.15
+    if dari == "Kelvin (K)":
+        return nilai - 273.15 if ke == "Celsius (°C)" else (nilai - 273.15) * 9/5 + 32
+
+# ================ UI Input ==========================
+
+kategori = st.selectbox("📂 Pilih jenis satuan", [
+    "Panjang 📏", "Massa ⚖️", "Suhu 🌡️", "Waktu ⏱️", "Energi ⚡", "Gaya 🏋️"
+])
+
+nilai = st.number_input("Masukkan nilai yang ingin dikonversi", value=0.0)
+
 col1, col2 = st.columns(2)
+
 with col1:
-    gram_zat = st.number_input("⚖️ Bobot zat yang ditimbang (g)", min_value=0.0, format="%.4f")
-    faktor_pengali = st.number_input(
-        "🧮 Faktor Pengali", min_value=0.0001, value=1.0, step=0.1,
-        help="Misal 1000 jika volume dalam mL."
-    )
+    if "Panjang" in kategori:
+        satuan_asal = st.selectbox("Dari satuan", list(konversi_panjang.keys()))
+    elif "Massa" in kategori:
+        satuan_asal = st.selectbox("Dari satuan", list(konversi_massa.keys()))
+    elif "Suhu" in kategori:
+        satuan_asal = st.selectbox("Dari satuan", satuan_suhu)
+    elif "Waktu" in kategori:
+        satuan_asal = st.selectbox("Dari satuan", list(konversi_waktu.keys()))
+    elif "Energi" in kategori:
+        satuan_asal = st.selectbox("Dari satuan", list(konversi_energi.keys()))
+    elif "Gaya" in kategori:
+        satuan_asal = st.selectbox("Dari satuan", list(konversi_gaya.keys()))
+
 with col2:
-    volume_mL = st.number_input("📏 Volume larutan (mL)", min_value=0.0, format="%.2f")
+    if "Panjang" in kategori:
+        satuan_tujuan = st.selectbox("Ke satuan", list(konversi_panjang.keys()))
+    elif "Massa" in kategori:
+        satuan_tujuan = st.selectbox("Ke satuan", list(konversi_massa.keys()))
+    elif "Suhu" in kategori:
+        satuan_tujuan = st.selectbox("Ke satuan", satuan_suhu)
+    elif "Waktu" in kategori:
+        satuan_tujuan = st.selectbox("Ke satuan", list(konversi_waktu.keys()))
+    elif "Energi" in kategori:
+        satuan_tujuan = st.selectbox("Ke satuan", list(konversi_energi.keys()))
+    elif "Gaya" in kategori:
+        satuan_tujuan = st.selectbox("Ke satuan", list(konversi_gaya.keys()))
 
-# Input volume titran 1 & 2 untuk RPD
-st.markdown("### 🔁 Input Volume Titran (untuk %RPD)")
-col3, col4 = st.columns(2)
-with col3:
-    volume_titran1 = st.number_input("🔁 Volume Titran 1 (mL)", min_value=0.0, format="%.2f")
-with col4:
-    volume_titran2 = st.number_input("🔁 Volume Titran 2 (mL)", min_value=0.0, format="%.2f")
+# ================= Tombol dan Output =================
 
-# Tombol hitung
-st.markdown("---")
-if st.button("▶️ Hitung Sekarang"):
-    if gram_zat == 0 or volume_mL == 0 or faktor_pengali == 0:
-        st.warning("❗ Mohon isi semua input dengan benar (tidak boleh nol).")
-    else:
-        with st.spinner("🔬 Menghitung hasil standarisasi..."):
-            time.sleep(1.5)
-            N = hitung_normalitas(gram_zat, BE, volume_mL, faktor_pengali)
-            M = hitung_molaritas(gram_zat, BM, volume_mL, faktor_pengali)
-            RPD = hitung_rpd(volume_titran1, volume_titran2)
+if st.button("🔄 Konversi"):
+    with st.spinner("⏳ Menghitung konversi..."):
+        time.sleep(2)
+        if "Panjang" in kategori:
+            hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_panjang)
+        elif "Massa" in kategori:
+            hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_massa)
+        elif "Suhu" in kategori:
+            hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
+        elif "Waktu" in kategori:
+            hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_waktu)
+        elif "Energi" in kategori:
+            hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_energi)
+        elif "Gaya" in kategori:
+            hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_gaya)
 
-        st.success("✅ Perhitungan selesai!")
-        st.markdown(f"**📘 Metode:** `{metode}`")
-        st.markdown(f"**🧪 Senyawa:** `{senyawa}`")
-        st.markdown(f"**📏 Volume larutan:** `{volume_mL:.2f} mL`")
-        st.markdown(f"**🧮 Faktor pengali:** `{faktor_pengali}`")
-        st.markdown("---")
-        st.markdown(f"**🧫 Normalitas (N):** `{N:.4f} N`")
-        st.markdown(f"**🔬 Molaritas (M):** `{M:.4f} mol/L`")
-        st.markdown(f"**📉 %RPD:** `{RPD:.2f}`")
+    st.success(f"✅ {nilai} {satuan_asal} = {hasil:.4f} {satuan_tujuan}")
+
