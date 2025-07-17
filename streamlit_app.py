@@ -60,6 +60,7 @@ konversi_data = {
     "🧪 Tekanan": {
         "atm": 101325,
         "Pa": 1,
+        "kPa": 1000,
         "mmHg": 133.322,
         "bar": 100000
     }
