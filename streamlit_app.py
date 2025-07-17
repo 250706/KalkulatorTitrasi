@@ -87,7 +87,7 @@ def konversi_suhu(nilai, dari, ke):
 
 kategori = st.selectbox("📂 Pilih jenis konversi", list(konversi_data.keys()) + ["🔥 Suhu"])
 
-nilai = st.number_input("Masukkan nilai yang ingin dikonversi", value=0.0)
+nilai = st.number_input("Masukkan nilai yang ingin dikonversi")
 
 col1, col2 = st.columns(2)
 
