@@ -110,7 +110,8 @@ if st.button("🔄 Konversi"):
         st.warning("⚠️ Harap masukkan nilai terlebih dahulu.")
     else:
         try:
-            nilai = float(nilai_input)
+            # Gantikan koma (,) dengan titik (.) agar bisa diubah ke float
+            nilai = float(nilai_input.replace(",", "."))
             with st.spinner("⏳ Menghitung konversi..."):
                 time.sleep(2)
                 if kategori == "🔥 Suhu":
@@ -120,4 +121,4 @@ if st.button("🔄 Konversi"):
 
             st.success(f"✅ {nilai} {satuan_asal} = {hasil:.6g} {satuan_tujuan}")
         except ValueError:
-            st.error("❌ Nilai yang dimasukkan harus berupa angka.")
+            st.error("❌ Nilai yang dimasukkan harus berupa angka (contoh: 3.5 atau 3,5).")
