@@ -14,6 +14,7 @@ st.markdown(
         background-position: center;
         background-repeat: no-repeat;
     }
+ unsafe_allow_html=True
 )
 # Data konversi dan faktor satuan
 konversi_data = {
