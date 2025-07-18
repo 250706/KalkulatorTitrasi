@@ -1,13 +1,32 @@
 import streamlit as st
 import time
+import pandas as pd
+import altair as alt
 
 st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
-st.markdown("<h1 style='text-align: center; color: #4B8BBE;'>🔁 KALKULATOR KONVERSI SATUAN FISIKA</h1>", unsafe_allow_html=True)
-st.markdown("---")
-
-# ================== Data Konversi ==================
+st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
+st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
 konversi_data = {
+    "🔥 Suhu": {
+        "Celsius (°C)": "C",
+        "Fahrenheit (°F)": "F",
+        "Kelvin (K)": "K"
+    },
+    "🧪 Tekanan": {
+        "atm": 101325,
+        "mmHg": 133.322,
+        "Pa": 1,
+        "bar": 100000,
+        "kPa": 1000
+    },
+    "⚖ Massa": {
+        "kg": 1000,
+        "g": 1,
+        "mg": 0.001,
+        "lb": 453.592,
+        "oz": 28.3495
+    },
     "📏 Panjang": {
         "km": 1000,
         "m": 1,
@@ -18,13 +37,6 @@ konversi_data = {
         "inchi": 0.0254,
         "kaki (ft)": 0.3048,
         "mil": 1609.34
-    },
-    "⚖ Massa": {
-        "kg": 1,
-        "g": 0.001,
-        "mg": 0.000001,
-        "lb": 0.453592,
-        "oz": 0.0283495
     },
     "⏱ Waktu": {
         "detik (s)": 1,
@@ -41,9 +53,9 @@ konversi_data = {
     },
     "💨 Kecepatan": {
         "m/s": 1,
-        "km/jam": 1 / 3.6,
-        "mil/jam (mph)": 0.44704,
-        "knot": 0.514444
+        "km/jam": 1000/3600,
+        "mil/jam (mph)": 1609.34/3600,
+        "knot": 1852/3600
     },
     "💡 Daya": {
         "watt (W)": 1,
@@ -57,77 +69,134 @@ konversi_data = {
         "m³": 1000,
         "galon": 3.78541
     },
-    "🧪 Tekanan": {
-        "atm": 101325,
-        "Pa": 1,
-        "kPa": 1000,
-        "mmHg": 133.322,
-        "bar": 100000
+    "📡 Frekuensi": {
+        "Hz": 1,
+        "kHz": 1e3,
+        "MHz": 1e6,
+        "GHz": 1e9
+    },
+    "⚡ Hambatan Listrik": {
+        "ohm (Ω)": 1,
+        "kΩ": 1e3,
+        "MΩ": 1e6
+    },
+    "🔋 Tegangan Listrik": {
+        "volt (V)": 1,
+        "mV": 1e-3,
+        "kV": 1e3
+    },
+    "🔌 Arus Listrik": {
+        "ampere (A)": 1,
+        "mA": 1e-3,
+        "μA": 1e-6
     }
 }
 
-satuan_suhu = ["Celsius (°C)", "Fahrenheit (°F)", "Kelvin (K)"]
+presisi = {
+    "🔥 Suhu": 2,
+    "🧪 Tekanan": 2,
+    "⚖ Massa": 4,
+    "📏 Panjang": 4,
+    "⏱ Waktu": 0,
+    "⚡ Energi": 6,
+    "💨 Kecepatan": 3,
+    "💡 Daya": 2,
+    "🧊 Volume": 4,
+    "📡 Frekuensi": 2,
+    "⚡ Hambatan Listrik": 2,
+    "🔋 Tegangan Listrik": 2,
+    "🔌 Arus Listrik": 2
+}
 
-# ================ Fungsi Konversi ===================
+kategori = st.selectbox("Pilih kategori satuan:", list(konversi_data.keys()))
+satuan_list = list(konversi_data[kategori].keys())
+satuan_asal = st.selectbox("Satuan asal:", satuan_list)
+satuan_tujuan = st.selectbox("Satuan tujuan:", satuan_list)
+nilai_input = st.text_input("Masukkan nilai:", placeholder="contoh: 5.5")
 
-def konversi_satuan(nilai, dari, ke, satuan_dict):
-    return nilai * satuan_dict[dari] / satuan_dict[ke]
 
 def konversi_suhu(nilai, dari, ke):
     if dari == ke:
         return nilai
     if dari == "Celsius (°C)":
-        return nilai * 9/5 + 32 if ke == "Fahrenheit (°F)" else nilai + 273.15
+        if ke == "Fahrenheit (°F)":
+            return (nilai * 9/5) + 32
+        elif ke == "Kelvin (K)":
+            return nilai + 273.15
     elif dari == "Fahrenheit (°F)":
-        return (nilai - 32) * 5/9 if ke == "Celsius (°C)" else (nilai - 32) * 5/9 + 273.15
+        if ke == "Celsius (°C)":
+            return (nilai - 32) * 5/9
+        elif ke == "Kelvin (K)":
+            return (nilai - 32) * 5/9 + 273.15
     elif dari == "Kelvin (K)":
-        return nilai - 273.15 if ke == "Celsius (°C)" else (nilai - 273.15) * 9/5 + 32
-
-# ============== Presisi Desimal Berdasarkan Kategori ==============
-
-presisi = {
-    "🔥 Suhu": 2,
-    "🧪 Tekanan": 3,
-    "⚖ Massa": 4,
-    "📏 Panjang": 4,
-    "⏱ Waktu": 2,
-    "⚡ Energi": 3,
-    "💨 Kecepatan": 3,
-    "💡 Daya": 2,
-    "🧊 Volume": 3
-}
-
-# ================ UI Input ==========================
-
-kategori = st.selectbox("📂 Pilih jenis konversi", list(konversi_data.keys()) + ["🔥 Suhu"])
-
-nilai_input = st.text_input("Masukkan nilai yang ingin dikonversi")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    satuan_asal = st.selectbox("Dari satuan", satuan_suhu if kategori == "🔥 Suhu" else list(konversi_data[kategori].keys()))
-with col2:
-    satuan_tujuan = st.selectbox("Ke satuan", satuan_suhu if kategori == "🔥 Suhu" else list(konversi_data[kategori].keys()))
-
-# ================= Tombol dan Output =================
+        if ke == "Celsius (°C)":
+            return nilai - 273.15
+        elif ke == "Fahrenheit (°F)":
+            return (nilai - 273.15) * 9/5 + 32
+    return nilai
 
 if st.button("🔄 Konversi"):
     if not nilai_input:
         st.warning("⚠️ Harap masukkan nilai terlebih dahulu.")
     else:
         try:
-            nilai = float(nilai_input.replace(",", "."))  # Mengubah koma menjadi titik
+            nilai = float(nilai_input.replace(",", "."))
             with st.spinner("⏳ Menghitung konversi..."):
                 time.sleep(2)
+
                 if kategori == "🔥 Suhu":
                     hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
                 else:
-                    hasil = konversi_satuan(nilai, satuan_asal, satuan_tujuan, konversi_data[kategori])
+                    faktor_asal = konversi_data[kategori][satuan_asal]
+                    faktor_tujuan = konversi_data[kategori][satuan_tujuan]
+                    hasil = nilai * faktor_asal / faktor_tujuan
 
-            # Terapkan presisi per kategori
-            desimal = presisi.get(kategori, 2)
-            hasil_str = f"{hasil:.{desimal}f}"
-            st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                desimal = presisi.get(kategori, 2)
+                hasil_str = f"{hasil:.{desimal}f}"
+                st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+
+                st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", key="copy", disabled=False)
+
+                if kategori == "🔥 Suhu":
+                    st.markdown("### 📘 Penjelasan Konversi Suhu")
+                    st.markdown(f"""
+                    Rumus konversi suhu dari **{satuan_asal}** ke **{satuan_tujuan}** telah digunakan sesuai standar:
+                    
+                    ```python
+                    {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
+                    ```
+                    """)
+                else:
+                    st.markdown("### 📘 Penjelasan Konversi")
+                    st.markdown(f"""
+                    Dikonversi menggunakan rumus:
+                    
+                    \[
+                    \text{{Hasil}} = \text{{nilai}} \times \frac{{\text{{faktor asal}}}}{{\text{{faktor tujuan}}}}
+                    \]
+
+                    Substitusi:
+                    
+                    \[
+                    {nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}
+                    \]
+                    """, unsafe_allow_html=True)
+
+                    df = pd.DataFrame({
+                        'Satuan': [satuan_asal, satuan_tujuan],
+                        'Nilai': [nilai, hasil]
+                    })
+                    chart = alt.Chart(df).mark_bar().encode(
+                        x='Satuan',
+                        y='Nilai',
+                        color='Satuan',
+                        tooltip=['Satuan', 'Nilai']
+                    ).properties(
+                        title='📊 Perbandingan Nilai Sebelum dan Sesudah Konversi',
+                        height=300
+                    )
+                    st.altair_chart(chart, use_container_width=True)
+
         except ValueError:
             st.error("❌ Nilai yang dimasukkan harus berupa angka (contoh: 3.5 atau 3,5).")
