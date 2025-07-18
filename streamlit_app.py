@@ -98,7 +98,7 @@ presisi = {
     "⚖ Massa": 4,
     "📏 Panjang": 4,
     "⏱ Waktu": 0,
-    "⚡ Energi": 6,
+    "⚡ Energi": 12,
     "💨 Kecepatan": 3,
     "💡 Daya": 2,
     "🧊 Volume": 4,
@@ -118,20 +118,11 @@ def konversi_suhu(nilai, dari, ke):
     if dari == ke:
         return nilai
     if dari == "Celsius (°C)":
-        if ke == "Fahrenheit (°F)":
-            return (nilai * 9/5) + 32
-        elif ke == "Kelvin (K)":
-            return nilai + 273.15
+        return (nilai * 9/5 + 32) if ke == "Fahrenheit (°F)" else nilai + 273.15
     elif dari == "Fahrenheit (°F)":
-        if ke == "Celsius (°C)":
-            return (nilai - 32) * 5/9
-        elif ke == "Kelvin (K)":
-            return (nilai - 32) * 5/9 + 273.15
+        return (nilai - 32) * 5/9 if ke == "Celsius (°C)" else (nilai - 32) * 5/9 + 273.15
     elif dari == "Kelvin (K)":
-        if ke == "Celsius (°C)":
-            return nilai - 273.15
-        elif ke == "Fahrenheit (°F)":
-            return (nilai - 273.15) * 9/5 + 32
+        return nilai - 273.15 if ke == "Celsius (°C)" else (nilai - 273.15) * 9/5 + 32
     return nilai
 
 if st.button("🔄 Konversi"):
@@ -143,7 +134,10 @@ if st.button("🔄 Konversi"):
             with st.spinner("⏳ Menghitung konversi..."):
                 time.sleep(2)
 
-                if kategori == "🔥 Suhu":
+                if satuan_asal == satuan_tujuan:
+                    hasil = nilai
+                    st.info(f"ℹ️ Tidak ada konversi diperlukan. Nilai tetap: {hasil} {satuan_asal}")
+                elif kategori == "🔥 Suhu":
                     hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
                 else:
                     faktor_asal = konversi_data[kategori][satuan_asal]
@@ -162,31 +156,21 @@ if st.button("🔄 Konversi"):
                     st.markdown(f"""
                     Rumus konversi dari **{satuan_asal}** ke **{satuan_tujuan}**:
 
-                    
-{nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
+                    {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
 
-                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu:
-
+                    Transformasi suhu:
                     - °C ke °F : (°C × 9/5) + 32
                     - °C ke K : °C + 273.15
                     - °F ke °C : (°F - 32) × 5/9
+                    - °F ke K : (°F - 32) × 5/9 + 273.15
                     - K ke °C : K - 273.15
-                    - dan seterusnya
+                    - K ke °F : (K - 273.15) × 9/5 + 32
                     """)
-                else:
+                elif satuan_asal != satuan_tujuan:
                     st.markdown("### 📘 Penjelasan Konversi")
                     st.markdown("Rumus konversi satuan berdasarkan skala pengali:")
-
                     st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
-                    st.markdown("Contoh substitusi nilai:")
                     st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
-
-                    st.markdown(f"""
-                    **Keterangan:**
-                    - Nilai awal dikalikan dengan rasio antara faktor asal dan faktor tujuan
-                    - Nilai konversi dihitung sebagai: {nilai} × ({faktor_asal} / {faktor_tujuan})
-                    - Hasil dibulatkan sesuai presisi kategori ({desimal} angka di belakang koma)
-                    """)
 
                     df = pd.DataFrame({
                         'Satuan': [satuan_asal, satuan_tujuan],
@@ -205,8 +189,3 @@ if st.button("🔄 Konversi"):
 
         except ValueError:
             st.error("❌ Nilai yang dimasukkan harus berupa angka (contoh: 3.5 atau 3,5).")
-
-
-
-2/2
-
