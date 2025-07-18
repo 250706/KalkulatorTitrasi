@@ -172,15 +172,15 @@ if st.button("🔄 Konversi"):
                     st.markdown(f"""
                     Menggunakan rumus konversi:
 
-                    \[
+                    $$
                     \text{{Hasil}} = \text{{nilai}} \times \frac{{\text{{faktor asal}}}}{{\text{{faktor tujuan}}}}
-                    \]
+                    $$
 
                     Substitusi nilai:
 
-                    \[
+                    $$
                     {nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}
-                    \]
+                    $$
                     """, unsafe_allow_html=True)
 
                     df = pd.DataFrame({
