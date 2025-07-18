@@ -1,3 +1,4 @@
+
 import streamlit as st
 import time
 import pandas as pd
@@ -165,15 +166,28 @@ if st.button("🔄 Konversi"):
                     ```
                     {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
                     ```
-                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu standar.
+                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu:
+
+                    - °C ke °F : (°C × 9/5) + 32
+                    - °C ke K : °C + 273.15
+                    - °F ke °C : (°F - 32) × 5/9
+                    - K ke °C : K - 273.15
+                    - dan seterusnya
                     """)
                 else:
                     st.markdown("### 📘 Penjelasan Konversi")
-                    st.write("Menggunakan rumus konversi:")
+                    st.markdown("Rumus konversi satuan berdasarkan skala pengali:")
 
                     st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
-                    st.write("Substitusi nilai:")
+                    st.markdown("Contoh substitusi nilai:")
                     st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
+
+                    st.markdown(f"""
+                    **Keterangan:**
+                    - Nilai awal dikalikan dengan rasio antara faktor asal dan faktor tujuan
+                    - Nilai konversi dihitung sebagai: {nilai} × ({faktor_asal} / {faktor_tujuan})
+                    - Hasil dibulatkan sesuai presisi kategori ({desimal} angka di belakang koma)
+                    """)
 
                     df = pd.DataFrame({
                         'Satuan': [satuan_asal, satuan_tujuan],
