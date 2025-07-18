@@ -1,4 +1,3 @@
-[media pointer="file-service://file-VhheTLGvEYg9i6bNgsyz6E"]
 import streamlit as st
 import time
 import pandas as pd
@@ -206,3 +205,8 @@ if st.button("🔄 Konversi"):
 
         except ValueError:
             st.error("❌ Nilai yang dimasukkan harus berupa angka (contoh: 3.5 atau 3,5).")
+
+
+
+2/2
+
