@@ -1,34 +1,13 @@
+[media pointer="file-service://file-VhheTLGvEYg9i6bNgsyz6E"]
 import streamlit as st
 import time
 import pandas as pd
 import altair as alt
-import base64
 
-# ===== SETUP LATAR BELAKANG =====
-def set_background(image_path):
-    with open(image_path, "rb") as image_file:
-        encoded = base64.b64encode(image_file.read()).decode()
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/jpg;base64,{encoded}");
-            background-size: cover;
-            background-attachment: fixed;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-set_background("chemistry-and-physics-symbols-on-black-board-wallpaper-960x600_1.jpg")
-
-# ===== TITLE & INFO =====
 st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
 st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
 st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
-# ===== DATA KONVERSI =====
 konversi_data = {
     "🔥 Suhu": {
         "Celsius (°C)": "C",
@@ -130,26 +109,32 @@ presisi = {
     "🔌 Arus Listrik": 2
 }
 
-# ===== INPUT =====
-kategori = st.selectbox("📚 Pilih kategori satuan:", list(konversi_data.keys()))
+kategori = st.selectbox("Pilih kategori satuan:", list(konversi_data.keys()))
 satuan_list = list(konversi_data[kategori].keys())
-satuan_asal = st.selectbox("🎯 Satuan asal:", satuan_list)
-satuan_tujuan = st.selectbox("🎯 Satuan tujuan:", satuan_list)
-nilai_input = st.text_input("💡 Masukkan nilai:", placeholder="contoh: 5.5")
+satuan_asal = st.selectbox("Satuan asal:", satuan_list)
+satuan_tujuan = st.selectbox("Satuan tujuan:", satuan_list)
+nilai_input = st.text_input("Masukkan nilai:", placeholder="contoh: 5.5")
 
-# ===== LOGIKA KONVERSI =====
 def konversi_suhu(nilai, dari, ke):
     if dari == ke:
         return nilai
     if dari == "Celsius (°C)":
-        return (nilai * 9/5 + 32) if ke == "Fahrenheit (°F)" else (nilai + 273.15)
+        if ke == "Fahrenheit (°F)":
+            return (nilai * 9/5) + 32
+        elif ke == "Kelvin (K)":
+            return nilai + 273.15
     elif dari == "Fahrenheit (°F)":
-        return (nilai - 32) * 5/9 if ke == "Celsius (°C)" else (nilai - 32) * 5/9 + 273.15
+        if ke == "Celsius (°C)":
+            return (nilai - 32) * 5/9
+        elif ke == "Kelvin (K)":
+            return (nilai - 32) * 5/9 + 273.15
     elif dari == "Kelvin (K)":
-        return nilai - 273.15 if ke == "Celsius (°C)" else (nilai - 273.15) * 9/5 + 32
+        if ke == "Celsius (°C)":
+            return nilai - 273.15
+        elif ke == "Fahrenheit (°F)":
+            return (nilai - 273.15) * 9/5 + 32
     return nilai
 
-# ===== TOMBOL KONVERSI =====
 if st.button("🔄 Konversi"):
     if not nilai_input:
         st.warning("⚠️ Harap masukkan nilai terlebih dahulu.")
@@ -159,7 +144,6 @@ if st.button("🔄 Konversi"):
             with st.spinner("⏳ Menghitung konversi..."):
                 time.sleep(2)
 
-                # Hitung hasil
                 if kategori == "🔥 Suhu":
                     hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
                 else:
@@ -169,31 +153,42 @@ if st.button("🔄 Konversi"):
 
                 desimal = presisi.get(kategori, 2)
                 hasil_str = f"{hasil:.{desimal}f}"
-
                 st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+
                 st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
                 st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", key="copy", disabled=False)
 
-                # Penjelasan
                 if kategori == "🔥 Suhu":
                     st.markdown("### 📘 Penjelasan Konversi Suhu")
                     st.markdown(f"""
                     Rumus konversi dari **{satuan_asal}** ke **{satuan_tujuan}**:
-                    
-                    {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
 
-                    Transformasi suhu:
-                    - °C → °F : (°C × 9/5) + 32
-                    - °C → K  : °C + 273.15
-                    - °F → °C : (°F - 32) × 5/9
-                    - K → °C  : K - 273.15
+                    
+{nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
+
+                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu:
+
+                    - °C ke °F : (°C × 9/5) + 32
+                    - °C ke K : °C + 273.15
+                    - °F ke °C : (°F - 32) × 5/9
+                    - K ke °C : K - 273.15
+                    - dan seterusnya
                     """)
                 else:
                     st.markdown("### 📘 Penjelasan Konversi")
+                    st.markdown("Rumus konversi satuan berdasarkan skala pengali:")
+
                     st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
+                    st.markdown("Contoh substitusi nilai:")
                     st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
 
-                    # Grafik perbandingan
+                    st.markdown(f"""
+                    **Keterangan:**
+                    - Nilai awal dikalikan dengan rasio antara faktor asal dan faktor tujuan
+                    - Nilai konversi dihitung sebagai: {nilai} × ({faktor_asal} / {faktor_tujuan})
+                    - Hasil dibulatkan sesuai presisi kategori ({desimal} angka di belakang koma)
+                    """)
+
                     df = pd.DataFrame({
                         'Satuan': [satuan_asal, satuan_tujuan],
                         'Nilai': [nilai, hasil]
