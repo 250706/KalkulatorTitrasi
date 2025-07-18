@@ -3,8 +3,29 @@ import time
 import pandas as pd
 import altair as alt
 
+# === Tambahkan Ini ===
+def set_custom_background(image_url):
+    st.markdown(f"""
+        <style>
+        .stApp {{
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                        url("{image_url}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }}
+        </style>
+        """, unsafe_allow_html=True)
+
+# Ganti dengan link gambarmu
+image_link = "https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp"
+set_custom_background(image_link)
+# ======================
+
 st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
 st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
+# dst...
+
 st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
 # Data konversi dan faktor satuan
