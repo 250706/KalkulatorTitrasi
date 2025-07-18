@@ -21,7 +21,7 @@ image_link = "https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-boa
 set_custom_background(image_link)
 # ==========================
 
-st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
+st.set_page_config(page_title="⏳FizConvert", layout="centered")
 st.title("🧠 KALKULATOR KONVERSI SATUAN FISIKA")
 st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
