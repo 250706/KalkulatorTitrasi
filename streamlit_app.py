@@ -12,7 +12,7 @@ def get_base64_bg(file_path):
     with open(file_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-bg_base64 = get_base64_bg("da954ec3-975c-4134-a0b7-d488731d128e.png")
+bg_base64 = get_base64_bg("/mnt/data/da954ec3-975c-4134-a0b7-d488731d128e.png")
 
 # Tambahkan background dari gambar lokal
 st.markdown(
