@@ -169,19 +169,11 @@ if st.button("🔄 Konversi"):
                     """)
                 else:
                     st.markdown("### 📘 Penjelasan Konversi")
-                    st.markdown(f"""
-                    Menggunakan rumus konversi:
+                    st.write("Menggunakan rumus konversi:")
 
-                    $$
-                    \text{{Hasil}} = \text{{nilai}} \times \frac{{\text{{faktor asal}}}}{{\text{{faktor tujuan}}}}
-                    $$
-
-                    Substitusi nilai:
-
-                    $$
-                    {nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}
-                    $$
-                    """, unsafe_allow_html=True)
+                    st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
+                    st.write("Substitusi nilai:")
+                    st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
 
                     df = pd.DataFrame({
                         'Satuan': [satuan_asal, satuan_tujuan],
