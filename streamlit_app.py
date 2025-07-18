@@ -1,4 +1,3 @@
-
 import streamlit as st
 import time
 import pandas as pd
@@ -188,20 +187,28 @@ if st.button("🔄 Konversi"):
                 if kategori == "🔥 Suhu":
                     st.markdown("### 📘 Penjelasan Konversi Suhu")
                     st.markdown(f"""
-                    Rumus konversi dari **{satuan_asal}** ke **{satuan_tujuan}**:
+                    **Rumus Konversi Suhu** dari **{satuan_asal}** ke **{satuan_tujuan}**:
 
                     ```
                     {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
                     ```
-                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu standar.
+                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu standar menggunakan rumus umum suhu.
                     """)
                 else:
                     st.markdown("### 📘 Penjelasan Konversi")
-                    st.write("Menggunakan rumus konversi:")
+                    st.markdown(f"""
+                    Konversi satuan dilakukan dengan menggunakan rumus:
 
-                    st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
-                    st.write("Substitusi nilai:")
-                    st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
+                    \[
+                    \text{{Hasil}} = \text{{nilai}} \times \frac{{\text{{faktor asal}}}}{{\text{{faktor tujuan}}}}
+                    \]
+
+                    Substitusi nilai:
+
+                    \[
+                    {nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}
+                    \]
+                    """)
 
                     df = pd.DataFrame({
                         'Satuan': [satuan_asal, satuan_tujuan],
@@ -220,3 +227,4 @@ if st.button("🔄 Konversi"):
 
         except ValueError:
             st.error("❌ Nilai yang dimasukkan harus berupa angka (contoh: 3.5 atau 3,5).")
+
