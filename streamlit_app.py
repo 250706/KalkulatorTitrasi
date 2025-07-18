@@ -21,7 +21,7 @@ def set_background_from_url(image_url, opacity=0.85):
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, {opacity});
+            background-color: rgba(0, 0, 0, 0.85);
             z-index: -1;
         }}
         </style>
