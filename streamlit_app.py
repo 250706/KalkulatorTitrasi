@@ -1,168 +1,153 @@
 import streamlit as st
-import time
 import base64
-from pathlib import Path
+import time
 import matplotlib.pyplot as plt
 
-# ---------------- SETUP APLIKASI ----------------
-st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
+# --- Fungsi untuk background ---
+def set_bg_from_local(image_file_path):
+    with open(image_file_path, "rb") as f:
+        data = f.read()
+        encoded = base64.b64encode(data).decode()
+        st.markdown(
+            f"""
+            <style>
+            .stApp {{
+                background-image: url("data:image/png;base64,{encoded}");
+                background-size: cover;
+                background-attachment: fixed;
+                background-position: center;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
-# ---------------- BACKGROUND GAMBAR ----------------
-def set_background(image_path):
-    with open(image_path, "rb") as img_file:
-        encoded = base64.b64encode(img_file.read()).decode()
-    css = f"""
-    <style>
-    .stApp {{
-        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("data:image/jpg;base64,{encoded}");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        color: white;
-    }}
-    </style>
-    """
-    st.markdown(css, unsafe_allow_html=True)
-
-set_background("/mnt/data/17a103c4-d68f-40a3-bf7f-ae312a73708d.jpg")  # Gunakan file upload kamu
-
-# ---------------- DICTIONARY KONVERSI ----------------
+# --- Data konversi satuan ---
 konversi_data = {
-    "Tekanan": {
-        "satuan": ["atm", "Pa", "kPa", "bar", "mmHg", "psi"],
-        "faktor": {"atm": 101325, "Pa": 1, "kPa": 1000, "bar": 100000, "mmHg": 133.322, "psi": 6894.76},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
-    },
     "Suhu": {
         "satuan": ["Celsius", "Fahrenheit", "Kelvin"],
+        "rumus": {
+            ("Celsius", "Fahrenheit"): lambda c: c * 9/5 + 32,
+            ("Fahrenheit", "Celsius"): lambda f: (f - 32) * 5/9,
+            ("Celsius", "Kelvin"): lambda c: c + 273.15,
+            ("Kelvin", "Celsius"): lambda k: k - 273.15,
+            ("Fahrenheit", "Kelvin"): lambda f: (f - 32) * 5/9 + 273.15,
+            ("Kelvin", "Fahrenheit"): lambda k: (k - 273.15) * 9/5 + 32,
+        },
+        "presisi": 2
+    },
+    "Tekanan": {
+        "satuan": ["atm", "Pa", "mmHg", "bar"],
+        "faktor": {"atm": 101325, "Pa": 1, "mmHg": 133.322, "bar": 100000},
         "presisi": 2
     },
     "Massa": {
-        "satuan": ["kg", "g", "mg", "lb"],
-        "faktor": {"kg": 1000, "g": 1, "mg": 0.001, "lb": 453.592},
-        "presisi": 3,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
+        "satuan": ["mg", "g", "kg", "ton"],
+        "faktor": {"mg": 0.001, "g": 1, "kg": 1000, "ton": 1e6},
+        "presisi": 2
     },
     "Panjang": {
-        "satuan": ["m", "cm", "mm", "inch", "ft"],
-        "faktor": {"m": 100, "cm": 1, "mm": 0.1, "inch": 2.54, "ft": 30.48},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
-    },
-    "Energi": {
-        "satuan": ["J", "kJ", "cal", "kcal"],
-        "faktor": {"J": 1, "kJ": 1000, "cal": 4.184, "kcal": 4184},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
-    },
-    "Volume": {
-        "satuan": ["L", "mL", "cm³"],
-        "faktor": {"L": 1000, "mL": 1, "cm³": 1},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
+        "satuan": ["mm", "cm", "m", "km"],
+        "faktor": {"mm": 0.001, "cm": 0.01, "m": 1, "km": 1000},
+        "presisi": 3
     },
     "Waktu": {
         "satuan": ["detik", "menit", "jam", "hari"],
         "faktor": {"detik": 1, "menit": 60, "jam": 3600, "hari": 86400},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
+        "presisi": 2
+    },
+    "Energi": {
+        "satuan": ["J", "kJ", "kcal"],
+        "faktor": {"J": 1, "kJ": 1000, "kcal": 4184},
+        "presisi": 2
     },
     "Kecepatan": {
         "satuan": ["m/s", "km/h", "mph"],
-        "faktor": {"m/s": 1, "km/h": 0.277778, "mph": 0.44704},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
+        "faktor": {"m/s": 1, "km/h": 3.6, "mph": 2.237},
+        "presisi": 2
     },
     "Daya": {
-        "satuan": ["W", "kW", "hp"],
-        "faktor": {"W": 1, "kW": 1000, "hp": 745.7},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
+        "satuan": ["W", "kW", "HP"],
+        "faktor": {"W": 1, "kW": 1000, "HP": 745.7},
+        "presisi": 2
+    },
+    "Volume": {
+        "satuan": ["mL", "L", "m³"],
+        "faktor": {"mL": 0.001, "L": 1, "m³": 1000},
+        "presisi": 3
     },
     "Frekuensi": {
         "satuan": ["Hz", "kHz", "MHz", "GHz"],
-        "faktor": {"Hz": 1, "kHz": 1000, "MHz": 1e6, "GHz": 1e9},
-        "presisi": 0,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
+        "faktor": {"Hz": 1, "kHz": 1e3, "MHz": 1e6, "GHz": 1e9},
+        "presisi": 2
     },
     "Hambatan Listrik": {
-        "satuan": ["ohm", "kiloohm", "megaohm"],
-        "faktor": {"ohm": 1, "kiloohm": 1000, "megaohm": 1e6},
-        "presisi": 1,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
+        "satuan": ["ohm", "kΩ", "MΩ"],
+        "faktor": {"ohm": 1, "kΩ": 1e3, "MΩ": 1e6},
+        "presisi": 2
+    },
+    "Tegangan": {
+        "satuan": ["mV", "V", "kV"],
+        "faktor": {"mV": 0.001, "V": 1, "kV": 1000},
+        "presisi": 2
     },
     "Arus Listrik": {
-        "satuan": ["A", "mA"],
-        "faktor": {"A": 1000, "mA": 1},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
-    },
-    "Tegangan Listrik": {
-        "satuan": ["V", "mV", "kV"],
-        "faktor": {"V": 1, "mV": 0.001, "kV": 1000},
-        "presisi": 2,
-        "deskripsi": "Hasil = nilai × (faktor asal / faktor tujuan)"
+        "satuan": ["mA", "A", "kA"],
+        "faktor": {"mA": 0.001, "A": 1, "kA": 1000},
+        "presisi": 2
     },
 }
 
-# ---------------- INPUT USER ----------------
-st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
-kategori = st.selectbox("Pilih kategori konversi", list(konversi_data.keys()))
-data = konversi_data[kategori]
+# --- Fungsi konversi ---
+def konversi(kategori, nilai, asal, tujuan):
+    if kategori == "Suhu":
+        rumus = konversi_data[kategori]["rumus"].get((asal, tujuan))
+        return rumus(nilai) if rumus else nilai
+    else:
+        faktor_asal = konversi_data[kategori]["faktor"][asal]
+        faktor_tujuan = konversi_data[kategori]["faktor"][tujuan]
+        return nilai * (faktor_asal / faktor_tujuan)
 
-col1, col2 = st.columns(2)
-asal = col1.selectbox("Dari satuan", data["satuan"])
-tujuan = col2.selectbox("Ke satuan", data["satuan"])
-nilai_input = st.text_input("Masukkan nilai yang akan dikonversi", placeholder="Contoh: 100")
+# --- UI ---
+st.set_page_config("Kalkulator Konversi Fisika", layout="centered")
+set_bg_from_local("4eac359b-ce1e-4967-9ad9-8f98db7428d4.png")
 
-# ---------------- KONVERSI ----------------
-def konversi(nilai, asal, tujuan, faktor):
-    return nilai * faktor[asal] / faktor[tujuan]
+st.title("🧮 Kalkulator Konversi Satuan Fisika")
+st.markdown("Silakan pilih kategori, satuan, dan masukkan nilai yang ingin dikonversi.")
 
-def konversi_suhu(nilai, asal, tujuan):
-    if asal == tujuan:
-        return nilai
-    if asal == "Celsius":
-        return {"Fahrenheit": nilai * 9/5 + 32, "Kelvin": nilai + 273.15}[tujuan]
-    elif asal == "Fahrenheit":
-        c = (nilai - 32) * 5/9
-        return {"Celsius": c, "Kelvin": c + 273.15}[tujuan]
-    elif asal == "Kelvin":
-        c = nilai - 273.15
-        return {"Celsius": c, "Fahrenheit": c * 9/5 + 32}[tujuan]
+kategori = st.selectbox("Pilih kategori satuan:", list(konversi_data.keys()))
+satuan_opsi = konversi_data[kategori]["satuan"]
+asal = st.selectbox("Dari satuan:", satuan_opsi)
+tujuan = st.selectbox("Ke satuan:", satuan_opsi)
+nilai = st.number_input("Masukkan nilai yang ingin dikonversi:", value=0.0, format="%.6f")
 
-# ---------------- TOMBOL KONVERSI ----------------
-if nilai_input:
-    try:
-        nilai = float(nilai_input.replace(",", "."))
-        with st.spinner("🔄 Mengonversi..."):
-            time.sleep(1.5)
+if st.button("Konversi"):
+    with st.spinner("Menghitung konversi..."):
+        time.sleep(1.5)
+        hasil = konversi(kategori, nilai, asal, tujuan)
+        presisi = konversi_data[kategori]["presisi"]
+        hasil_bulat = round(hasil, presisi)
+        
+        # Penjelasan rumus
+        st.subheader("📘 Penjelasan Perhitungan")
+        if kategori == "Suhu":
+            st.latex(r"\text{Gunakan rumus konversi suhu sesuai konversi yang dipilih}")
+        else:
+            st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
+            faktor_asal = konversi_data[kategori]["faktor"][asal]
+            faktor_tujuan = konversi_data[kategori]["faktor"][tujuan]
+            rumus_latex = rf"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_bulat}"
+            st.latex(r"\text{Substitusi nilai:}")
+            st.latex(rf"{rumus_latex}")
 
-            if kategori == "Suhu":
-                hasil = konversi_suhu(nilai, asal, tujuan)
-                presisi = data["presisi"]
-                st.success(f"Hasil: {round(hasil, presisi)} {tujuan}")
-                st.markdown(f"**Rumus:** Konversi suhu tergantung jenis satuannya (mis. °C → °F: ×9/5 + 32)")
-            else:
-                hasil = konversi(nilai, asal, tujuan, data["faktor"])
-                presisi = data["presisi"]
-                faktor_asal = data["faktor"][asal]
-                faktor_tujuan = data["faktor"][tujuan]
+        # Hasil konversi
+        st.success(f"Hasil konversi: **{hasil_bulat} {tujuan}**")
 
-                st.success(f"Hasil: {round(hasil, presisi)} {tujuan}")
-                st.markdown(f"**Rumus:** {data['deskripsi']}")
-                st.latex(f"\\text{{Hasil}} = {nilai} \\times \\frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {round(hasil, presisi)}")
+        # Tombol salin
+        st.code(f"{nilai} {asal} = {hasil_bulat} {tujuan}")
 
-            # ---------------- TOMBOL SALIN ----------------
-            st.code(f"{round(hasil, presisi)} {tujuan}", language="markdown")
-
-            # ---------------- GRAFIK ----------------
-            fig, ax = plt.subplots()
-            ax.bar([asal, tujuan], [nilai, hasil], color=["#00bfff", "#90ee90"])
-            ax.set_ylabel("Nilai")
-            ax.set_title("Perbandingan Konversi")
-            st.pyplot(fig)
-
-    except ValueError:
-        st.error("Masukkan angka yang valid.")
+        # Grafik batang
+        fig, ax = plt.subplots()
+        ax.bar(["Nilai Awal", "Hasil Konversi"], [nilai, hasil], color=["skyblue", "lightgreen"])
+        ax.set_ylabel(kategori)
+        st.pyplot(fig)
