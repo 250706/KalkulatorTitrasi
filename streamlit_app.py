@@ -2,33 +2,12 @@ import streamlit as st
 import time
 import pandas as pd
 import altair as alt
-import base64
-
-# Optional: set background image
-def set_background(image_file):
-    with open(image_file, "rb") as img:
-        encoded = base64.b64encode(img.read()).decode()
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/jpg;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-# Aktifkan jika ingin memakai background
-# set_background("chemistry-and-physics-symbols-on-black-board-wallpaper-960x600_1.jpg")
 
 st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
 st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
 st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
+# Data konversi dan faktor satuan
 konversi_data = {
     "🔥 Suhu": {
         "Celsius (°C)": "C",
@@ -114,30 +93,18 @@ konversi_data = {
     }
 }
 
-presisi = {
-    "🔥 Suhu": 2,
-    "🧪 Tekanan": 2,
-    "⚖ Massa": 4,
-    "📏 Panjang": 4,
-    "⏱ Waktu": 0,
-    "⚡ Energi": 6,
-    "💨 Kecepatan": 3,
-    "💡 Daya": 2,
-    "🧊 Volume": 4,
-    "📡 Frekuensi": 2,
-    "⚡ Hambatan Listrik": 2,
-    "🔋 Tegangan Listrik": 2,
-    "🔌 Arus Listrik": 2
-}
+# Fungsi format presisi otomatis
+def format_presisi(nilai):
+    if nilai == int(nilai):
+        return str(int(nilai))
+    elif abs(nilai) < 1:
+        return f"{nilai:.4f}".rstrip('0').rstrip('.')
+    elif abs(nilai) < 100:
+        return f"{nilai:.3f}".rstrip('0').rstrip('.')
+    else:
+        return f"{nilai:.2f}".rstrip('0').rstrip('.')
 
-# UI
-kategori = st.selectbox("Pilih kategori satuan:", list(konversi_data.keys()))
-satuan_list = list(konversi_data[kategori].keys())
-satuan_asal = st.selectbox("Satuan asal:", satuan_list)
-satuan_tujuan = st.selectbox("Satuan tujuan:", satuan_list)
-nilai_input = st.text_input("Masukkan nilai:", placeholder="contoh: 5.5")
-
-# Fungsi khusus suhu
+# Fungsi konversi suhu
 def konversi_suhu(nilai, dari, ke):
     if dari == ke:
         return nilai
@@ -158,6 +125,14 @@ def konversi_suhu(nilai, dari, ke):
             return (nilai - 273.15) * 9/5 + 32
     return nilai
 
+# Input pengguna
+kategori = st.selectbox("Pilih kategori satuan:", list(konversi_data.keys()))
+satuan_list = list(konversi_data[kategori].keys())
+satuan_asal = st.selectbox("Satuan asal:", satuan_list)
+satuan_tujuan = st.selectbox("Satuan tujuan:", satuan_list)
+nilai_input = st.text_input("Masukkan nilai:", placeholder="contoh: 5.5")
+
+# Tombol konversi
 if st.button("🔄 Konversi"):
     if not nilai_input:
         st.warning("⚠️ Harap masukkan nilai terlebih dahulu.")
@@ -165,20 +140,19 @@ if st.button("🔄 Konversi"):
         try:
             nilai = float(nilai_input.replace(",", "."))
             with st.spinner("⏳ Menghitung konversi..."):
-                time.sleep(2)
+                time.sleep(1.5)
 
                 if kategori == "🔥 Suhu":
                     hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
+                    faktor_asal = faktor_tujuan = None
                 else:
                     faktor_asal = konversi_data[kategori][satuan_asal]
                     faktor_tujuan = konversi_data[kategori][satuan_tujuan]
-                    nilai_dasar = nilai * faktor_asal
-                    hasil = nilai_dasar / faktor_tujuan
+                    hasil = nilai * faktor_asal / faktor_tujuan
 
-                desimal = presisi.get(kategori, 2)
-                hasil_str = f"{hasil:.{desimal}f}"
+                hasil_str = format_presisi(hasil)
+
                 st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
-
                 st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
                 st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", key="copy", disabled=False)
 
@@ -189,7 +163,7 @@ if st.button("🔄 Konversi"):
 
                     {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
 
-                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu:
+                    Transformasi antar skala suhu:
                     - °C ke °F : (°C × 9/5) + 32
                     - °C ke K : °C + 273.15
                     - °F ke °C : (°F - 32) × 5/9
@@ -197,17 +171,14 @@ if st.button("🔄 Konversi"):
                     """)
                 else:
                     st.markdown("### 📘 Penjelasan Konversi")
-                    st.markdown("Rumus konversi satuan berdasarkan skala pengali:")
                     st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
                     st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
                     st.markdown(f"""
                     **Keterangan:**
-                    - Nilai awal dikonversi ke satuan dasar terlebih dahulu
-                    - Lalu dikonversi ke satuan tujuan
-                    - Presisi: {desimal} angka di belakang koma
+                    - Nilai dikalikan rasio antar satuan
+                    - Presisi otomatis disesuaikan berdasarkan besar angka
                     """)
 
-                    # Chart hasil
                     df = pd.DataFrame({
                         'Satuan': [satuan_asal, satuan_tujuan],
                         'Nilai': [nilai, hasil]
@@ -224,4 +195,4 @@ if st.button("🔄 Konversi"):
                     st.altair_chart(chart, use_container_width=True)
 
         except ValueError:
-            st.error("❌ Nilai yang dimasukkan harus berupa angka (contoh: 3.5 atau 3,5).")
+            st.error("❌ Nilai harus berupa angka. Gunakan titik atau koma desimal.")
