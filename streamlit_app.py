@@ -3,8 +3,43 @@ import streamlit as st
 import time
 import pandas as pd
 import altair as alt
+import base64
 
 st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
+
+# Fungsi untuk konversi gambar ke base64
+def get_base64_bg(file_path):
+    with open(file_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+bg_base64 = get_base64_bg("da954ec3-975c-4134-a0b7-d488731d128e.png")
+
+# Tambahkan background dari gambar lokal
+st.markdown(
+    f"""
+    <style>
+    body {{
+        background-image: url("data:image/png;base64,{bg_base64}");
+        background-size: cover;
+        background-attachment: fixed;
+    }}
+    [data-testid="stAppViewContainer"] {{
+        background: transparent;
+    }}
+    [data-testid="stHeader"], [data-testid="stToolbar"] {{
+        background: rgba(255, 255, 255, 0.3);
+    }}
+    .st-emotion-cache-1v0mbdj {{
+        background-color: rgba(255, 255, 255, 0.6) !important;
+        backdrop-filter: blur(5px);
+        border-radius: 10px;
+        padding: 1em;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
 st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
@@ -161,32 +196,27 @@ if st.button("🔄 Konversi"):
                 if kategori == "🔥 Suhu":
                     st.markdown("### 📘 Penjelasan Konversi Suhu")
                     st.markdown(f"""
-                    Rumus konversi dari **{satuan_asal}** ke **{satuan_tujuan}**:
+                    **Rumus Konversi Suhu** dari **{satuan_asal}** ke **{satuan_tujuan}**:
 
                     ```
                     {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
                     ```
-                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu:
-
-                    - °C ke °F : (°C × 9/5) + 32
-                    - °C ke K : °C + 273.15
-                    - °F ke °C : (°F - 32) × 5/9
-                    - K ke °C : K - 273.15
-                    - dan seterusnya
+                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu standar menggunakan rumus umum suhu.
                     """)
                 else:
                     st.markdown("### 📘 Penjelasan Konversi")
-                    st.markdown("Rumus konversi satuan berdasarkan skala pengali:")
-
-                    st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
-                    st.markdown("Contoh substitusi nilai:")
-                    st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
-
                     st.markdown(f"""
-                    **Keterangan:**
-                    - Nilai awal dikalikan dengan rasio antara faktor asal dan faktor tujuan
-                    - Nilai konversi dihitung sebagai: {nilai} × ({faktor_asal} / {faktor_tujuan})
-                    - Hasil dibulatkan sesuai presisi kategori ({desimal} angka di belakang koma)
+                    Konversi satuan dilakukan dengan menggunakan rumus:
+
+                    \[
+                    \text{{Hasil}} = \text{{nilai}} \times \frac{{\text{{faktor asal}}}}{{\text{{faktor tujuan}}}}
+                    \]
+
+                    Substitusi nilai:
+
+                    \[
+                    {nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}
+                    \]
                     """)
 
                     df = pd.DataFrame({
