@@ -1,3 +1,4 @@
+
 import streamlit as st
 import time
 import pandas as pd
@@ -64,7 +65,6 @@ st.markdown(
 st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
 st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
-# Data konversi
 konversi_data = {
     "Suhu": {
         "satuan": ["Celsius (°C)", "Fahrenheit (°F)", "Kelvin (K)"],
@@ -139,13 +139,12 @@ if kategori:
                     faktor_asal = konversi_data[kategori]["faktor"][satuan_asal]
                     faktor_tujuan = konversi_data[kategori]["faktor"][satuan_tujuan]
                     hasil = nilai * faktor_asal / faktor_tujuan
-                    penjelasan = f"\n\n**Rumus:**\n\\[ Hasil = Nilai \times \frac{{Faktor\ Asal}}{{Faktor\ Tujuan}} \\]"
+                    penjelasan = f"\n\n**Rumus:**\n\\[ Hasil = Nilai \times \frac{{Faktor\\ Asal}}{{Faktor\\ Tujuan}} \\]"
                     penjelasan += f"\n\n**Substitusi:**\n\\[ {nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {round(hasil, 5)} \\]"
 
                 st.success(f"**Hasil Konversi:** {round(hasil, 5)} {satuan_tujuan}")
                 st.markdown(penjelasan)
 
-                # Grafik
                 df_plot = pd.DataFrame({
                     "Satuan": [satuan_asal, satuan_tujuan],
                     "Nilai": [nilai, hasil]
@@ -157,7 +156,6 @@ if kategori:
                     use_container_width=True
                 )
 
-                # Tombol salin
                 st.code(f"{nilai} {satuan_asal} = {round(hasil, 5)} {satuan_tujuan}", language="")
                 st.button("Salin Hasil Konversi")
 
