@@ -22,7 +22,7 @@ set_custom_background(image_link)
 # ==========================
 
 st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
-st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
+st.title("🧠 KALKULATOR KONVERSI SATUAN FISIKA")
 st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
 # === Data satuan ===
