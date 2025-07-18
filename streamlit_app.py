@@ -8,7 +8,7 @@ def set_custom_background(image_url):
     st.markdown(f"""
         <style>
         .stApp {{
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+            background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), 
                         url("{image_url}");
             background-size: cover;
             background-position: center;
