@@ -114,7 +114,6 @@ satuan_asal = st.selectbox("Satuan asal:", satuan_list)
 satuan_tujuan = st.selectbox("Satuan tujuan:", satuan_list)
 nilai_input = st.text_input("Masukkan nilai:", placeholder="contoh: 5.5")
 
-
 def konversi_suhu(nilai, dari, ke):
     if dari == ke:
         return nilai
@@ -161,23 +160,24 @@ if st.button("🔄 Konversi"):
                 if kategori == "🔥 Suhu":
                     st.markdown("### 📘 Penjelasan Konversi Suhu")
                     st.markdown(f"""
-                    Rumus konversi suhu dari **{satuan_asal}** ke **{satuan_tujuan}** telah digunakan sesuai standar:
-                    
-                    ```python
+                    Rumus konversi dari **{satuan_asal}** ke **{satuan_tujuan}**:
+
+                    ```
                     {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
                     ```
+                    Penyesuaian suhu dilakukan berdasarkan transformasi antar skala suhu standar.
                     """)
                 else:
                     st.markdown("### 📘 Penjelasan Konversi")
                     st.markdown(f"""
-                    Dikonversi menggunakan rumus:
-                    
+                    Menggunakan rumus konversi:
+
                     \[
                     \text{{Hasil}} = \text{{nilai}} \times \frac{{\text{{faktor asal}}}}{{\text{{faktor tujuan}}}}
                     \]
 
-                    Substitusi:
-                    
+                    Substitusi nilai:
+
                     \[
                     {nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}
                     \]
