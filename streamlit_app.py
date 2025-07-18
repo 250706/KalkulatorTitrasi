@@ -1,28 +1,104 @@
 import streamlit as st
-import time
+import base64
 import pandas as pd
-import altair as alt
+import matplotlib.pyplot as plt
+import time
 
-# === Background Custom ===
-def set_custom_background(image_url):
+# ---------------------- SETUP LATAR BELAKANG ----------------------
+def set_background_from_url(image_url, opacity=0.85):
     st.markdown(f"""
         <style>
         .stApp {{
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
-                        url("{image_url}");
+            background-image: url('{image_url}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        .stApp::before {{
+            content: """""""";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, {opacity});
+            z-index: -1;
         }}
         </style>
-        """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-image_link = "https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp"
-set_custom_background(image_link)
-# ==========================
+# URL gambar latar belakang yang ingin digunakan
+bg_image_url = "https://i.pinimg.com/originals/4e/ac/35/4eac359bce1e49679ad98f98db7428d4.png"
+set_background_from_url(bg_image_url, opacity=0.85)
 
-st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
-st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
+# ---------------------- EFEK INTERAKTIF ----------------------
+# Metric highlight
+st.markdown("""
+    <style>
+    div[data-testid="metric-container"] {
+        background-color: #001F3F;
+        padding: 20px;
+        border-radius: 15px;
+        color: white;
+        border: 2px solid #39CCCC;
+        box-shadow: 0px 0px 15px 2px #39CCCC;
+        transition: all 0.3s ease-in-out;
+    }
+    div[data-testid="metric-container"]:hover {
+        box-shadow: 0px 0px 25px 5px #7FDBFF;
+        transform: scale(1.03);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Fade-in efek hasil
+st.markdown("""
+    <style>
+    .fade-in {
+        animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Hover tabel
+st.markdown("""
+    <style>
+    .stDataFrame > div > div {
+        transition: all 0.2s ease-in-out;
+    }
+    .stDataFrame > div > div:hover {
+        transform: scale(1.01);
+        box-shadow: 0px 0px 10px #00BFFF;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Framer-like efek ringan
+st.markdown("""
+    <div class="card-animated">
+        <h4 style='color:#FFDC00;'>📘 Hasil dikonversi dengan presisi tinggi</h4>
+    </div>
+    <style>
+    .card-animated {
+        transition: transform 0.3s ease;
+    }
+    .card-animated:hover {
+        transform: scale(1.03);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# ---------- SISANYA ADALAH KODE UTAMA (dikonversi, hasil, grafik, dll) ----------
+# (Kode konversi utama tetap di bagian bawah, tidak diubah dan dilanjutkan sesuai yang telah kamu simpan sebelumnya)
+
+st.title("✨ KALKULATOR KONVERSI SATUAN FISIKA ✨")
+# (Tambahkan kode inti kalkulator kamu di bawah bagian ini seperti sebelumnya, misalnya input nilai, satuan asal, satuan tujuan, dll)
+
 st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
 # === Data satuan ===
