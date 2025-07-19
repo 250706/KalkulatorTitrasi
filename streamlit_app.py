@@ -292,9 +292,9 @@ def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
 
    if st.button("🔄 Konversi"):
         with st.spinner("Menghitung konversi..."):
-            time.sleep(1)
-            hasil = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
-            semua_hasil = get_konversi_semua_satuan(kategori, nilai, satuan_dari)
+        time.sleep(1)
+        hasil = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
+        semua_hasil = get_konversi_semua_satuan(kategori, nilai, satuan_dari)
 
             # Hasil utama
             st.markdown("## 🎯 Hasil Konversi")
@@ -312,13 +312,13 @@ def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
             # Grafik batang
             st.markdown("### 📊 Grafik Perbandingan Konversi")
             chart = alt.Chart(pd.DataFrame({
-                'Satuan': list(semua_hasil.keys()),
-                'Hasil': list(semua_hasil.values())
+            'Satuan': list(semua_hasil.keys()),
+            'Hasil': list(semua_hasil.values())
             })).mark_bar().encode(
-                x=alt.X('Satuan', sort=None),
-                y='Hasil',
-                color='Satuan',
-                tooltip=['Satuan', 'Hasil']
+            x=alt.X('Satuan', sort=None),
+            y='Hasil',
+            color='Satuan',
+            tooltip=['Satuan', 'Hasil']
             ).properties(height=400)
 
             st.altair_chart(chart, use_container_width=True)
