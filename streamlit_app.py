@@ -135,7 +135,7 @@ data_konversi = {
 }
 
 # ---------------------- HALAMAN KALKULATOR ----------------------
-elif halaman == "📐 Kalkulator":
+if halaman == "📐 Kalkulator":
     st.markdown("## 📐 Kalkulator Konversi")
     kategori = st.selectbox("Pilih kategori satuan", list(data_konversi.keys()))
     
