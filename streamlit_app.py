@@ -4,11 +4,11 @@ import time
 import altair as alt
 
 # ---------------------- SETUP LATAR BELAKANG ----------------------
-def set_background_from_url(image_url):
+def set_background_from_url(image_url, opacity=0.85):
     st.markdown(f"""
         <style>
         .stApp {{
-            background-image: url('{https://i.pinimg.com/originals/4e/ac/35/4eac359bce1e49679ad98f98db7428d4.png}');
+            background-image: url('https://i.pinimg.com/originals/4e/ac/35/4eac359bce1e49679ad98f98db7428d4.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -21,13 +21,13 @@ def set_background_from_url(image_url):
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: rgba(0, 0, 0, {opacity});
             z-index: -1;
         }}
         </style>
     """, unsafe_allow_html=True)
 
-set_background_from_url("https://i.pinimg.com/originals/4e/ac/35/4eac359bce1e49679ad98f98db7428d4.png")
+set_background_from_url("https://i.pinimg.com/originals/4e/ac/35/4eac359bce1e49679ad98f98db7428d4.png", 0.85)
 
 # ---------------------- EFEK INTERAKTIF ----------------------
 st.markdown("""
