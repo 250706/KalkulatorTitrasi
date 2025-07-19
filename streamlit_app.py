@@ -54,7 +54,7 @@ st.markdown("""
 
 # ---------------------- SIDEBAR DAN NAVIGASI ----------------------
 st.sidebar.title("📚 Navigasi")
-halaman = st.sidebar.radio("Pilih Halaman", ["Beranda", "Kalkulator", "Tentang"])
+halaman = st.sidebar.radio("Pilih Halaman", ["Beranda", "Kalkulator", "📖 Tentang"])
 
 # ---------------------- DATA KONVERSI ----------------------
 konversi_data = {
@@ -167,7 +167,7 @@ if halaman == "Beranda":
     st.title("👋 Selamat Datang di Kalkulator Konversi Satuan Fisika")
     st.markdown("""
     Aplikasi ini membantu Anda mengonversi berbagai satuan fisika dengan mudah dan cepat.  
-    Gunakan menu **Kalkulator** untuk memulai perhitungan.
+    Gunakan menu *Kalkulator* untuk memulai perhitungan.
     """)
 
 # ---------------------- HALAMAN: KALKULATOR ----------------------
@@ -179,7 +179,7 @@ elif halaman == "Kalkulator":
     satuan_tujuan = st.selectbox("🔹 Satuan Tujuan:", list(konversi_data[kategori].keys()))
     nilai_input = st.text_input("📥 Masukkan Nilai:", placeholder="Contoh: 5.5")
 
-if st.button("🔄 Konversi"):
+    if st.button("🔄 Konversi"):
         if not nilai_input:
             st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
         else:
@@ -191,43 +191,42 @@ if st.button("🔄 Konversi"):
                     if kategori == "🔥 Suhu":
                         hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
                         penjelasan = """
-**📘 Penjelasan Rumus Konversi Suhu:**
+*📘 Penjelasan Rumus Konversi Suhu:*
 
-1. **Celsius → Kelvin**  
- `K = C + 273.15`
+1. *Celsius → Kelvin*  
+ K = C + 273.15
 
-2. **Celsius → Fahrenheit**  
- `F = (C × 9/5) + 32`
+2. *Celsius → Fahrenheit*  
+ F = (C × 9/5) + 32
 
-3. **Fahrenheit → Celsius**  
- `C = (F - 32) × 5/9`
+3. *Fahrenheit → Celsius*  
+ C = (F - 32) × 5/9
 
-4. **Kelvin → Celsius**  
- `C = K - 273.15`
+4. *Kelvin → Celsius*  
+ C = K - 273.15
 
-5. **Fahrenheit → Kelvin**  
- `K = (F - 32) × 5/9 + 273.15`
+5. *Fahrenheit → Kelvin*  
+ K = (F - 32) × 5/9 + 273.15
 
-6. **Kelvin → Fahrenheit**  
- `F = (K - 273.15) × 9/5 + 32`
+6. *Kelvin → Fahrenheit*  
+ F = (K - 273.15) × 9/5 + 32
 """ 
-
                     else:
                         hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
 
                         penjelasan_khusus = {
-                            "🧪 Tekanan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Pascal (Pa)",
-                            "⚖ Massa": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: gram (g)",
-                            "🕏 Panjang": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: meter (m)",
-                            "⏱ Waktu": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: detik (s)",
-                            "⚡ Energi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Joule (J)",
-                            "💨 Kecepatan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: m/s",
-                            "💡 Daya": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Watt (W)",
-                            "🧊 Volume": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: liter (L)",
-                            "📡 Frekuensi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Hz",
-                            "⚡ Hambatan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ohm (Ω)",
-                            "🔋 Tegangan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Volt (V)",
-                            "🔌 Arus Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ampere (A)"
+                            "🧪 Tekanan": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: Pascal (Pa)",
+                            "⚖ Massa": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: gram (g)",
+                            "🕏 Panjang": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: meter (m)",
+                            "⏱ Waktu": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: detik (s)",
+                            "⚡ Energi": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: Joule (J)",
+                            "💨 Kecepatan": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: m/s",
+                            "💡 Daya": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: Watt (W)",
+                            "🧊 Volume": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: liter (L)",
+                            "📡 Frekuensi": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: Hz",
+                            "⚡ Hambatan Listrik": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: Ohm (Ω)",
+                            "🔋 Tegangan Listrik": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: Volt (V)",
+                            "🔌 Arus Listrik": "Rumus: nilai × faktor_asal / faktor_tujuan, satuan dasar: Ampere (A)"
                         }
 
                         penjelasan = penjelasan_khusus.get(kategori, "Konversi berdasarkan rasio satuan terhadap satuan dasar.")
@@ -238,7 +237,7 @@ if st.button("🔄 Konversi"):
                     st.success(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
                     st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
                     st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", disabled=False)
-                    st.markdown(f"**📘 Penjelasan:**\n\n{penjelasan}")
+                    st.markdown(f"📘 Penjelasan:\n\n{penjelasan}")
 
                     chart_df = pd.DataFrame({'Satuan': [satuan_asal, satuan_tujuan], 'Nilai': [nilai, hasil]})
                     st.altair_chart(
@@ -250,14 +249,12 @@ if st.button("🔄 Konversi"):
             except ValueError:
                 st.error("❌ Nilai harus berupa angka.")
 
-
 # ---------------------- HALAMAN: TENTANG ----------------------
 elif halaman == "📖 Tentang":
-    st.markdown("ℹ️ Tentang Aplikasi")
-
+    st.markdown("## ℹ Tentang Aplikasi")
     st.markdown("""
-Aplikasi **Kalkulator Konversi Satuan Fisika** dibuat untuk membantu pelajar, mahasiswa, dan profesional 
-melakukan konversi satuan fisika secara **akurat, cepat, dan interaktif**.
+Aplikasi *Kalkulator Konversi Satuan Fisika* dibuat untuk membantu pelajar, mahasiswa, dan profesional 
+melakukan konversi satuan fisika secara *akurat, cepat, dan interaktif*.
 
 ---
 
@@ -271,12 +268,13 @@ melakukan konversi satuan fisika secara **akurat, cepat, dan interaktif**.
 ---
 
 ### Sumber Referensi:
-- SI Units  https://www.bipm.org
-- NIST  National Institute of Standards and Technology
-- *Physics for Scientists and Engineers*  Serway & Jewett
-- *CRC Handbook of Chemistry and Physics*
-- *Thermodynamics*  Yunus A. Çengel
+- SI Units — https://www.bipm.org
+- NIST — National Institute of Standards and Technology
+- Physics for Scientists and Engineers — Serway & Jewett
+- CRC Handbook of Chemistry and Physics
+- Thermodynamics — Yunus A. Çengel
 
 ---
 
-Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda! """)
+Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda!
+""")
