@@ -188,9 +188,9 @@ if st.button("🔄 Konversi"):
                 with st.spinner("⏳ Menghitung..."):
                     time.sleep(1)
                     
-                    if kategori == "🔥 Suhu":
-                        hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-                        penjelasan = """
+if kategori == "🔥 Suhu":
+    hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
+    penjelasan = """
 *📘 Penjelasan Rumus Konversi Suhu:*
 
 1. *Celsius → Kelvin*  
@@ -210,9 +210,8 @@ if st.button("🔄 Konversi"):
 
 6. *Kelvin → Fahrenheit*  
  F = (K - 273.15) × 9/5 + 32
-""" 
-
-                        """
+"""  # <<== ini penutupnya, jangan ada apa pun setelahnya
+         
                     else:
                         hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
 
