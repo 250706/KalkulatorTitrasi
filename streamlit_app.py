@@ -13,16 +13,19 @@ def set_background_from_url(image_url: str, opacity: float = 0.85):
     background_style = f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(255,255,255,{opacity}), rgba(255,255,255},{opacity})),
+        background: linear-gradient(rgba(255,255,255,{opacity}), rgba(255,255,255,{opacity})),
                     url('{image_url}');
         background-size: cover;
         background-attachment: fixed;
     }}
     </style>
-   
+    """
     st.markdown(background_style, unsafe_allow_html=True)
 
-set_background_from_url("https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp", 0.85)
+set_background_from_url(
+    "https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp",
+    0.85
+)
 
 # ---------------------------
 # SIDEBAR DAN NAVIGASI
@@ -42,7 +45,7 @@ if halaman == "Beranda":
     - Salin hasil
     - Tampilan interaktif dan modern
 
-    Gunakan menu **Kalkulator** di sidebar untuk memulai 
+    Gunakan menu **Kalkulator** di sidebar untuk memulai.
     """)
 
 # ---------------------------
@@ -150,20 +153,11 @@ elif halaman == "Kalkulator":
         if dari == ke:
             return nilai
         if dari == "Celsius (°C)":
-            if ke == "Fahrenheit (°F)":
-                return (nilai * 9/5) + 32
-            elif ke == "Kelvin (K)":
-                return nilai + 273.15
-        elif dari == "Fahrenheit (°F)":
-            if ke == "Celsius (°C)":
-                return (nilai - 32) * 5/9
-            elif ke == "Kelvin (K)":
-                return (nilai - 32) * 5/9 + 273.15
-        elif dari == "Kelvin (K)":
-            if ke == "Celsius (°C)":
-                return nilai - 273.15
-            elif ke == "Fahrenheit (°F)":
-                return (nilai - 273.15) * 9/5 + 32
+            return (nilai * 9/5 + 32) if ke == "Fahrenheit (°F)" else nilai + 273.15
+        if dari == "Fahrenheit (°F)":
+            return (nilai - 32) * 5/9 if ke == "Celsius (°C)" else (nilai - 32) * 5/9 + 273.15
+        if dari == "Kelvin (K)":
+            return nilai - 273.15 if ke == "Celsius (°C)" else (nilai - 273.15) * 9/5 + 32
         return nilai
 
     kategori = st.selectbox("Pilih kategori satuan:", list(konversi_data.keys()))
@@ -193,7 +187,6 @@ elif halaman == "Kalkulator":
 
                     st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", disabled=False)
 
-                    # Visualisasi grafik
                     st.altair_chart(
                         alt.Chart(pd.DataFrame({
                             'Satuan': [satuan_asal, satuan_tujuan],
@@ -203,7 +196,6 @@ elif halaman == "Kalkulator":
                         ).properties(title="📊 Perbandingan Nilai Sebelum & Sesudah Konversi"),
                         use_container_width=True
                     )
-
             except ValueError:
                 st.error("❌ Nilai harus berupa angka.")
 
@@ -222,11 +214,11 @@ elif halaman == "Tentang":
     - Salin hasil konversi
 
     ### 📚 Sumber Referensi:
-    - SI (Système International d Unités)
+    - SI (Système International d'Unités)
     - NIST (National Institute of Standards and Technology)
-    - *Physics for Scientists and Engineers*  Serway & Jewett
-    - *Handbook of Chemistry and Physics*  CRC Press
+    - *Physics for Scientists and Engineers* – Serway & Jewett
+    - *Handbook of Chemistry and Physics* – CRC Press
     - [https://www.bipm.org](https://www.bipm.org)
-    - *Thermodynamics*  Yunus Cengel
+    - *Thermodynamics* – Yunus Cengel
     - International Temperature Scale
     """)
