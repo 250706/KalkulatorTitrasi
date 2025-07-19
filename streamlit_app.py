@@ -263,7 +263,7 @@ melakukan konversi satuan fisika secara **akurat, cepat, dan interaktif**.
 ---
 
 ### 🎯 Fitur Utama:
-- ✅ Konversi berbagai satuan fisika: suhu, massa, panjang, tekanan, waktu, energi, daya, kecepatan, volume, arus listrik, hambatan, dan lainnya.
+- 🔁 Konversi berbagai satuan fisika: suhu, massa, panjang, tekanan, waktu, energi, daya, kecepatan, volume, arus listrik, hambatan, dan lainnya.
 - 📚 Penjelasan lengkap dan mudah dimengerti untuk setiap rumus konversi.
 - 📊 Visualisasi hasil konversi dalam bentuk grafik batang.
 - 💡 Antarmuka ramah pengguna dan estetis, dengan latar belakang visual yang dapat disesuaikan.
