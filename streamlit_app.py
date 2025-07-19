@@ -224,9 +224,9 @@ elif halaman == "Tentang":
     ### 📚 Sumber Referensi:
     - SI (Système International d Unités)
     - NIST (National Institute of Standards and Technology)
-    - *Physics for Scientists and Engineers* – Serway & Jewett
-    - *Handbook of Chemistry and Physics* – CRC Press
+    - *Physics for Scientists and Engineers*  Serway & Jewett
+    - *Handbook of Chemistry and Physics*  CRC Press
     - [https://www.bipm.org](https://www.bipm.org)
-    - *Thermodynamics* – Yunus Cengel
+    - *Thermodynamics*  Yunus Cengel
     - International Temperature Scale
     """)
