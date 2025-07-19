@@ -269,8 +269,8 @@ melakukan konversi satuan fisika secara akurat dan cepat.
 ### 📚 Sumber Referensi:
 - SI Units: [https://www.bipm.org](https://www.bipm.org)
 - NIST (National Institute of Standards and Technology)
-- *Physics for Scientists and Engineers* — Serway & Jewett
+- *Physics for Scientists and Engineers*  Serway & Jewett
 - *CRC Handbook of Chemistry and Physics*
-- *Thermodynamics* — Yunus Cengel
-""")  # ← Penutup kutip tiga yang diperlukan
+- *Thermodynamics*  Yunus Cengel
+""")  # 
 
