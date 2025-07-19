@@ -188,7 +188,7 @@ if st.button("🔄 Konversi"):
                 with st.spinner("⏳ Menghitung..."):
                     time.sleep(1)
                     
-                   if kategori == "🔥 Suhu":
+ if kategori == "🔥 Suhu":
                         hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
                         penjelasan = """
 **📘 Penjelasan Rumus Konversi Suhu:**
