@@ -2,7 +2,7 @@ import streamlit as st
 import base64
 import time
 import pandas as pd
-import altair as alt 
+import altair as alt
 
 # ---------------------------
 # KONFIGURASI DAN BACKGROUND
@@ -13,7 +13,7 @@ def set_background_from_url(image_url: str, opacity: float = 0.85):
     background_style = f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(255,255,255,{opacity}), rgba(255,255,255,{opacity})),
+        background: linear-gradient(rgba(255,255,255,{opacity}), rgba(255,255,255},{opacity})),
                     url('{image_url}');
         background-size: cover;
         background-attachment: fixed;
@@ -22,43 +22,13 @@ def set_background_from_url(image_url: str, opacity: float = 0.85):
     """
     st.markdown(background_style, unsafe_allow_html=True)
 
-# Background dari URL eksternal
 set_background_from_url("https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp", 0.85)
-
-# ---------------------------
-# DATA KONVERSI (SAMPLE UNTUK MASSA DAN TEKANAN SAJA, BISA DILENGKAPI)
-# ---------------------------
-konversi_data = {
-    "massa": {
-        "gram": 1,
-        "kilogram": 1000,
-        "miligram": 0.001,
-        "pon": 453.592,
-        "ons": 28.3495
-    },
-    "tekanan": {
-        "Pa": 1,
-        "kPa": 1000,
-        "atm": 101325,
-        "bar": 100000,
-        "mmHg": 133.322
-    },
-}
-
-# ---------------------------
-# FUNGSI KONVERSI
-# ---------------------------
-def konversi(nilai, satuan_asal, satuan_tujuan, kategori):
-    faktor_asal = konversi_data[kategori][satuan_asal]
-    faktor_tujuan = konversi_data[kategori][satuan_tujuan]
-    hasil = nilai * (faktor_asal / faktor_tujuan)
-    return hasil, faktor_asal, faktor_tujuan
 
 # ---------------------------
 # SIDEBAR DAN NAVIGASI
 # ---------------------------
 st.sidebar.title("📚 Navigasi")
-halaman = st.sidebar.radio("Pilih Halaman", ["Beranda", "Kalkulator", "Grafik", "Tentang"])
+halaman = st.sidebar.radio("Pilih Halaman", ["Beranda", "Kalkulator", "Tentang"])
 
 # ---------------------------
 # BERANDA
@@ -78,12 +48,9 @@ if halaman == "Beranda":
 # ---------------------------
 # KALKULATOR
 # ---------------------------
-elif menu == "Kalkulator":
-    st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
+elif halaman == "Kalkulator":
     st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
-    st.markdown("Konversi berbagai satuan fisika lengkap dengan penjelasan dan grafik hasil.")
 
-    # === Data satuan ===
     konversi_data = {
         "🔥 Suhu": {
             "Celsius (°C)": "C",
@@ -199,88 +166,46 @@ elif menu == "Kalkulator":
                 return (nilai - 273.15) * 9/5 + 32
         return nilai
 
-    # === Input Pengguna ===
     kategori = st.selectbox("Pilih kategori satuan:", list(konversi_data.keys()))
-    satuan_list = list(konversi_data[kategori].keys())
-    satuan_asal = st.selectbox("Satuan asal:", satuan_list)
-    satuan_tujuan = st.selectbox("Satuan tujuan:", satuan_list)
+    satuan_asal = st.selectbox("Satuan asal:", list(konversi_data[kategori].keys()))
+    satuan_tujuan = st.selectbox("Satuan tujuan:", list(konversi_data[kategori].keys()))
     nilai_input = st.text_input("Masukkan nilai:", placeholder="contoh: 5.5")
 
-    # === Tombol Konversi ===
     if st.button("🔄 Konversi"):
         if not nilai_input:
             st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
         else:
             try:
                 nilai = float(nilai_input.replace(",", "."))
-                with st.spinner("⏳ Menghitung konversi..."):
+                with st.spinner("⏳ Menghitung..."):
                     time.sleep(1)
 
                     if kategori == "🔥 Suhu":
                         hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-                        hasil_str = format_presisi(hasil)
-
-                        st.metric(label="Hasil Konversi", value=f"{hasil_str} {satuan_tujuan}")
-                        st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
-                        st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
-                        st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", key="copy", disabled=False)
-
-                        st.markdown("### 📘 Penjelasan Konversi Suhu")
-                        st.markdown(f"""
-                        Rumus konversi dari *{satuan_asal}* ke *{satuan_tujuan}*:
-
-                        {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
-
-                        Transformasi antar skala suhu:
-                        - °C ke °F : (°C × 9/5) + 32
-                        - °C ke K : °C + 273.15
-                        - °F ke °C : (°F - 32) × 5/9
-                        - K ke °C : K - 273.15
-                        """)
                     else:
-                        faktor_asal = konversi_data[kategori][satuan_asal]
-                        faktor_tujuan = konversi_data[kategori][satuan_tujuan]
-                        hasil = nilai * faktor_asal / faktor_tujuan
-                        hasil_str = format_presisi(hasil)
+                        hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
 
-                        st.metric(label="Hasil Konversi", value=f"{hasil_str} {satuan_tujuan}")
-                        st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
-                        st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
-                        st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", key="copy2", disabled=False)
+                    hasil_str = format_presisi(hasil)
 
-                        st.markdown("### 📘 Penjelasan Konversi")
-                        st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
-                        st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
-                        st.markdown("""
-                        *Keterangan:*
-                        - Nilai dikalikan rasio antar satuan
-                        - Presisi otomatis disesuaikan berdasarkan besar angka
-                        """)
+                    st.metric("💡 Hasil Konversi", f"{hasil_str} {satuan_tujuan}")
+                    st.success(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                    st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
 
-                        semua_konversi = {}
-                        for satuan in konversi_data[kategori]:
-                            faktor = konversi_data[kategori][satuan]
-                            konversi = nilai * faktor_asal / faktor
-                            semua_konversi[satuan] = format_presisi(konversi)
+                    st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", disabled=False)
 
-                        df_all = pd.DataFrame(list(semua_konversi.items()), columns=["Satuan", "Hasil"])
-                        st.dataframe(df_all, use_container_width=True)
-
-                        df_chart = pd.DataFrame({
+                    # Visualisasi grafik
+                    st.altair_chart(
+                        alt.Chart(pd.DataFrame({
                             'Satuan': [satuan_asal, satuan_tujuan],
                             'Nilai': [nilai, hasil]
-                        })
-                        st.altair_chart(
-                            alt.Chart(df_chart).mark_bar().encode(
-                                x='Satuan', y='Nilai', color='Satuan', tooltip=['Satuan', 'Nilai']
-                            ).properties(
-                                title='📊 Perbandingan Nilai Sebelum dan Sesudah Konversi',
-                                height=300
-                            ), use_container_width=True
-                        )
+                        })).mark_bar().encode(
+                            x='Satuan', y='Nilai', color='Satuan'
+                        ).properties(title="📊 Perbandingan Nilai Sebelum & Sesudah Konversi"),
+                        use_container_width=True
+                    )
 
             except ValueError:
-                st.error("❌ Nilai harus berupa angka. Gunakan titik atau koma desimal.")
+                st.error("❌ Nilai harus berupa angka.")
 
 # ---------------------------
 # TENTANG
@@ -288,28 +213,20 @@ elif menu == "Kalkulator":
 elif halaman == "Tentang":
     st.header("📖 Tentang Aplikasi")
     st.markdown("""
-    Aplikasi **Kalkulator Konversi Satuan Fisika** ini dibuat untuk membantu konversi satuan-satuan penting dalam ilmu fisika seperti suhu, massa, panjang, waktu, energi, dan lainnya secara cepat dan akurat.
+    Aplikasi **Kalkulator Konversi Satuan Fisika** ini membantu Anda melakukan konversi satuan dengan mudah dan akurat.
 
-    ### 🔍 Fitur Unggulan:
-    - Konversi berbagai satuan fisika dengan **presisi otomatis**
-    - Penjelasan **rumus konversi** secara matematis
-    - **Grafik visual interaktif**
-    - Tombol **salin hasil konversi**
-    - Tampilan dengan latar belakang yang menarik
-
-    ### 👨‍💻 Dibuat Oleh:
-    AL FATIH – 2025  
-    Dengan bantuan teknologi Python dan Streamlit.
-
-    ### 📬 Kontak:
-    Untuk saran dan masukan, hubungi: **alfatih@example.com**
+    ### 🔍 Fitur:
+    - Konversi presisi otomatis
+    - Penjelasan dan rumus konversi
+    - Visualisasi grafik interaktif
+    - Salin hasil konversi
 
     ### 📚 Sumber Referensi:
     - SI (Système International d’Unités)
     - NIST (National Institute of Standards and Technology)
-    - Buku *Physics for Scientists and Engineers* – Serway & Jewett
+    - *Physics for Scientists and Engineers* – Serway & Jewett
     - *Handbook of Chemistry and Physics* – CRC Press
-    - Situs resmi SI Units: [https://www.bipm.org](https://www.bipm.org)
+    - [https://www.bipm.org](https://www.bipm.org)
     - *Thermodynamics* – Yunus Cengel
     - International Temperature Scale
     """)
