@@ -110,11 +110,28 @@ def konversi_suhu(nilai, dari, ke):
             return ((nilai - 273.15) * 9/5) + 32
     return None
 
-def konversi_satuan(kategori, nilai, satuan_dari, satuan_ke):
-    if kategori == "🔥 Suhu":
-        return konversi_suhu(nilai, satuan_dari, satuan_ke)
-    else:
-        return nilai * konversi_data[kategori][satuan_dari] / konversi_data[kategori][satuan_ke]
+def konversi_suhu(nilai, dari, ke):
+    if dari == ke:
+        return nilai
+    # Celsius to ...
+    if dari == "Celsius (°C)":
+        if ke == "Fahrenheit (°F)":
+            return (nilai * 9/5) + 32
+        elif ke == "Kelvin (K)":
+            return nilai + 273.15
+    # Fahrenheit to ...
+    if dari == "Fahrenheit (°F)":
+        if ke == "Celsius (°C)":
+            return (nilai - 32) * 5/9
+        elif ke == "Kelvin (K)":
+            return ((nilai - 32) * 5/9) + 273.15
+    # Kelvin to ...
+    if dari == "Kelvin (K)":
+        if ke == "Celsius (°C)":
+            return nilai - 273.15
+        elif ke == "Fahrenheit (°F)":
+            return ((nilai - 273.15) * 9/5) + 32
+    return None
 
 def get_konversi_semua_satuan(kategori, nilai, satuan_dari):
     hasil = {}
@@ -122,16 +139,15 @@ def get_konversi_semua_satuan(kategori, nilai, satuan_dari):
         hasil[satuan_ke] = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
     return hasil
 
-# ---------------------- PENJELASAN RUMUS ----------------------
 def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
-    if kategori == "Suhu":
+    if "Suhu" in kategori:
         rumus_dict = {
-            ("Celsius", "Fahrenheit"): "`(°C × 9/5) + 32 = °F`",
-            ("Fahrenheit", "Celsius"): "`(°F − 32) × 5/9 = °C`",
-            ("Celsius", "Kelvin"): "`°C + 273.15 = K`",
-            ("Kelvin", "Celsius"): "`K − 273.15 = °C`",
-            ("Fahrenheit", "Kelvin"): "`((°F − 32) × 5/9) + 273.15 = K`",
-            ("Kelvin", "Fahrenheit"): "`((K − 273.15) × 9/5) + 32 = °F`"
+            ("Celsius (°C)", "Fahrenheit (°F)"): "`(°C × 9/5) + 32 = °F`",
+            ("Fahrenheit (°F)", "Celsius (°C)"): "`(°F − 32) × 5/9 = °C`",
+            ("Celsius (°C)", "Kelvin (K)"): "`°C + 273.15 = K`",
+            ("Kelvin (K)", "Celsius (°C)"): "`K − 273.15 = °C`",
+            ("Fahrenheit (°F)", "Kelvin (K)"): "`((°F − 32) × 5/9) + 273.15 = K`",
+            ("Kelvin (K)", "Fahrenheit (°F)"): "`((K − 273.15) × 9/5) + 32 = °F`"
         }
         rumus = rumus_dict.get((satuan_dari, satuan_ke), "*Rumus tidak tersedia*")
         st.markdown(f"### 📘 Rumus Konversi\n**{satuan_dari} ➝ {satuan_ke}**\n\n{rumus}")
@@ -142,6 +158,7 @@ def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
 
         $$\\text{{Hasil}} = \\text{{Nilai}} \\times \\frac{{\\text{{Konstanta dari {satuan_dari}}}}}{{\\text{{Konstanta dari {satuan_ke}}}}}$$
         """)
+
 # ---------------------- TEMA & BACKGROUND ----------------------
 def set_custom_background(image_url):
     st.markdown(f"""
