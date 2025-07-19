@@ -255,22 +255,22 @@ if st.button("🔄 Konversi"):
 # ---------------------- HALAMAN: TENTANG ----------------------
 elif halaman == "📖 Tentang":
     st.markdown("## ℹ️ Tentang Aplikasi")
+    
     st.markdown("""
-    Aplikasi **Kalkulator Konversi Satuan Fisika** dibuat untuk membantu pelajar, mahasiswa, dan profesional 
-    melakukan konversi satuan fisika secara akurat dan cepat.
+Aplikasi **Kalkulator Konversi Satuan Fisika** dibuat untuk membantu pelajar, mahasiswa, dan profesional 
+melakukan konversi satuan fisika secara akurat dan cepat.
 
+### 🎯 Fitur Utama:
+- Konversi berbagai satuan fisika (suhu, massa, panjang, energi, dll.)
+- Penjelasan lengkap rumus konversi
+- Visualisasi hasil dalam bentuk grafik
+- Antarmuka interaktif dan latar belakang yang menarik
 
-    ### 🔍 Fitur Unggulan:
-    - Konversi suhu, massa, panjang, waktu, tekanan, energi, volume, listrik, dll.
-    - Presisi hasil otomatis berdasarkan nilai
-    - Penjelasan rumus perhitungan
-    - Visualisasi grafik hasil konversi
-    - Salin hasil konversi ke clipboard
-    - UI interaktif dengan latar belakang dinamis
+### 📚 Sumber Referensi:
+- SI Units: https://www.bipm.org
+- NIST – National Institute of Standards and Technology
+- Physics for Scientists and Engineers – Serway & Jewett
+- CRC Handbook of Chemistry and Physics
+- Thermodynamics – Yunus Cengel
+""")
 
-    ### 📚 Referensi:
-    - SI Units – BIPM.org
-    - Physics Handbook – Serway & Jewett
-    - NIST Unit Conversion
-    - CRC Handbook of Chemistry and Physics
-    """)
