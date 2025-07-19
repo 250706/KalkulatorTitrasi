@@ -191,27 +191,6 @@ elif halaman == "📐 Kalkulator":
         st.markdown("### 🔁 Konversi ke Semua Satuan")
         st.dataframe(pd.DataFrame(semua_hasil.items(), columns=["Satuan", "Hasil"]), use_container_width=True)
 
-# ---------------------- WATERMARK ----------------------
-st.markdown("""
-    <style>
-    .watermark {
-        position: fixed;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.5);
-        z-index: 9999;
-        pointer-events: none;
-        font-weight: bold;
-    }
-    </style>
-    <div class="watermark">
-        POLITEKNIK AKA BOGOR – D3 ANALISIS KIMIA
-    </div>
-    """, unsafe_allow_html=True)
-
-
 # ---------------------- TENTANG ----------------------
 elif halaman == "ℹ️ Tentang":
     st.title("ℹ️ Tentang Aplikasi")
@@ -251,3 +230,23 @@ elif halaman == "ℹ️ Tentang":
 👨‍💻 **Dikembangkan oleh:**  
 Mahasiswa Program Studi D3 Analisis Kimia – 2025
     """)
+
+# ---------------------- WATERMARK ----------------------
+st.markdown("""
+    <style>
+    .watermark {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
+        z-index: 9999;
+        pointer-events: none;
+        font-weight: bold;
+    }
+    </style>
+    <div class="watermark">
+        POLITEKNIK AKA BOGOR – D3 ANALISIS KIMIA
+    </div>
+    """, unsafe_allow_html=True)
