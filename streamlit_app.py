@@ -175,7 +175,7 @@ elif halaman == "Kalkulator":
                     time.sleep(1)
 
                     if kategori == "🔥 Suhu":
-                        def konversi_suhu(n, dari, ke):
+              def konversi_suhu(n, dari, ke):
                     if dari == ke:
                         return n
                     if dari == "Celsius (°C)":
