@@ -193,28 +193,28 @@ elif halaman == "Kalkulator":
                     else:
                         hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
                        penjelasan_khusus = {
-    "🔥 Suhu": r"""
-    Konversi suhu tergantung satuannya:
-    
-    - Celsius → Kelvin: $K = ^\circ C + 273.15$
-    - Celsius → Fahrenheit: $^\circ F = (^ \circ C \times \frac{9}{5}) + 32$
-    - Fahrenheit → Celsius: $^\circ C = (^\circ F - 32) \times \frac{5}{9}$
-    - Kelvin → Celsius: $^\circ C = K - 273.15$
-    """,
-    "🧪 Tekanan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Pascal (Pa)",
-    "⚖ Massa": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: gram (g)",
-    "🕏 Panjang": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: meter (m)",
-    "⏱ Waktu": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: detik (s)",
-    "⚡ Energi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Joule (J)",
-    "💨 Kecepatan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: m/s",
-    "💡 Daya": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Watt (W)",
-    "🧊 Volume": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: liter (L)",
-    "📡 Frekuensi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Hz",
-    "⚡ Hambatan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ohm (Ω)",
-    "🔋 Tegangan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Volt (V)",
-    "🔌 Arus Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ampere (A)"
-}
-penjelasan = penjelasan_khusus.get(kategori, "Konversi berdasarkan rasio satuan terhadap satuan dasar.")
+                            "🔥 Suhu": r"""
+                            Konversi suhu tergantung satuannya:
+                            
+                            - Celsius → Kelvin: $K = ^\circ C + 273.15$
+                            - Celsius → Fahrenheit: $^\circ F = (^ \circ C \times \frac{9}{5}) + 32$
+                            - Fahrenheit → Celsius: $^\circ C = (^\circ F - 32) \times \frac{5}{9}$
+                            - Kelvin → Celsius: $^\circ C = K - 273.15$
+                            """,
+                            "🧪 Tekanan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Pascal (Pa)",
+                            "⚖ Massa": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: gram (g)",
+                            "🕏 Panjang": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: meter (m)",
+                            "⏱ Waktu": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: detik (s)",
+                            "⚡ Energi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Joule (J)",
+                            "💨 Kecepatan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: m/s",
+                            "💡 Daya": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Watt (W)",
+                            "🧊 Volume": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: liter (L)",
+                            "📡 Frekuensi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Hz",
+                            "⚡ Hambatan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ohm (Ω)",
+                            "🔋 Tegangan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Volt (V)",
+                            "🔌 Arus Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ampere (A)"
+                        }
+                        penjelasan = penjelasan_khusus.get(kategori, "Konversi berdasarkan rasio satuan terhadap satuan dasar.")
 
                     hasil_str = format_presisi(hasil)
 
