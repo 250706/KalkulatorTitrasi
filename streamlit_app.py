@@ -255,7 +255,7 @@ if st.button("🔄 Konversi"):
 # ---------------------- HALAMAN: TENTANG ----------------------
 elif halaman == "📖 Tentang":
     st.markdown("## ℹ️ Tentang Aplikasi")
-    
+
     st.markdown("""
 Aplikasi **Kalkulator Konversi Satuan Fisika** dibuat untuk membantu pelajar, mahasiswa, dan profesional 
 melakukan konversi satuan fisika secara akurat dan cepat.
@@ -267,9 +267,10 @@ melakukan konversi satuan fisika secara akurat dan cepat.
 - Antarmuka interaktif dan latar belakang yang menarik
 
 ### 📚 Sumber Referensi:
-- SI Units: https://www.bipm.org
-- NIST  (National Institute of Standards and Technology)
-- Physics for Scientists and Engineers  Serway & Jewett
-- CRC Handbook of Chemistry and Physics
-- Thermodynamics  Yunus Cengel
-""")
+- SI Units: [https://www.bipm.org](https://www.bipm.org)
+- NIST (National Institute of Standards and Technology)
+- *Physics for Scientists and Engineers* — Serway & Jewett
+- *CRC Handbook of Chemistry and Physics*
+- *Thermodynamics* — Yunus Cengel
+""")  # ← Penutup kutip tiga yang diperlukan
+
