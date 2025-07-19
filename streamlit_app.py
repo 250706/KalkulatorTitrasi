@@ -195,20 +195,38 @@ elif halaman == "📐 Kalkulator":
 elif halaman == "ℹ️ Tentang":
     st.title("ℹ️ Tentang Aplikasi")
     st.markdown("""
-    Aplikasi **Kalkulator Konversi Satuan Fisika** ini dibuat untuk mempermudah proses belajar dan kerja dalam konversi satuan fisika sehari-hari.
+    Aplikasi **Kalkulator Konversi Satuan Fisika** ini dibuat sebagai **proyek tugas** untuk mata kuliah **Logika Pemrograman Komputer** pada Program Studi **D3 Analisis Kimia**.
 
-    ### 🧠 Dibuat Menggunakan:
-    - Python 3
-    - [Streamlit](https://streamlit.io/)
-    - Altair & Matplotlib
+🎯 **Tujuan utama pembuatan aplikasi ini adalah:**
+- Menerapkan logika pemrograman dalam membangun solusi nyata
+- Membantu mahasiswa dan pengguna umum dalam konversi satuan fisika secara cepat dan akurat
+- Menyediakan alat bantu edukatif dalam memahami hubungan antar satuan
 
-    ### 📚 Referensi Konversi:
-    - NIST (National Institute of Standards and Technology)
-    - International System of Units (SI)
-    - Buku Fisika Dasar - Halliday & Resnick
-    - https://www.unitconverters.net/
-    - https://www.rapidtables.com/convert/
+🧪 Aplikasi ini mencakup berbagai kategori konversi, seperti:
+- Suhu
+- Massa
+- Panjang
+- Waktu
+- Tekanan
+- Energi, dan lainnya
 
-    ### 👨‍💻 Developer:
-    **AL FATIH** – 2025
+---
+
+🧠 **Teknologi yang digunakan:**
+- Python
+- [Streamlit](https://streamlit.io/)
+- Pandas
+- Altair & Matplotlib
+
+📚 **Sumber Referensi Konversi:**
+- NIST (National Institute of Standards and Technology)
+- SI Units Handbook
+- Buku Fisika Dasar (Halliday & Resnick)
+- [unitconverters.net](https://www.unitconverters.net/)
+- [rapidtables.com](https://www.rapidtables.com/convert/)
+
+---
+
+👨‍💻 **Dikembangkan oleh:**  
+Mahasiswa Program Studi D3 Analisis Kimia – 2025
     """)
