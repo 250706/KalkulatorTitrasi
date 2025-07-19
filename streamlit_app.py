@@ -142,7 +142,7 @@ set_custom_background(image_link)
 
 # ---------------------- NAVIGASI SIDEBAR ----------------------
 st.sidebar.title("📌 Navigasi")
-halaman = st.sidebar.radio("Pilih Halaman", ["🏠 Beranda", "📐 Kalkulator", "📊 Grafik", "ℹ️ Tentang"])
+halaman = st.sidebar.radio("Pilih Halaman", ["🏠 Beranda", "📐 Kalkulator", "ℹ️ Tentang"])
 
 # ---------------------- HALAMAN BERANDA ----------------------
 if halaman == "🏠 Beranda":
