@@ -66,7 +66,6 @@ konversi_data = {
         "m³": 1000,
         "galon": 3.78541
     },
-      },
     "📡 Frekuensi": {
         "Hz": 1,
         "kHz": 1e3,
