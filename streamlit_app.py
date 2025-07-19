@@ -15,28 +15,6 @@ def set_background_from_url(image_url):
         background-repeat: no-repeat;
     }
 
-# ---------------------- EFEK INTERAKTIF ----------------------
-st.markdown("""
-    <style>
-    div[data-testid="metric-container"] {
-        background-color: #001F3F;
-        padding: 20px;
-        border-radius: 15px;
-        color: white;
-        border: 2px solid #39CCCC;
-        box-shadow: 0px 0px 15px 2px #39CCCC;
-        transition: all 0.3s ease-in-out;
-    }
-    div[data-testid="metric-container"]:hover {
-        box-shadow: 0px 0px 25px 5px #7FDBFF;
-        transform: scale(1.03);
-    }
-    .stDataFrame > div > div:hover {
-        transform: scale(1.01);
-        box-shadow: 0px 0px 10px #00BFFF;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 # ---------------------- SIDEBAR DAN NAVIGASI ----------------------
 st.sidebar.title("📚 Navigasi")
