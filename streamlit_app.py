@@ -272,5 +272,5 @@ melakukan konversi satuan fisika secara akurat dan cepat.
 - *Physics for Scientists and Engineers*  Serway & Jewett
 - *CRC Handbook of Chemistry and Physics*
 - *Thermodynamics*  Yunus Cengel
-""")  # 
+""")  
 
