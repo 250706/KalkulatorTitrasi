@@ -262,25 +262,25 @@ melakukan konversi satuan fisika secara **akurat, cepat, dan interaktif**.
 
 ---
 
-### 🎯 Fitur Utama:
--  Konversi berbagai satuan fisika: suhu, massa, panjang, tekanan, waktu, energi, daya, kecepatan, volume, arus listrik, hambatan, dan lainnya.
--  Penjelasan lengkap dan mudah dimengerti untuk setiap rumus konversi.
--  Visualisasi hasil konversi dalam bentuk grafik batang.
--  Antarmuka ramah pengguna dan estetis, dengan latar belakang visual yang dapat disesuaikan.
--  Presisi hasil disesuaikan berdasarkan standar masing-masing kategori satuan.
+### Fitur Utama:
+- Konversi berbagai satuan fisika: suhu, massa, panjang, tekanan, waktu, energi, daya, kecepatan, volume, arus listrik, hambatan, dan lainnya.
+- Penjelasan lengkap dan mudah dimengerti untuk setiap rumus konversi.
+- Visualisasi hasil konversi dalam bentuk grafik batang.
+- Antarmuka ramah pengguna dan estetis, dengan latar belakang visual yang dapat disesuaikan.
+- Presisi hasil disesuaikan berdasarkan standar masing-masing kategori satuan.
 
 ---
 
-### 📚 Sumber Referensi:
--  SI Units : [www.bipm.org](https://www.bipm.org)
--  NIST : National Institute of Standards and Technology
--  *Physics for Scientists and Engineers* : Serway & Jewett
--  *CRC Handbook of Chemistry and Physics* : CRC Press
--  *Thermodynamics* : Yunus A. Çengel
+### Sumber Referensi:
+- SI Units — https://www.bipm.org
+- NIST — National Institute of Standards and Technology
+- *Physics for Scientists and Engineers* — Serway & Jewett
+- *CRC Handbook of Chemistry and Physics*
+- *Thermodynamics* — Yunus A. Çengel
 
 ---
 
- Terima kasih telah menggunakan website ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda!
- """)
+Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda!
+""")
 
 
