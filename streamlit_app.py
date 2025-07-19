@@ -180,60 +180,61 @@ elif halaman == "Kalkulator":
     nilai_input = st.text_input("📥 Masukkan Nilai:", placeholder="Contoh: 5.5")
 
     if st.button("🔄 Konversi"):
-        if not nilai_input:
-            st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
-        else:
-            try:
-                nilai = float(nilai_input.replace(",", "."))
-                with st.spinner("⏳ Menghitung..."):
-                    time.sleep(1)
-                    if kategori == "🔥 Suhu":
-                        hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-                        penjelasan = "Konversi suhu dilakukan menggunakan rumus tergantung jenis satuannya."
-                    else:
-                        hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
-                       penjelasan_khusus = {
-                           
-                            "🔥 Suhu": r"""
-                            Konversi suhu tergantung satuannya:
-                            
-                            - Celsius → Kelvin: $K = ^\circ C + 273.15$
-                            - Celsius → Fahrenheit: $^\circ F = (^ \circ C \times \frac{9}{5}) + 32$
-                            - Fahrenheit → Celsius: $^\circ C = (^\circ F - 32) \times \frac{5}{9}$
-                            - Kelvin → Celsius: $^\circ C = K - 273.15$
-                            """,
-                            "🧪 Tekanan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Pascal (Pa)",
-                            "⚖ Massa": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: gram (g)",
-                            "🕏 Panjang": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: meter (m)",
-                            "⏱ Waktu": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: detik (s)",
-                            "⚡ Energi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Joule (J)",
-                            "💨 Kecepatan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: m/s",
-                            "💡 Daya": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Watt (W)",
-                            "🧊 Volume": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: liter (L)",
-                            "📡 Frekuensi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Hz",
-                            "⚡ Hambatan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ohm (Ω)",
-                            "🔋 Tegangan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Volt (V)",
-                            "🔌 Arus Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ampere (A)"
-                        }
-                        penjelasan = penjelasan_khusus.get(kategori, "Konversi berdasarkan rasio satuan terhadap satuan dasar.")
+    if not nilai_input:
+        st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
+    else:
+        try:
+            nilai = float(nilai_input.replace(",", "."))
+            with st.spinner("⏳ Menghitung..."):
+                time.sleep(1)
+                
+                if kategori == "🔥 Suhu":
+                    hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
+                    penjelasan = r"""
+                    Konversi suhu tergantung satuannya:
 
-                    hasil_str = format_presisi(hasil)
+                    - Celsius → Kelvin: $K = ^\circ C + 273.15$
+                    - Celsius → Fahrenheit: $^\circ F = (^ \circ C \times \frac{9}{5}) + 32$
+                    - Fahrenheit → Celsius: $^\circ C = (^\circ F - 32) \times \frac{5}{9}$
+                    - Kelvin → Celsius: $^\circ C = K - 273.15$
+                    """
+                else:
+                    hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
+                    
+                    penjelasan_khusus = {
+                        "🧪 Tekanan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Pascal (Pa)",
+                        "⚖ Massa": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: gram (g)",
+                        "🕏 Panjang": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: meter (m)",
+                        "⏱ Waktu": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: detik (s)",
+                        "⚡ Energi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Joule (J)",
+                        "💨 Kecepatan": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: m/s",
+                        "💡 Daya": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Watt (W)",
+                        "🧊 Volume": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: liter (L)",
+                        "📡 Frekuensi": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Hz",
+                        "⚡ Hambatan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ohm (Ω)",
+                        "🔋 Tegangan Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Volt (V)",
+                        "🔌 Arus Listrik": "Rumus: `nilai × faktor_asal / faktor_tujuan`, satuan dasar: Ampere (A)"
+                    }
 
-                    st.metric("💡 Hasil Konversi", f"{hasil_str} {satuan_tujuan}")
-                    st.success(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
-                    st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
-                    st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", disabled=False)
-                    st.markdown(f"**📘 Penjelasan:** {penjelasan}")
+                    penjelasan = penjelasan_khusus.get(kategori, "Konversi berdasarkan rasio satuan terhadap satuan dasar.")
 
-                    chart_df = pd.DataFrame({'Satuan': [satuan_asal, satuan_tujuan], 'Nilai': [nilai, hasil]})
-                    st.altair_chart(
-                        alt.Chart(chart_df).mark_bar().encode(
-                            x='Satuan', y='Nilai', color='Satuan'
-                        ).properties(title="📊 Perbandingan Nilai Sebelum & Sesudah Konversi"),
-                        use_container_width=True
-                    )
-            except ValueError:
-                st.error("❌ Nilai harus berupa angka.")
+                hasil_str = format_presisi(hasil)
+
+                st.metric("💡 Hasil Konversi", f"{hasil_str} {satuan_tujuan}")
+                st.success(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", disabled=False)
+                st.markdown(f"**📘 Penjelasan:** {penjelasan}")
+
+                chart_df = pd.DataFrame({'Satuan': [satuan_asal, satuan_tujuan], 'Nilai': [nilai, hasil]})
+                st.altair_chart(
+                    alt.Chart(chart_df).mark_bar().encode(
+                        x='Satuan', y='Nilai', color='Satuan'
+                    ).properties(title="📊 Perbandingan Nilai Sebelum & Sesudah Konversi"),
+                    use_container_width=True
+                )
+        except ValueError:
+            st.error("❌ Nilai harus berupa angka.")
 
 # ---------------------- HALAMAN: TENTANG ----------------------
 elif halaman == "Tentang":
