@@ -280,7 +280,6 @@ melakukan konversi satuan fisika secara **akurat, cepat, dan interaktif**.
 
 ---
 
-Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda!
-""")
+Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda!""")
 
 
