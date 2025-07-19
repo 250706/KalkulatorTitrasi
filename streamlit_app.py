@@ -301,16 +301,16 @@ if st.button("🔄 Konversi"):
     st.success(f"**{nilai} {satuan_dari} = {round(hasil, 6)} {satuan_ke}**")
 
             # Penjelasan rumus
-            tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke)
+    tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke)
 
             # Tabel hasil ke semua satuan
-            if kategori != "Suhu":
-                df = pd.DataFrame(list(semua_hasil.items()), columns=["Satuan", "Hasil"])
-                st.markdown("### 🔍 Konversi ke Semua Satuan")
-                st.dataframe(df.style.highlight_max(axis=0), use_container_width=True)
+    if kategori != "Suhu":
+        df = pd.DataFrame(list(semua_hasil.items()), columns=["Satuan", "Hasil"])
+    st.markdown("### 🔍 Konversi ke Semua Satuan")
+    st.dataframe(df.style.highlight_max(axis=0), use_container_width=True)
 
             # Grafik batang
-            st.markdown("### 📊 Grafik Perbandingan Konversi")
+    st.markdown("### 📊 Grafik Perbandingan Konversi")
             chart = alt.Chart(pd.DataFrame({
             'Satuan': list(semua_hasil.keys()),
             'Hasil': list(semua_hasil.values())
