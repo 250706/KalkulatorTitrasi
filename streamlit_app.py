@@ -253,10 +253,11 @@ if st.button("🔄 Konversi"):
 
 
 # ---------------------- HALAMAN: TENTANG ----------------------
-elif halaman == "Tentang":
-    st.header("📖 Tentang Aplikasi")
+if halaman == "📖 Tentang":
     st.markdown("""
+    ## Tentang Aplikasi
     Aplikasi **Kalkulator Konversi Satuan Fisika** dibuat untuk membantu pelajar, mahasiswa, dan profesional melakukan konversi satuan fisika secara akurat dan cepat.
+    """)
 
     ### 🔍 Fitur Unggulan:
     - Konversi suhu, massa, panjang, waktu, tekanan, energi, volume, listrik, dll.
