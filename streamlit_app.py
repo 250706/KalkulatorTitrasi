@@ -54,7 +54,7 @@ st.markdown("""
 
 # ---------------------- SIDEBAR DAN NAVIGASI ----------------------
 st.sidebar.title("📚 Navigasi")
-halaman = st.sidebar.radio("Pilih Halaman", ["Beranda", "Kalkulator", "Tentang"])
+halaman = st.sidebar.radio("Pilih Halaman", ["Beranda", "Kalkulator", "📖 Tentang"])
 
 # ---------------------- DATA KONVERSI ----------------------
 konversi_data = {
@@ -179,7 +179,7 @@ elif halaman == "Kalkulator":
     satuan_tujuan = st.selectbox("🔹 Satuan Tujuan:", list(konversi_data[kategori].keys()))
     nilai_input = st.text_input("📥 Masukkan Nilai:", placeholder="Contoh: 5.5")
 
-if st.button("🔄 Konversi"):
+    if st.button("🔄 Konversi"):
         if not nilai_input:
             st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
         else:
@@ -187,10 +187,10 @@ if st.button("🔄 Konversi"):
                 nilai = float(nilai_input.replace(",", "."))
                 with st.spinner("⏳ Menghitung..."):
                     time.sleep(1)
-                    
-if kategori == "🔥 Suhu":
-    hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-    penjelasan = """
+
+                    if kategori == "🔥 Suhu":
+                        hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
+                        penjelasan = """
 *📘 Penjelasan Rumus Konversi Suhu:*
 
 1. *Celsius → Kelvin*  
@@ -210,8 +210,7 @@ if kategori == "🔥 Suhu":
 
 6. *Kelvin → Fahrenheit*  
  F = (K - 273.15) × 9/5 + 32
-"""  # <<== ini penutupnya, jangan ada apa pun setelahnya
-         
+"""
                     else:
                         hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
 
@@ -250,12 +249,11 @@ if kategori == "🔥 Suhu":
             except ValueError:
                 st.error("❌ Nilai harus berupa angka.")
 
-
 # ---------------------- HALAMAN: TENTANG ----------------------
 elif halaman == "📖 Tentang":
     st.markdown("## ℹ Tentang Aplikasi")
 
-st.markdown("""
+    st.markdown("""
 Aplikasi *Kalkulator Konversi Satuan Fisika* dibuat untuk membantu pelajar, mahasiswa, dan profesional 
 melakukan konversi satuan fisika secara *akurat, cepat, dan interaktif*.
 
@@ -281,3 +279,4 @@ melakukan konversi satuan fisika secara *akurat, cepat, dan interaktif*.
 
 Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda! 
 """)
+
