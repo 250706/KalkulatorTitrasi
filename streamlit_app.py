@@ -210,7 +210,7 @@ if st.button("🔄 Konversi"):
 
 6. **Kelvin → Fahrenheit**  
  `F = (K - 273.15) × 9/5 + 32`
-"""
+""" #
 
                         """
                     else:
@@ -272,6 +272,5 @@ melakukan konversi satuan fisika secara akurat dan cepat.
 - *Physics for Scientists and Engineers*  Serway & Jewett
 - *CRC Handbook of Chemistry and Physics*
 - *Thermodynamics*  Yunus Cengel
-"""
-)  
+""")
 
