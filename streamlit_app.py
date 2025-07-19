@@ -19,7 +19,7 @@ def set_background_from_url(image_url: str, opacity: float = 0.85):
         background-attachment: fixed;
     }}
     </style>
-    """
+   
     st.markdown(background_style, unsafe_allow_html=True)
 
 set_background_from_url("https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp", 0.85)
