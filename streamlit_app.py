@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import time
-import pyperclip
 import altair as alt
 
 # ---------------------- SETUP LATAR BELAKANG ----------------------
