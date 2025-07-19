@@ -90,23 +90,20 @@ konversi_data = {
 }
 
 # ---------------------- FUNGSI KONVERSI ----------------------
-
+# Fungsi konversi suhu (definisi duluan)
 def konversi_suhu(nilai, dari, ke):
     if dari == ke:
         return nilai
-    # Celsius to ...
     if dari == "Celsius (°C)":
         if ke == "Fahrenheit (°F)":
             return (nilai * 9/5) + 32
         elif ke == "Kelvin (K)":
             return nilai + 273.15
-    # Fahrenheit to ...
     if dari == "Fahrenheit (°F)":
         if ke == "Celsius (°C)":
             return (nilai - 32) * 5/9
         elif ke == "Kelvin (K)":
             return ((nilai - 32) * 5/9) + 273.15
-    # Kelvin to ...
     if dari == "Kelvin (K)":
         if ke == "Celsius (°C)":
             return nilai - 273.15
@@ -114,11 +111,12 @@ def konversi_suhu(nilai, dari, ke):
             return ((nilai - 273.15) * 9/5) + 32
     return None
 
-def get_konversi_semua_satuan(kategori, nilai, satuan_dari):
-    hasil = {}
-    for satuan_ke in konversi_data[kategori]:
-        hasil[satuan_ke] = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
-    return hasil
+# Fungsi konversi umum
+def konversi_satuan(kategori, nilai, satuan_dari, satuan_ke):
+    if "Suhu" in kategori:
+        return konversi_suhu(nilai, satuan_dari, satuan_ke)
+    else:
+        return nilai * konversi_data[kategori][satuan_dari] / konversi_data[kategori][satuan_ke]
 
 def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
     if "Suhu" in kategori:
