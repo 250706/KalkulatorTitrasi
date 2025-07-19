@@ -195,7 +195,7 @@ if st.button("🔄 Konversi"):
                         
                        with st.expander("📘 Penjelasan Rumus Konversi Suhu (Lengkap)"):
                         st.markdown("""
-st.markdown("""
+
 1. Celsius ke Kelvin  
 Rumus:  
 K = C + 273.15  
