@@ -235,108 +235,74 @@ halaman = st.sidebar.radio("Pilih Halaman", ["🏠 Beranda", "📐 Kalkulator", 
 
 # ---------------------- HALAMAN BERANDA ----------------------
 if halaman == "🏠 Beranda":
-    st.title("📐 Kalkulator Konversi Satuan Fisika")
+    st.title("🌟 Selamat Datang di Kalkulator Konversi Satuan Fisika 🌟")
     st.markdown("""
-    <div style='text-align: justify; font-size: 18px'>
-    Selamat datang di **Kalkulator Konversi Satuan Fisika**! 🔍  
-    Aplikasi ini dirancang untuk memudahkan Anda dalam mengonversi berbagai satuan dalam ilmu fisika secara cepat, akurat, dan dengan penjelasan yang mudah dipahami.  
-    Cukup masukkan nilai, pilih kategori, dan satuan asal serta tujuan — maka hasil dan penjelasan lengkap akan langsung muncul!  
+    Aplikasi ini dirancang untuk membantu Anda mengonversi berbagai satuan fisika seperti suhu, massa, panjang, tekanan, dan lainnya dengan **mudah**, **cepat**, dan **akurat**.
 
-    ### ✨ Fitur Unggulan:
-    - ✅ Konversi berbagai kategori: suhu, massa, tekanan, energi, kecepatan, dan banyak lagi.
-    - 📘 Penjelasan rumus lengkap.
-    - 📊 Visualisasi hasil konversi dalam grafik interaktif.
-    - 🎨 Tampilan bersih dan elegan.
+    ### 📌 Fitur Unggulan:
+    - Konversi antar satuan dalam berbagai kategori
+    - Penjelasan rumus yang **jelas dan edukatif**
+    - Visualisasi grafik konversi
+    - Tampilan interaktif dan menarik
 
-    Ayo mulai konversi sekarang di halaman **Kalkulator**!
-    </div>
-    """, unsafe_allow_html=True)
-# ---------------------- HALAMAN KALKULATOR ----------------------
+    **Pilih menu di sebelah kiri untuk memulai!**
+    """)
+
+# ---------------------- KALKULATOR ----------------------
 elif halaman == "📐 Kalkulator":
-    st.header("📐 Kalkulator Konversi")
-    st.markdown("Gunakan alat ini untuk melakukan konversi satuan fisika dengan mudah dan cepat.")
+    st.title("📐 Kalkulator Konversi Satuan Fisika")
 
     kategori = st.selectbox("Pilih Kategori Satuan", list(konversi_data.keys()))
     satuan_dari = st.selectbox("Dari Satuan", list(konversi_data[kategori].keys()))
     satuan_ke = st.selectbox("Ke Satuan", list(konversi_data[kategori].keys()))
-    nilai = st.number_input(f"Masukkan Nilai ({satuan_dari})", value=0.0, step=0.1)
+    nilai = st.number_input("Masukkan Nilai", value=0.0, step=0.1, format="%.4f")
 
-def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
-    st.markdown("### 📘 Penjelasan Rumus Konversi")
-    
-    if kategori == "Suhu":
-        rumus = ""
-        if satuan_dari == "Celsius (°C)" and satuan_ke == "Fahrenheit (°F)":
-            rumus = r"$F = \frac{9}{5} \times C + 32$"
-        elif satuan_dari == "Fahrenheit (°F)" and satuan_ke == "Celsius (°C)":
-            rumus = r"$C = \frac{5}{9} \times (F - 32)$"
-        elif satuan_dari == "Celsius (°C)" and satuan_ke == "Kelvin (K)":
-            rumus = r"$K = C + 273.15$"
-        elif satuan_dari == "Kelvin (K)" and satuan_ke == "Celsius (°C)":
-            rumus = r"$C = K - 273.15$"
-        elif satuan_dari == "Fahrenheit (°F)" and satuan_ke == "Kelvin (K)":
-            rumus = r"$K = \frac{5}{9} \times (F - 32) + 273.15$"
-        elif satuan_dari == "Kelvin (K)" and satuan_ke == "Fahrenheit (°F)":
-            rumus = r"$F = \frac{9}{5} \times (K - 273.15) + 32$"
-        else:
-            rumus = "*Tidak tersedia untuk kombinasi ini.*"
+    if st.button("🔄 Konversi"):
+        with st.spinner("Menghitung..."):
+            time.sleep(1.5)
+            hasil = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
+            semua_hasil = get_konversi_semua_satuan(kategori, nilai, satuan_dari)
 
-        st.latex(rumus)
-    else:
-        st.markdown(f"""
-        Rumus konversi untuk kategori **{kategori}**:
-        ```text
-        Nilai akhir = Nilai awal × (Faktor {satuan_dari} ÷ Faktor {satuan_ke})
-        ```
-        """)
+        st.markdown("## 🎯 Hasil Konversi")
+        st.success(f"**{nilai} {satuan_dari} = {hasil:.4f} {satuan_ke}**")
 
-if st.button("🔄 Konversi"):
-    with st.spinner("Menghitung konversi..."):
-        time.sleep(1)
-    hasil = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
-    semua_hasil = get_konversi_semua_satuan(kategori, nilai, satuan_dari)
+        tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke)
 
-            # Hasil utama
-    st.markdown("## 🎯 Hasil Konversi")
-    st.success(f"**{nilai} {satuan_dari} = {round(hasil, 6)} {satuan_ke}**")
+        st.markdown("---")
+        st.markdown("### 🔁 Konversi ke Semua Satuan")
+        st.dataframe(pd.DataFrame(semua_hasil.items(), columns=["Satuan", "Hasil"]), use_container_width=True)
+# ---------------------- GRAFIK ----------------------
+elif halaman == "📊 Grafik":
+    st.title("📊 Visualisasi Konversi Satuan")
 
-            # Penjelasan rumus
-    tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke)
+    kategori = st.selectbox("Pilih Kategori", list(konversi_data.keys()), key="grafik_kategori")
+    satuan_dari = st.selectbox("Pilih Satuan Asal", list(konversi_data[kategori].keys()), key="grafik_dari")
+    nilai = st.number_input("Masukkan Nilai", value=1.0, step=0.1, format="%.4f", key="grafik_nilai")
 
-            # Tabel hasil ke semua satuan
-    if kategori != "Suhu":
-        df = pd.DataFrame(list(semua_hasil.items()), columns=["Satuan", "Hasil"])
-    st.markdown("### 🔍 Konversi ke Semua Satuan")
-    st.dataframe(df.style.highlight_max(axis=0), use_container_width=True)
+    if st.button("📈 Tampilkan Grafik"):
+        semua_hasil = get_konversi_semua_satuan(kategori, nilai, satuan_dari)
+        st.markdown("### 🔍 Grafik Konversi")
+        tampilkan_grafik(kategori, semua_hasil)
 
-            # Grafik batang
-    st.markdown("### 📊 Grafik Perbandingan Konversi")
-            chart = alt.Chart(pd.DataFrame({
-            'Satuan': list(semua_hasil.keys()),
-            'Hasil': list(semua_hasil.values())
-            })).mark_bar().encode(
-            x=alt.X('Satuan', sort=None),
-            y='Hasil',
-            color='Satuan',
-            tooltip=['Satuan', 'Hasil']
-            ).properties(height=400)
-
-            st.altair_chart(chart, use_container_width=True)
-
-# ---------------------- HALAMAN TENTANG ----------------------
+# ---------------------- TENTANG ----------------------
 elif halaman == "ℹ️ Tentang":
-    st.header("ℹ️ Tentang Aplikasi")
+    st.title("ℹ️ Tentang Aplikasi")
     st.markdown("""
-    Aplikasi **Kalkulator Konversi Satuan Fisika** ini dikembangkan untuk membantu pelajar, guru, mahasiswa, dan profesional dalam memahami serta melakukan konversi satuan secara cepat dan tepat.
+    Aplikasi **Kalkulator Konversi Satuan Fisika** ini dibuat untuk mempermudah proses belajar dan kerja dalam konversi satuan fisika sehari-hari.
 
-    ### 📚 Sumber Referensi:
-    - [NIST: National Institute of Standards and Technology](https://www.nist.gov)
-    - [Wikipedia: Units of Measurement](https://en.wikipedia.org/wiki/Units_of_measurement)
-    - Buku-buku Fisika Dasar dan Kimia Dasar
-    - Konversi suhu: dokumentasi standar internasional dan praktik umum laboratorium
+    ### 🧠 Dibuat Menggunakan:
+    - Python 3
+    - [Streamlit](https://streamlit.io/)
+    - Altair & Matplotlib
 
-    ### 👨‍💻 Pengembang:
-    Dibuat dengan ❤️ menggunakan Python & Streamlit.
+    ### 📚 Referensi Konversi:
+    - NIST (National Institute of Standards and Technology)
+    - International System of Units (SI)
+    - Buku Fisika Dasar - Halliday & Resnick
+    - https://www.unitconverters.net/
+    - https://www.rapidtables.com/convert/
 
-    Untuk pertanyaan atau masukan, silakan hubungi melalui [GitHub](https://github.com).
+    ### 👨‍💻 Developer:
+    **AL FATIH** – 2025
     """)
+
