@@ -129,25 +129,59 @@ def get_konversi_semua_satuan(kategori, nilai, satuan_dari):
             hasil[satuan] = konversi_satuan(kategori, nilai, satuan_dari, satuan)
     return hasil
 
-def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
-    if "Suhu" in kategori:
-        rumus_dict = {
-            ("Celsius (°C)", "Fahrenheit (°F)"): "`(°C × 9/5) + 32 = °F`",
-            ("Fahrenheit (°F)", "Celsius (°C)"): "`(°F − 32) × 5/9 = °C`",
-            ("Celsius (°C)", "Kelvin (K)"): "`°C + 273.15 = K`",
-            ("Kelvin (K)", "Celsius (°C)"): "`K − 273.15 = °C`",
-            ("Fahrenheit (°F)", "Kelvin (K)"): "`((°F − 32) × 5/9) + 273.15 = K`",
-            ("Kelvin (K)", "Fahrenheit (°F)"): "`((K − 273.15) × 9/5) + 32 = °F`"
-        }
-        rumus = rumus_dict.get((satuan_dari, satuan_ke), "*Rumus tidak tersedia*")
-        st.markdown(f"### 📘 Rumus Konversi\n**{satuan_dari} ➝ {satuan_ke}**\n\n{rumus}")
+
+
+def tampilkan_rumus(kategori, nilai, satuan_dari, satuan_ke, hasil):
+    st.markdown("### 📘 Penjelasan Rumus Konversi")
+
+    if kategori == "Suhu":
+        st.markdown(f"""
+        Misalnya mengonversi dari **{satuan_dari}** ke **{satuan_ke}**:
+
+        ```latex
+        \\text{{Hasil}} = \\text{{konversi suhu sesuai rumus}}
+        ```
+        """)
+
+        if satuan_dari == "Celsius (°C)" and satuan_ke == "Fahrenheit (°F)":
+            st.latex(r"Hasil = (°C × \frac{9}{5}) + 32")
+            st.markdown(f"Hasil = ({nilai} × 9/5) + 32 = **{hasil:.2f} °F**")
+
+        elif satuan_dari == "Celsius (°C)" and satuan_ke == "Kelvin (K)":
+            st.latex(r"Hasil = °C + 273.15")
+            st.markdown(f"Hasil = {nilai} + 273.15 = **{hasil:.2f} K**")
+
+        elif satuan_dari == "Fahrenheit (°F)" and satuan_ke == "Celsius (°C)":
+            st.latex(r"Hasil = (°F - 32) × \frac{5}{9}")
+            st.markdown(f"Hasil = ({nilai} - 32) × 5/9 = **{hasil:.2f} °C**")
+
+        elif satuan_dari == "Kelvin (K)" and satuan_ke == "Fahrenheit (°F)":
+            st.latex(r"Hasil = ((K - 273.15) × \frac{9}{5}) + 32")
+            st.markdown(f"Hasil = (({nilai} - 273.15) × 9/5) + 32 = **{hasil:.2f} °F**")
+
+        # Tambahkan semua kombinasi suhu lainnya
+        else:
+            st.info("Konversi suhu lainnya menggunakan rumus umum sesuai standar.")
+
     else:
         st.markdown(f"""
-        ### 📘 Rumus Konversi
-        **{satuan_dari} ➝ {satuan_ke}**
+        Misalnya mengonversi dari **{satuan_dari}** ke **{satuan_ke}**:
 
-        $$\\text{{Hasil}} = \\text{{Nilai}} \\times \\frac{{\\text{{Konstanta dari {satuan_dari}}}}}{{\\text{{Konstanta dari {satuan_ke}}}}}$$
+        ```latex
+        \\text{{Hasil}} = \\frac{{\\text{{nilai}} × \\text{{faktor konversi dari}}}}{{\\text{{faktor ke}}}}
+        ```
+
+        Dengan:
+        - Faktor dari: `{konversi_data[kategori][satuan_dari]}`
+        - Faktor ke: `{konversi_data[kategori][satuan_ke]}`
+
+        Maka:
+        ```python
+        Hasil = ({nilai} × {konversi_data[kategori][satuan_dari]}) / {konversi_data[kategori][satuan_ke]}
+              = {hasil:.5f}
+        ```
         """)
+
 
 # ---------------------- TEMA & BACKGROUND ----------------------
 def set_custom_background(image_url):
