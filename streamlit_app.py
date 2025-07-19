@@ -42,7 +42,7 @@ if halaman == "Beranda":
     - Salin hasil
     - Tampilan interaktif dan modern
 
-    Gunakan menu **Kalkulator** di sidebar untuk memulai 🚀
+    Gunakan menu **Kalkulator** di sidebar untuk memulai 
     """)
 
 # ---------------------------
