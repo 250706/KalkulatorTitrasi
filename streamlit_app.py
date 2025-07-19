@@ -212,7 +212,6 @@ if st.button("🔄 Konversi"):
  `F = (K - 273.15) × 9/5 + 32`
 """ 
 
-                        """
                     else:
                         hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
 
@@ -254,7 +253,7 @@ if st.button("🔄 Konversi"):
 
 # ---------------------- HALAMAN: TENTANG ----------------------
 elif halaman == "📖 Tentang":
-    st.markdown("## ℹ️ Tentang Aplikasi")
+    st.markdown("ℹ️ Tentang Aplikasi")
 
     st.markdown("""
 Aplikasi **Kalkulator Konversi Satuan Fisika** dibuat untuk membantu pelajar, mahasiswa, dan profesional 
@@ -280,5 +279,4 @@ melakukan konversi satuan fisika secara **akurat, cepat, dan interaktif**.
 
 ---
 
-Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda!
-""")
+Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda! """)
