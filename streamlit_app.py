@@ -1,256 +1,254 @@
 import streamlit as st
 import pandas as pd
-import altair as alt
 import time
-
-# ---------------------- SETUP LATAR BELAKANG ----------------------
-def set_background_from_url(image_url, opacity=0.85):
-    st.markdown(f"""
-        <style>
-        .stApp {{
-            background-image: linear-gradient(rgba(255,255,255,{opacity}), rgba(255,255,255,{opacity})), url('{image_url}');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }}
-        </style>
-    """, unsafe_allow_html=True)
-
-set_background_from_url("https://images.unsplash.com/photo-1608139748485-69f9f1f8ef62?auto=format&fit=crop&w=1950&q=80")
+import altair as alt
 
 # ---------------------- DATA KONVERSI ----------------------
-data_konversi = {
+konversi_data = {
     "Suhu": {
-        "satuan": ["Celsius", "Fahrenheit", "Kelvin"],
-        "rumus": {
-            ("Celsius", "Fahrenheit"): "°F = (°C × 9/5) + 32",
-            ("Fahrenheit", "Celsius"): "°C = (°F − 32) × 5/9",
-            ("Celsius", "Kelvin"): "K = °C + 273.15",
-            ("Kelvin", "Celsius"): "°C = K − 273.15",
-            ("Fahrenheit", "Kelvin"): "K = (°F − 32) × 5/9 + 273.15",
-            ("Kelvin", "Fahrenheit"): "°F = (K − 273.15) × 9/5 + 32"
-        }
+        "Celsius": lambda x, y: {
+            "Celsius": x,
+            "Fahrenheit": (x * 9 / 5) + 32,
+            "Kelvin": x + 273.15
+        }[y],
+        "Fahrenheit": lambda x, y: {
+            "Celsius": (x - 32) * 5 / 9,
+            "Fahrenheit": x,
+            "Kelvin": ((x - 32) * 5 / 9) + 273.15
+        }[y],
+        "Kelvin": lambda x, y: {
+            "Celsius": x - 273.15,
+            "Fahrenheit": ((x - 273.15) * 9 / 5) + 32,
+            "Kelvin": x
+        }[y]
     },
     "Tekanan": {
-        "satuan": ["atm", "Pa", "bar", "mmHg", "psi"],
-        "nilai_dasar": {
-            "atm": 1,
-            "Pa": 101325,
-            "bar": 1.01325,
-            "mmHg": 760,
-            "psi": 14.6959
-        }
+        "Pascal": 1,
+        "atm": 101325,
+        "bar": 100000,
+        "psi": 6894.76
     },
     "Massa": {
-        "satuan": ["kg", "g", "mg", "ton", "lb"],
-        "nilai_dasar": {
-            "kg": 1,
-            "g": 1000,
-            "mg": 1_000_000,
-            "ton": 0.001,
-            "lb": 2.20462
-        }
+        "Gram": 1,
+        "Kilogram": 1000,
+        "Pound": 453.592,
+        "Ons": 28.3495
     },
     "Panjang": {
-        "satuan": ["m", "cm", "mm", "km", "inch", "foot"],
-        "nilai_dasar": {
-            "m": 1,
-            "cm": 100,
-            "mm": 1000,
-            "km": 0.001,
-            "inch": 39.3701,
-            "foot": 3.28084
-        }
+        "Meter": 1,
+        "Kilometer": 1000,
+        "Sentimeter": 0.01,
+        "Milimeter": 0.001,
+        "Inci": 0.0254,
+        "Kaki": 0.3048
     },
     "Waktu": {
-        "satuan": ["detik", "menit", "jam", "hari"],
-        "nilai_dasar": {
-            "detik": 1,
-            "menit": 1/60,
-            "jam": 1/3600,
-            "hari": 1/86400
-        }
+        "Detik": 1,
+        "Menit": 60,
+        "Jam": 3600,
+        "Hari": 86400
     },
     "Energi": {
-        "satuan": ["Joule", "kJ", "cal", "kcal", "Wh"],
-        "nilai_dasar": {
-            "Joule": 1,
-            "kJ": 0.001,
-            "cal": 0.239006,
-            "kcal": 0.000239006,
-            "Wh": 0.000278
-        }
+        "Joule": 1,
+        "Kilojoule": 1000,
+        "Kalori": 4.184,
+        "Kilokalori": 4184
     },
     "Kecepatan": {
-        "satuan": ["m/s", "km/h", "mph", "knot"],
-        "nilai_dasar": {
-            "m/s": 1,
-            "km/h": 3.6,
-            "mph": 2.23694,
-            "knot": 1.94384
-        }
+        "m/s": 1,
+        "km/jam": 0.277778,
+        "mil/jam": 0.44704
     },
     "Daya": {
-        "satuan": ["Watt", "kW", "HP"],
-        "nilai_dasar": {
-            "Watt": 1,
-            "kW": 0.001,
-            "HP": 0.00134102
-        }
+        "Watt": 1,
+        "Kilowatt": 1000,
+        "Horsepower": 745.7
     },
     "Volume": {
-        "satuan": ["L", "mL", "m³", "cm³", "galon"],
-        "nilai_dasar": {
-            "L": 1,
-            "mL": 1000,
-            "m³": 0.001,
-            "cm³": 1000,
-            "galon": 0.264172
-        }
+        "Liter": 1,
+        "Mililiter": 0.001,
+        "Galon (US)": 3.78541,
+        "Pint (US)": 0.473176
     },
     "Frekuensi": {
-        "satuan": ["Hz", "kHz", "MHz", "GHz"],
-        "nilai_dasar": {
-            "Hz": 1,
-            "kHz": 0.001,
-            "MHz": 1e-6,
-            "GHz": 1e-9
-        }
+        "Hertz": 1,
+        "Kilohertz": 1000,
+        "Megahertz": 1_000_000
     },
     "Hambatan Listrik": {
-        "satuan": ["Ohm", "kOhm", "MOhm"],
-        "nilai_dasar": {
-            "Ohm": 1,
-            "kOhm": 0.001,
-            "MOhm": 1e-6
-        }
+        "Ohm": 1,
+        "Kiloohm": 1000,
+        "Megaohm": 1_000_000
     },
     "Tegangan": {
-        "satuan": ["Volt", "mV", "kV"],
-        "nilai_dasar": {
-            "Volt": 1,
-            "mV": 1000,
-            "kV": 0.001
-        }
+        "Volt": 1,
+        "Kilovolt": 1000,
+        "Milivolt": 0.001
     },
     "Arus Listrik": {
-        "satuan": ["Ampere", "mA", "kA"],
-        "nilai_dasar": {
-            "Ampere": 1,
-            "mA": 1000,
-            "kA": 0.001
-        }
+        "Ampere": 1,
+        "Miliampere": 0.001
     }
 }
+# ---------------------- FUNGSI KONVERSI ----------------------
+def konversi_satuan(kategori, nilai, satuan_dari, satuan_ke):
+    if kategori == "Suhu":
+        return konversi_data[kategori][satuan_dari](nilai, satuan_ke)
+    else:
+        return nilai * konversi_data[kategori][satuan_dari] / konversi_data[kategori][satuan_ke]
 
-# ---------------------- HALAMAN ----------------------
-def halaman_beranda():
+def get_konversi_semua_satuan(kategori, nilai, satuan_dari):
+    hasil = {}
+    for satuan_ke in konversi_data[kategori]:
+        hasil[satuan_ke] = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
+    return hasil
+
+# ---------------------- PENJELASAN RUMUS ----------------------
+def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
+    if kategori == "Suhu":
+        rumus_dict = {
+            ("Celsius", "Fahrenheit"): "`(°C × 9/5) + 32 = °F`",
+            ("Fahrenheit", "Celsius"): "`(°F − 32) × 5/9 = °C`",
+            ("Celsius", "Kelvin"): "`°C + 273.15 = K`",
+            ("Kelvin", "Celsius"): "`K − 273.15 = °C`",
+            ("Fahrenheit", "Kelvin"): "`((°F − 32) × 5/9) + 273.15 = K`",
+            ("Kelvin", "Fahrenheit"): "`((K − 273.15) × 9/5) + 32 = °F`"
+        }
+        rumus = rumus_dict.get((satuan_dari, satuan_ke), "*Rumus tidak tersedia*")
+        st.markdown(f"### 📘 Rumus Konversi\n**{satuan_dari} ➝ {satuan_ke}**\n\n{rumus}")
+    else:
+        st.markdown(f"""
+        ### 📘 Rumus Konversi
+        **{satuan_dari} ➝ {satuan_ke}**
+
+        $$\\text{{Hasil}} = \\text{{Nilai}} \\times \\frac{{\\text{{Konstanta dari {satuan_dari}}}}}{{\\text{{Konstanta dari {satuan_ke}}}}}$$
+        """)
+# ---------------------- TEMA & BACKGROUND ----------------------
+def set_background():
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url('https://images.unsplash.com/photo-1604079628043-94317f1b7981?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }}
+        .main .block-container {{
+            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.80);
+            border-radius: 10px;
+            padding: 2rem;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+set_background()
+
+# ---------------------- NAVIGASI SIDEBAR ----------------------
+st.sidebar.title("📌 Navigasi")
+halaman = st.sidebar.radio("Pilih Halaman", ["🏠 Beranda", "📐 Kalkulator", "📊 Grafik", "ℹ️ Tentang"])
+
+# ---------------------- HALAMAN BERANDA ----------------------
+if halaman == "🏠 Beranda":
     st.title("📐 Kalkulator Konversi Satuan Fisika")
     st.markdown("""
-        Selamat datang di **Kalkulator Konversi Satuan Fisika**!  
-        Aplikasi ini dirancang untuk membantu Anda mengonversi berbagai satuan fisika dengan cepat dan mudah.
+    <div style='text-align: justify; font-size: 18px'>
+    Selamat datang di **Kalkulator Konversi Satuan Fisika**! 🔍  
+    Aplikasi ini dirancang untuk memudahkan Anda dalam mengonversi berbagai satuan dalam ilmu fisika secara cepat, akurat, dan dengan penjelasan yang mudah dipahami.  
+    Cukup masukkan nilai, pilih kategori, dan satuan asal serta tujuan — maka hasil dan penjelasan lengkap akan langsung muncul!  
 
-        ### ✨ Fitur Unggulan:
-        - Konversi antar satuan **suhu**, **massa**, **panjang**, **energi**, dll
-        - Penjelasan **rumus konversi otomatis**
-        - Visualisasi hasil dalam bentuk grafik 📊
-        - Tampilan interaktif dan ramah pengguna 🎨
+    ### ✨ Fitur Unggulan:
+    - ✅ Konversi berbagai kategori: suhu, massa, tekanan, energi, kecepatan, dan banyak lagi.
+    - 📘 Penjelasan rumus lengkap.
+    - 📊 Visualisasi hasil konversi dalam grafik interaktif.
+    - 🎨 Tampilan bersih dan elegan.
 
-        Pilih halaman di sidebar untuk memulai konversi!
-    """)
-
-def halaman_kalkulator():
-    st.header("🔄 Kalkulator Konversi")
-    kategori = st.selectbox("Pilih kategori satuan", list(data_konversi.keys()))
-
-    satuan = data_konversi[kategori]["satuan"]
-    satuan_asal = st.selectbox("Dari satuan", satuan)
-    satuan_tujuan = st.selectbox("Ke satuan", satuan)
-    nilai = st.number_input("Masukkan nilai yang ingin dikonversi", value=0.0)
-
-    if st.button("🔄 Konversi"):
-        with st.spinner("Mengonversi..."):
-            time.sleep(1)
-
-            if kategori == "Suhu":
-                hasil, rumus = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-                tampilkan_hasil_konversi(nilai, satuan_asal, satuan_tujuan, hasil, rumus)
-            else:
-                hasil = konversi_umum(nilai, satuan_asal, satuan_tujuan, data_konversi[kategori]["nilai_dasar"])
-                rumus = f"= {nilai} {satuan_asal} × ({data_konversi[kategori]['nilai_dasar'][satuan_tujuan]:.6f})"
-                tampilkan_hasil_konversi(nilai, satuan_asal, satuan_tujuan, hasil, rumus)
-
-def halaman_grafik():
-    st.header("📊 Grafik Konversi Suhu")
-    nilai = st.number_input("Masukkan suhu (Celsius)", value=25.0)
-    data = {
-        "Satuan": ["Celsius", "Fahrenheit", "Kelvin"],
-        "Nilai": [nilai, nilai * 9/5 + 32, nilai + 273.15]
-    }
-    df = pd.DataFrame(data)
-
-    chart = alt.Chart(df).mark_bar().encode(
-        x=alt.X("Satuan", sort=None),
-        y="Nilai",
-        color=alt.Color("Satuan", scale=alt.Scale(scheme="pastel1"))
-    )
-    st.altair_chart(chart, use_container_width=True)
-
-def halaman_tentang():
-    st.header("📘 Tentang Aplikasi")
-    st.markdown("""
-        Aplikasi ini dibuat untuk memudahkan konversi satuan fisika dalam kehidupan sehari-hari maupun pembelajaran.
-
-        ### 📚 Referensi:
-        - [NIST Unit Conversion](https://www.nist.gov/pml/owm/metric-si/unit-conversion)
-        - [Wikipedia - Unit Conversion](https://en.wikipedia.org/wiki/Conversion_of_units)
-        - [Engineering Toolbox](https://www.engineeringtoolbox.com/)
-
-        Dibuat oleh: **OpenAI & AL FATIH**
-    """)
-
-# ---------------------- LOGIKA KONVERSI ----------------------
-def konversi_umum(nilai, satuan_asal, satuan_tujuan, nilai_dasar):
-    dasar = nilai / nilai_dasar[satuan_asal]
-    return dasar * nilai_dasar[satuan_tujuan]
-
-def konversi_suhu(nilai, dari, ke):
-    rumus_dict = data_konversi["Suhu"]["rumus"]
-    rumus = rumus_dict.get((dari, ke), "")
-    if dari == ke:
-        return nilai, "Tidak ada konversi"
-    if dari == "Celsius" and ke == "Fahrenheit":
-        return nilai * 9/5 + 32, rumus
-    elif dari == "Fahrenheit" and ke == "Celsius":
-        return (nilai - 32) * 5/9, rumus
-    elif dari == "Celsius" and ke == "Kelvin":
-        return nilai + 273.15, rumus
-    elif dari == "Kelvin" and ke == "Celsius":
-        return nilai - 273.15, rumus
-    elif dari == "Fahrenheit" and ke == "Kelvin":
-        return (nilai - 32) * 5/9 + 273.15, rumus
-    elif dari == "Kelvin" and ke == "Fahrenheit":
-        return (nilai - 273.15) * 9/5 + 32, rumus
-    return nilai, "Konversi tidak dikenali"
-
-def tampilkan_hasil_konversi(nilai, asal, tujuan, hasil, rumus):
-    st.subheader("🎯 Hasil Konversi")
-    st.markdown(f"""
-    <div style='padding: 1em; border-radius: 10px; background-color: #f0f8ff; border: 1px solid #cce;'>
-        <h4>🔢 {nilai} {asal} = <span style='color: #2a9d8f;'>{hasil:.4f} {tujuan}</span></h4>
-        <p><b>📘 Rumus:</b><br><code>{rumus}</code></p>
+    Ayo mulai konversi sekarang di halaman **Kalkulator**!
     </div>
     """, unsafe_allow_html=True)
-
-# ---------------------- NAVIGASI ----------------------
-st.sidebar.title("📚 Navigasi")
-halaman = st.sidebar.radio("Pilih halaman:", ["🏠 Beranda", "📐 Kalkulator", "📊 Grafik", "ℹ️ Tentang"])
-
-if halaman == "🏠 Beranda":
-    halaman_beranda()
+# ---------------------- HALAMAN KALKULATOR ----------------------
 elif halaman == "📐 Kalkulator":
-    halaman_kalkulator()
+    st.header("📐 Kalkulator Konversi")
+    st.markdown("Gunakan alat ini untuk melakukan konversi satuan fisika dengan mudah dan cepat.")
+
+    kategori = st.selectbox("Pilih Kategori Satuan", list(konversi_data.keys()))
+    satuan_dari = st.selectbox("Dari Satuan", list(konversi_data[kategori].keys()))
+    satuan_ke = st.selectbox("Ke Satuan", list(konversi_data[kategori].keys()))
+    nilai = st.number_input(f"Masukkan Nilai ({satuan_dari})", value=0.0, step=0.1)
+
+    if st.button("🔄 Konversi"):
+        with st.spinner("Menghitung konversi..."):
+            time.sleep(1)
+            hasil = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
+            semua_hasil = get_konversi_semua_satuan(kategori, nilai, satuan_dari)
+
+            # Hasil utama
+            st.markdown("## 🎯 Hasil Konversi")
+            st.success(f"**{nilai} {satuan_dari} = {round(hasil, 6)} {satuan_ke}**")
+
+            # Penjelasan rumus
+            tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke)
+
+            # Tabel hasil ke semua satuan
+            if kategori != "Suhu":
+                df = pd.DataFrame(list(semua_hasil.items()), columns=["Satuan", "Hasil"])
+                st.markdown("### 🔍 Konversi ke Semua Satuan")
+                st.dataframe(df.style.highlight_max(axis=0), use_container_width=True)
+
+            # Grafik batang
+            st.markdown("### 📊 Grafik Perbandingan Konversi")
+            chart = alt.Chart(pd.DataFrame({
+                'Satuan': list(semua_hasil.keys()),
+                'Hasil': list(semua_hasil.values())
+            })).mark_bar().encode(
+                x=alt.X('Satuan', sort=None),
+                y='Hasil',
+                color='Satuan',
+                tooltip=['Satuan', 'Hasil']
+            ).properties(height=400)
+
+            st.altair_chart(chart, use_container_width=True)
+# ---------------------- HALAMAN GRAFIK ----------------------
 elif halaman == "📊 Grafik":
-    halaman_grafik()
+    st.header("📊 Grafik Visualisasi")
+    st.markdown("Halaman ini menampilkan visualisasi perbandingan hasil konversi ke semua satuan.")
+
+    kategori = st.selectbox("Pilih Kategori untuk Grafik", list(konversi_data.keys()), key="grafik_kategori")
+    satuan_dari = st.selectbox("Dari Satuan", list(konversi_data[kategori].keys()), key="grafik_dari")
+    nilai = st.number_input(f"Masukkan Nilai ({satuan_dari})", value=0.0, step=0.1, key="grafik_nilai")
+
+    if st.button("📊 Tampilkan Grafik"):
+        semua_hasil = get_konversi_semua_satuan(kategori, nilai, satuan_dari)
+        df = pd.DataFrame(list(semua_hasil.items()), columns=["Satuan", "Hasil"])
+
+        st.altair_chart(
+            alt.Chart(df).mark_bar().encode(
+                x=alt.X('Satuan', sort=None),
+                y='Hasil',
+                color='Satuan',
+                tooltip=['Satuan', 'Hasil']
+            ).properties(height=400),
+            use_container_width=True
+        )
+
+# ---------------------- HALAMAN TENTANG ----------------------
 elif halaman == "ℹ️ Tentang":
-    halaman_tentang()
+    st.header("ℹ️ Tentang Aplikasi")
+    st.markdown("""
+    Aplikasi **Kalkulator Konversi Satuan Fisika** ini dikembangkan untuk membantu pelajar, guru, mahasiswa, dan profesional dalam memahami serta melakukan konversi satuan secara cepat dan tepat.
+
+    ### 📚 Sumber Referensi:
+    - [NIST: National Institute of Standards and Technology](https://www.nist.gov)
+    - [Wikipedia: Units of Measurement](https://en.wikipedia.org/wiki/Units_of_measurement)
+    - Buku-buku Fisika Dasar dan Kimia Dasar
+    - Konversi suhu: dokumentasi standar internasional dan praktik umum laboratorium
+
+    ### 👨‍💻 Pengembang:
+    Dibuat dengan ❤️ menggunakan Python & Streamlit.
+
+    Untuk pertanyaan atau masukan, silakan hubungi melalui [GitHub](https://github.com).
+    """)
