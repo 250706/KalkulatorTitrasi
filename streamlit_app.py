@@ -297,13 +297,6 @@ elif halaman == "Tentang":
     - Tombol **salin hasil konversi**
     - Tampilan dengan latar belakang yang menarik
 
-    ### 👨‍💻 Dibuat Oleh:
-    AL FATIH – 2025  
-    Dengan bantuan teknologi Python dan Streamlit.
-
-    ### 📬 Kontak:
-    Untuk saran dan masukan, hubungi: **alfatih@example.com**
-
     ### 📚 Sumber Referensi:
     - SI (Système International d’Unités)
     - NIST (National Institute of Standards and Technology)
