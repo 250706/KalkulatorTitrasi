@@ -117,6 +117,17 @@ def konversi_satuan(kategori, nilai, satuan_dari, satuan_ke):
         return konversi_suhu(nilai, satuan_dari, satuan_ke)
     else:
         return nilai * konversi_data[kategori][satuan_dari] / konversi_data[kategori][satuan_ke]
+        
+def get_konversi_semua_satuan(kategori, nilai, satuan_dari):
+    hasil = {}
+    if "Suhu" in kategori:
+        for satuan in konversi_data[kategori]:
+            if satuan != satuan_dari:
+                hasil[satuan] = konversi_suhu(nilai, satuan_dari, satuan)
+    else:
+        for satuan in konversi_data[kategori]:
+            hasil[satuan] = konversi_satuan(kategori, nilai, satuan_dari, satuan)
+    return hasil
 
 def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
     if "Suhu" in kategori:
