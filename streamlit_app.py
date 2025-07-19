@@ -195,7 +195,7 @@ if st.button("🔄 Konversi"):
                         
                        with st.expander("📘 Penjelasan Rumus Konversi Suhu (Lengkap)"):
                         st.markdown("""
-                   **1. Celsius ke Kelvin**  
+**1. Celsius ke Kelvin**  
 Rumus:  
   **K = C + 273.15**  
 Penjelasan: Tambahkan 273.15 ke suhu dalam °C untuk mendapatkan suhu dalam Kelvin.
