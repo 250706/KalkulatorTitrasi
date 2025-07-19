@@ -188,46 +188,29 @@ if st.button("🔄 Konversi"):
                 with st.spinner("⏳ Menghitung..."):
                     time.sleep(1)
                     
-                    if kategori == "🔥 Suhu":
+                   if kategori == "🔥 Suhu":
                         hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-                        penjelasan = r"""
-                        Konversi suhu tergantung satuannya:
-                        
-                       with st.expander("📘 Penjelasan Rumus Konversi Suhu (Lengkap)"):
-                        st.markdown("""
+                        penjelasan = """
+**📘 Penjelasan Rumus Konversi Suhu:**
 
-1. Celsius ke Kelvin  
-Rumus:  
-K = C + 273.15  
-Penjelasan: Tambahkan 273.15 ke suhu dalam °C untuk mendapatkan suhu dalam Kelvin.
+1. **Celsius → Kelvin**  
+ `K = C + 273.15`
 
-2. Celsius ke Fahrenheit  
-Rumus:  
-F = (C × 9/5) + 32  
-Penjelasan: Kalikan suhu °C dengan 9/5 lalu tambah 32 untuk mendapatkan Fahrenheit.
+2. **Celsius → Fahrenheit**  
+ `F = (C × 9/5) + 32`
 
-3. Fahrenheit ke Celsius  
-Rumus:  
-C = (F - 32) × 5/9
-Penjelasan: Kurangi 32 dari suhu °F, lalu kalikan dengan 5/9 untuk mendapatkan Celsius.
+3. **Fahrenheit → Celsius**  
+ `C = (F - 32) × 5/9`
 
-4. Kelvin ke Celsius  
-Rumus:  
-C = K - 273.15
-Penjelasan: Kurangi 273.15 dari suhu Kelvin untuk mendapatkan Celsius.
+4. **Kelvin → Celsius**  
+ `C = K - 273.15`
 
-5. Fahrenheit ke Kelvin  
-Rumus:  
-K = (F - 32) × 5/9 + 273.15
-Penjelasan: Kurangi 32 dari suhu °F, kalikan hasilnya dengan 5/9, lalu tambahkan 273.15 untuk mendapatkan Kelvin.
+5. **Fahrenheit → Kelvin**  
+ `K = (F - 32) × 5/9 + 273.15`
 
-6. Kelvin ke Fahrenheit 
-Rumus:  
-F = (K - 273.15) × 9/5 + 32  
-Penjelasan: Kurangi 273.15 dari suhu Kelvin, kalikan hasilnya dengan 9/5, lalu tambahkan 32 untuk mendapatkan Fahrenheit.
-""")
-
-
+6. **Kelvin → Fahrenheit**  
+ `F = (K - 273.15) × 9/5 + 32`
+"""
 
                         """
                     else:
