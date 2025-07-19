@@ -129,6 +129,7 @@ def set_background():
         f"""
         <style>
         .stApp {{
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
             background-image: url('https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp');
             background-size: cover;
             background-repeat: no-repeat;
