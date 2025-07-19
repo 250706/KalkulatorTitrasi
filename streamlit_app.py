@@ -150,16 +150,23 @@ halaman = st.sidebar.radio("Pilih Halaman", ["🏠 Beranda", "📐 Kalkulator", 
 
 # ---------------------- BERANDA ----------------------
 if halaman == "🏠 Beranda":
-    st.title("🌟 Selamat Datang di Kalkulator Konversi Satuan Fisika 🌟")
+    st.title("🧠 Selamat Datang di Kalkulator Konversi Satuan Fisika 🧠")
     st.markdown("""
-    Aplikasi ini dirancang untuk membantu Anda mengonversi berbagai satuan fisika seperti suhu, massa, panjang, tekanan, dan lainnya dengan **mudah**, **cepat**, dan **akurat**.
+    Aplikasi ini merupakan hasil proyek dari mata kuliah **Logika Pemrograman Komputer** dalam Program Studi **D3 Analisis Kimia**.
 
-    ### 📌 Fitur Unggulan:
-    - Konversi antar satuan dalam berbagai kategori
-    - Visualisasi grafik konversi
-    - Tampilan interaktif dan menarik
+💡 Dirancang untuk membantu pengguna dalam mengonversi berbagai satuan fisika secara **cepat**, **praktis**, dan **akurat**, seperti:
 
-    **Pilih menu di sebelah kiri untuk memulai!**
+- 🔥 Suhu
+- ⚖ Massa
+- 📏 Panjang
+- 💨 Kecepatan
+- 💡 Daya, dan masih banyak lagi.
+
+Dengan tampilan interaktif dan penjelasan visual yang mudah dipahami, aplikasi ini tidak hanya membantu dalam perhitungan, tapi juga mendukung **pembelajaran konsep satuan fisika** secara menyenangkan.
+
+---
+
+👉 Silakan pilih menu di sebelah kiri untuk mulai menggunakan kalkulator!
     """)
 
 # ---------------------- KALKULATOR ----------------------
