@@ -137,7 +137,7 @@ def set_background():
         }}
         .main .block-container {{
             backdrop-filter: blur(8px);
-            background-color: rgba(255, 255, 255, 0.50);
+            background-color: rgba(255, 255, 255, 0.85);
             border-radius: 10px;
             padding: 2rem;
         }}
