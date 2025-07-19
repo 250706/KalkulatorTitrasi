@@ -193,6 +193,7 @@ elif halaman == "Kalkulator":
                     else:
                         hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
                        penjelasan_khusus = {
+                           
                             "🔥 Suhu": r"""
                             Konversi suhu tergantung satuannya:
                             
