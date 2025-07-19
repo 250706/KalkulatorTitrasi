@@ -124,30 +124,22 @@ def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
         $$\\text{{Hasil}} = \\text{{Nilai}} \\times \\frac{{\\text{{Konstanta dari {satuan_dari}}}}}{{\\text{{Konstanta dari {satuan_ke}}}}}$$
         """)
 # ---------------------- TEMA & BACKGROUND ----------------------
-def set_background():
-    st.markdown(
-        f"""
+def set_custom_background(image_url):
+    st.markdown(f"""
         <style>
         .stApp {{
-            background: linear-gradient(rgba(0,0,0,0.50), rgba(0,0,0,0.50)), 
-            background-image: url('https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp');
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                        url("{image_url}");
             background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
             background-position: center;
-        }}
-        .main .block-container {{
-            backdrop-filter: blur(8px);
-            background-color: rgba(255, 255, 255, 0.50);
-            border-radius: 10px;
-            padding: 2rem;
+            background-repeat: no-repeat;
         }}
         </style>
-        """,
-        unsafe_allow_html=True
-    )
+        """, unsafe_allow_html=True)
 
-set_background()
+image_link = "https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp"
+
+set_custom_background(image_link)
 
 # ---------------------- NAVIGASI SIDEBAR ----------------------
 st.sidebar.title("📌 Navigasi")
