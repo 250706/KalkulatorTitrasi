@@ -1,6 +1,7 @@
 import streamlit as st
 import base64
 import time
+import matplotlib.pyplot as plt
 import pandas as pd
 
 # ---------------------------
