@@ -193,38 +193,38 @@ if st.button("🔄 Konversi"):
                         penjelasan = r"""
                         Konversi suhu tergantung satuannya:
                         
-                        with st.expander("📘 Penjelasan Rumus Konversi Suhu (Lengkap)"):
-    st.markdown("""
-**1. Celsius ke Kelvin**  
-Rumus:  
-  **K = C + 273.15**  
-Penjelasan: Tambahkan 273.15 ke suhu dalam °C untuk mendapatkan suhu dalam Kelvin.
-
-**2. Celsius ke Fahrenheit**  
-Rumus:  
-  **F = (C × 9/5) + 32**  
-Penjelasan: Kalikan suhu °C dengan 9/5 lalu tambah 32 untuk mendapatkan Fahrenheit.
-
-**3. Fahrenheit ke Celsius**  
-Rumus:  
-  **C = (F - 32) × 5/9**  
-Penjelasan: Kurangi 32 dari suhu °F, lalu kalikan dengan 5/9 untuk mendapatkan Celsius.
-
-**4. Kelvin ke Celsius**  
-Rumus:  
-  **C = K - 273.15**  
-Penjelasan: Kurangi 273.15 dari suhu Kelvin untuk mendapatkan Celsius.
-
-**5. Fahrenheit ke Kelvin**  
-Rumus:  
-  **K = (F - 32) × 5/9 + 273.15**  
-Penjelasan: Konversi suhu dari Fahrenheit langsung ke Kelvin dengan mengurangi 32, dikalikan 5/9, lalu tambah 273.15.
-
-**6. Kelvin ke Fahrenheit**  
-Rumus:  
-  **F = (K - 273.15) × 9/5 + 32**  
-Penjelasan: Ubah Kelvin ke Fahrenheit dengan mengurangi 273.15, lalu kalikan 9/5 dan tambah 32.
-""")
+                       with st.expander("📘 Penjelasan Rumus Konversi Suhu (Lengkap)"):
+                        st.markdown("""
+                    **1. Celsius ke Kelvin**  
+                    Rumus:  
+                      **K = C + 273.15**  
+                    Penjelasan: Tambahkan 273.15 ke suhu dalam °C untuk mendapatkan suhu dalam Kelvin.
+                    
+                    **2. Celsius ke Fahrenheit**  
+                    Rumus:  
+                      **F = (C × 9/5) + 32**  
+                    Penjelasan: Kalikan suhu °C dengan 9/5 lalu tambah 32 untuk mendapatkan Fahrenheit.
+                    
+                    **3. Fahrenheit ke Celsius**  
+                    Rumus:  
+                      **C = (F - 32) × 5/9**  
+                    Penjelasan: Kurangi 32 dari suhu °F, lalu kalikan dengan 5/9 untuk mendapatkan Celsius.
+                    
+                    **4. Kelvin ke Celsius**  
+                    Rumus:  
+                      **C = K - 273.15**  
+                    Penjelasan: Kurangi 273.15 dari suhu Kelvin untuk mendapatkan Celsius.
+                    
+                    **5. Fahrenheit ke Kelvin**  
+                    Rumus:  
+                      **K = (F - 32) × 5/9 + 273.15**  
+                    Penjelasan: Konversi suhu dari Fahrenheit langsung ke Kelvin dengan mengurangi 32, dikalikan 5/9, lalu tambah 273.15.
+                    
+                    **6. Kelvin ke Fahrenheit**  
+                    Rumus:  
+                      **F = (K - 273.15) × 9/5 + 32**  
+                    Penjelasan: Ubah Kelvin ke Fahrenheit dengan mengurangi 273.15, lalu kalikan 9/5 dan tambah 32.
+                    """)
 
                         """
                     else:
