@@ -204,28 +204,6 @@ elif halaman == "📐 Kalkulator":
             ).properties(height=400)
 
             st.altair_chart(chart, use_container_width=True)
-# ---------------------- HALAMAN GRAFIK ----------------------
-elif halaman == "📊 Grafik":
-    st.header("📊 Grafik Visualisasi")
-    st.markdown("Halaman ini menampilkan visualisasi perbandingan hasil konversi ke semua satuan.")
-
-    kategori = st.selectbox("Pilih Kategori untuk Grafik", list(konversi_data.keys()), key="grafik_kategori")
-    satuan_dari = st.selectbox("Dari Satuan", list(konversi_data[kategori].keys()), key="grafik_dari")
-    nilai = st.number_input(f"Masukkan Nilai ({satuan_dari})", value=0.0, step=0.1, key="grafik_nilai")
-
-    if st.button("📊 Tampilkan Grafik"):
-        semua_hasil = get_konversi_semua_satuan(kategori, nilai, satuan_dari)
-        df = pd.DataFrame(list(semua_hasil.items()), columns=["Satuan", "Hasil"])
-
-        st.altair_chart(
-            alt.Chart(df).mark_bar().encode(
-                x=alt.X('Satuan', sort=None),
-                y='Hasil',
-                color='Satuan',
-                tooltip=['Satuan', 'Hasil']
-            ).properties(height=400),
-            use_container_width=True
-        )
 
 # ---------------------- HALAMAN TENTANG ----------------------
 elif halaman == "ℹ️ Tentang":
