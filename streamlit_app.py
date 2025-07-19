@@ -90,9 +90,15 @@ elif halaman == "📐 Kalkulator":
             st.warning("Masukkan nilai yang ingin dikonversi!")
         else:
             try:
-                n = float(nilai_input)
-                with st.spinner("Menghitung hasil konversi..."):
-                    time.sleep(2)
+    n = float(nilai_input)
+    with st.spinner("Menghitung hasil konversi..."):
+        time.sleep(2)
+
+        # (lanjutkan konversi seperti biasa)
+        ...
+except ValueError:
+    st.error("Masukkan angka yang valid!")
+
 
                     # --- Konversi suhu
                     def konversi_suhu(n, dari, ke):
