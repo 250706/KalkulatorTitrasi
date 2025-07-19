@@ -272,11 +272,11 @@ melakukan konversi satuan fisika secara **akurat, cepat, dan interaktif**.
 ---
 
 ### 📚 Sumber Referensi:
--  SI Units — [www.bipm.org](https://www.bipm.org)
+-  SI Units : [www.bipm.org](https://www.bipm.org)
 -  NIST — National Institute of Standards and Technology
--  *Physics for Scientists and Engineers* — Serway & Jewett
--  *CRC Handbook of Chemistry and Physics* — CRC Press
--  *Thermodynamics* — Yunus A. Çengel
+-  *Physics for Scientists and Engineers* : Serway & Jewett
+-  *CRC Handbook of Chemistry and Physics* : CRC Press
+-  *Thermodynamics* : Yunus A. Çengel
 
 ---
 
