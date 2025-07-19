@@ -179,7 +179,7 @@ elif halaman == "Kalkulator":
     satuan_tujuan = st.selectbox("🔹 Satuan Tujuan:", list(konversi_data[kategori].keys()))
     nilai_input = st.text_input("📥 Masukkan Nilai:", placeholder="Contoh: 5.5")
 
-        if st.button("🔄 Konversi"):
+if st.button("🔄 Konversi"):
         if not nilai_input:
             st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
         else:
