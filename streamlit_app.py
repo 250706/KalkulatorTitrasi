@@ -90,9 +90,29 @@ konversi_data = {
 }
 
 # ---------------------- FUNGSI KONVERSI ----------------------
+def konversi_suhu(nilai, dari, ke):
+    if dari == ke:
+        return nilai
+    if dari == "Celsius (°C)":
+        if ke == "Fahrenheit (°F)":
+            return (nilai * 9/5) + 32
+        elif ke == "Kelvin (K)":
+            return nilai + 273.15
+    elif dari == "Fahrenheit (°F)":
+        if ke == "Celsius (°C)":
+            return (nilai - 32) * 5/9
+        elif ke == "Kelvin (K)":
+            return ((nilai - 32) * 5/9) + 273.15
+    elif dari == "Kelvin (K)":
+        if ke == "Celsius (°C)":
+            return nilai - 273.15
+        elif ke == "Fahrenheit (°F)":
+            return ((nilai - 273.15) * 9/5) + 32
+    return None
+
 def konversi_satuan(kategori, nilai, satuan_dari, satuan_ke):
-    if kategori == "Suhu":
-        return konversi_data[kategori][satuan_dari](nilai, satuan_ke)
+    if kategori == "🔥 Suhu":
+        return konversi_suhu(nilai, satuan_dari, satuan_ke)
     else:
         return nilai * konversi_data[kategori][satuan_dari] / konversi_data[kategori][satuan_ke]
 
