@@ -174,60 +174,84 @@ elif halaman == "Kalkulator":
                 with st.spinner("⏳ Menghitung..."):
                     time.sleep(1)
 
-    if kategori == "🔥 Suhu":
-        def konversi_suhu(n, dari, ke):
-            if dari == ke:
-                return n
-            if dari == "Celsius (°C)":
-                if ke == "Fahrenheit (°F)": return n * 9/5 + 32
-                elif ke == "Kelvin (K)": return n + 273.15
-            if dari == "Fahrenheit (°F)":
-                if ke == "Celsius (°C)": return (n - 32) * 5/9
-                elif ke == "Kelvin (K)": return (n - 32) * 5/9 + 273.15
-            if dari == "Kelvin (K)":
-                if ke == "Celsius (°C)": return n - 273.15
-                elif ke == "Fahrenheit (°F)": return (n - 273.15) * 9/5 + 32
-            return None
-
-                        hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-                    else:
-                        hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
-
+                   if kategori == "🔥 Suhu":
+                    hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
                     hasil_str = format_presisi(hasil)
 
-                    st.metric("💡 Hasil Konversi", f"{hasil_str} {satuan_tujuan}")
-                    st.success(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                    st.metric(label="Hasil Konversi", value=f"{hasil_str} {satuan_tujuan}")
+                    st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
                     st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
-             with st.expander("📘 Penjelasan Konversi"):
-                if kategori == "🔥 Suhu":
-                    if satuan_asal == "Celsius (°C)" and satuan_tujuan == "Fahrenheit (°F)":
-                        st.latex(r"T(\degree F) = T(\degree C) \times \frac{9}{5} + 32")
-                    elif satuan_asal == "Celsius (°C)" and satuan_tujuan == "Kelvin (K)":
-                        st.latex(r"T(K) = T(\degree C) + 273.15")
-                    elif satuan_asal == "Fahrenheit (°F)" and satuan_tujuan == "Celsius (°C)":
-                        st.latex(r"T(\degree C) = (T(\degree F) - 32) \times \frac{5}{9}")
-                    elif satuan_asal == "Fahrenheit (°F)" and satuan_tujuan == "Kelvin (K)":
-                        st.latex(r"T(K) = (T(\degree F) - 32) \times \frac{5}{9} + 273.15")
-                    elif satuan_asal == "Kelvin (K)" and satuan_tujuan == "Celsius (°C)":
-                        st.latex(r"T(\degree C) = T(K) - 273.15")
-                    elif satuan_asal == "Kelvin (K)" and satuan_tujuan == "Fahrenheit (°F)":
-                        st.latex(r"T(\degree F) = (T(K) - 273.15) \times \frac{9}{5} + 32")
+                    st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", key="copy", disabled=False)
+
+                    st.markdown("### 📘 Penjelasan Konversi Suhu")
+                    st.markdown(f"""
+                    Rumus konversi dari {satuan_asal} ke {satuan_tujuan}:
+
+                    {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
+
+                    Transformasi antar skala suhu:
+                    - °C ke °F : (°C × 9/5) + 32
+                    - °C ke K : °C + 273.15
+                    - °F ke °C : (°F - 32) × 5/9
+                    - K ke °C : K - 273.15
+                    """)
                 else:
-                    st.latex(r"\text{Hasil} = \text{Nilai} \times \frac{\text{faktor dari satuan asal}}{\text{faktor dari satuan tujuan}}")
-                    st.markdown(f"**Perhitungan:**  \n"
-                                f"{nilai} × ({konversi_data[kategori][satuan_asal]} / {konversi_data[kategori][satuan_tujuan]}) = **{hasil_str} {satuan_tujuan}**")
+                    faktor_asal = konversi_data[kategori][satuan_asal]
+                    faktor_tujuan = konversi_data[kategori][satuan_tujuan]
+                    hasil = nilai * faktor_asal / faktor_tujuan
+                    hasil_str = format_presisi(hasil)
 
+                    st.metric(label="Hasil Konversi", value=f"{hasil_str} {satuan_tujuan}")
+                    st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+     if kategori == "🔥 Suhu":
+                    hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
+                    hasil_str = format_presisi(hasil)
 
-                    st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", disabled=False)
+                    st.metric(label="Hasil Konversi", value=f"{hasil_str} {satuan_tujuan}")
+                    st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                    st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                    st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", key="copy", disabled=False)
 
-                    st.altair_chart(
-                        alt.Chart(pd.DataFrame({
-                            'Satuan': [satuan_asal, satuan_tujuan],
-                            'Nilai': [nilai, hasil]
-                        })).mark_bar().encode(
-                            x='Satuan', y='Nilai', color='Satuan'
-                        ).properties(title="📊 Perbandingan Nilai Sebelum & Sesudah Konversi"),
-                        use_container_width=True
+                    st.markdown("### 📘 Penjelasan Konversi Suhu")
+                    st.markdown(f"""
+                    Rumus konversi dari {satuan_asal} ke {satuan_tujuan}:
+
+                    {nilai} {satuan_asal} → {satuan_tujuan} = {hasil_str}
+
+                    Transformasi antar skala suhu:
+                    - °C ke °F : (°C × 9/5) + 32
+                    - °C ke K : °C + 273.15
+                    - °F ke °C : (°F - 32) × 5/9
+                    - K ke °C : K - 273.15
+                    """)
+                else:
+                    factor_asal = konversi_data[kategori][satuan_asal]
+                    factor_tujuan = konversi_data[kategori][satuan_tujuan]
+                    hasil = nilai * factor_asal / factor_tujuan
+                    hasil_str = format_presisi(hasil)
+
+                    st.metric(label="Hasil Konversi", value=f"{hasil_str} {satuan_tujuan}")
+                    st.success(f"✅ {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")st.code(f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}")
+                    st.text_input("📋 Salin hasil konversi:", value=f"{nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}", key="copy2", disabled=False)
+
+                    st.markdown("### 📘 Penjelasan Konversi")
+                    st.latex(r"\text{Hasil} = \text{nilai} \times \frac{\text{faktor asal}}{\text{faktor tujuan}}")
+                    st.latex(fr"{nilai} \times \frac{{{faktor_asal}}}{{{faktor_tujuan}}} = {hasil_str}")
+                    st.markdown("""
+                    Keterangan:
+                    - Nilai dikalikan rasio antar satuan
+                    - Presisi otomatis disesuaikan berdasarkan besar angka
+                    """)
+
+                    # Tabel konversi ke semua satuan dalam kategori
+                    semua_konversi = {}
+                    for satuan in konversi_data[kategori]:
+                        faktor = konversi_data[kategori][satuan]
+                        konversi = nilai * faktor_asal / faktor
+                        semua_konversi[satuan] = format_presisi(konversi)
+
+                    df_all = pd.DataFrame(list(semua_konversi.items()), columns=["Satuan", "Hasil"])
+                    st.dataframe(df_all, use_container_width=True)
                     )
             except ValueError:
                 st.error("❌ Nilai harus berupa angka.")
@@ -254,4 +278,4 @@ elif halaman == "Tentang":
     - [https://www.bipm.org](https://www.bipm.org)
     - *Thermodynamics* – Yunus Cengel
     - International Temperature Scale
-    """)
+    """)                                                 penjelasan konversi nya tidak muncul
