@@ -8,7 +8,7 @@ def set_background_from_url(image_url):
     st.markdown(f"""
         <style>
         .stApp {{
-            background-image: url('{image_url}');
+            background-image: url('{https://i.pinimg.com/originals/4e/ac/35/4eac359bce1e49679ad98f98db7428d4.png}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
