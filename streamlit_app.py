@@ -13,7 +13,7 @@ def set_background_from_url(image_url: str, opacity: float = 0.85):
     background_style = f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(255,255,255,{opacity}), rgba(255,255,255,{opacity})),
+        background: linear-gradient(rgba( 0,0,0,85,), rgba(0,0,0,85)),
                     url('{image_url}');
         background-size: cover;
         background-attachment: fixed;
