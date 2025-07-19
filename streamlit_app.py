@@ -179,71 +179,40 @@ elif halaman == "Kalkulator":
     satuan_tujuan = st.selectbox("🔹 Satuan Tujuan:", list(konversi_data[kategori].keys()))
     nilai_input = st.text_input("📥 Masukkan Nilai:", placeholder="Contoh: 5.5")
 
- if st.button("🔄 Konversi"):
-    if not nilai_input:
-        st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
-    else:
-        try:
-            nilai = float(nilai_input.replace(",", "."))
-            with st.spinner("⏳ Menghitung..."):
-                time.sleep(1)
+         if st.button("🔄 Konversi"):
+            if not nilai_input:
+                st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
+            else:
+                try:
+                    nilai = float(nilai_input.replace(",", "."))
+                    with st.spinner("⏳ Menghitung..."):
+                        time.sleep(1)
 
-                if kategori == "🔥 Suhu":
-                    hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
-                    penjelasan = """
+                        if kategori == "🔥 Suhu":
+                            hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
+                            penjelasan = """
 📘 **Penjelasan Konversi Suhu**
 
 Anda menggunakan rumus konversi suhu berdasarkan standar ilmiah internasional.  
-Rumus yang digunakan disesuaikan secara otomatis tergantung arah konversi:
+Rumus tergantung arah konversi, contohnya:
 
-- Celsius ⇄ Fahrenheit
-- Celsius ⇄ Kelvin
-- Fahrenheit ⇄ Kelvin
+- Celsius ⇄ Kelvin  `K = C + 273.15`
+- Celsius ⇄ Fahrenheit `F = (C × 9/5) + 32`
+- Fahrenheit ⇄ Kelvin `K = (F - 32) × 5/9 + 273.15`
 
-Rumus telah divalidasi dalam pendidikan, industri, dan penelitian. Gunakan hasil ini untuk keperluan praktis atau akademis Anda.
+Rumus-rumus ini digunakan dalam industri, sains, dan akademik.  
+Hasil konversi ini aman digunakan untuk eksperimen dan aplikasi praktis.
 """
-                else:
-                    hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
-
-                    penjelasan = f"""
+                        else:
+                            hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
+                            penjelasan = f"""
 📘 **Penjelasan Konversi {kategori.replace('⚡','').replace('💨','').replace('🔌','').replace('🔋','')}**
 
-Anda mengonversi satuan berdasarkan rasio terhadap satuan dasar standar internasional.  
-Rumus yang digunakan:
+Anda mengonversi satuan dengan rumus berikut:
 
  **Nilai Tujuan = Nilai Asal × Faktor Asal / Faktor Tujuan**
 
-- Satuan dasar: `{list(konversi_data[kategori].keys())[0]}`
-- Metode ini digunakan secara luas dalam pengukuran laboratorium dan industri.
-
-Pastikan satuan sesuai konteks penggunaan.
-"""
-
-                hasil_str = format_presisi(hasil)
-
-                # TAMPILKAN HASIL UTAMA (SATU KOTAK ELEGAN)
-                st.markdown(f"""
-<div style="padding: 20px; border-radius: 15px; background-color: #001f3f; color: white; 
-            border: 2px solid #39cccc; text-align: center; font-size: 24px; font-weight: bold; 
-            box-shadow: 0px 0px 25px #39cccc;">
-    🔄 {nilai} {satuan_asal} = {hasil_str} {satuan_tujuan}
-</div>
-""", unsafe_allow_html=True)
-
-                # PENJELASAN
-                st.markdown(penjelasan)
-
-                # GRAFIK PERBANDINGAN
-                chart_df = pd.DataFrame({'Satuan': [satuan_asal, satuan_tujuan], 'Nilai': [nilai, hasil]})
-                st.altair_chart(
-                    alt.Chart(chart_df).mark_bar().encode(
-                        x='Satuan', y='Nilai', color='Satuan'
-                    ).properties(title="📊 Perbandingan Nilai Sebelum & Sesudah Konversi"),
-                    use_container_width=True
-                )
-
-        except ValueError:
-            st.error("❌ Nilai harus berupa angka.")
+Faktor konversi didasarkan pad
 
 # ---------------------- HALAMAN: TENTANG ----------------------
 elif halaman == "📖 Tentang":
