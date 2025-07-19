@@ -290,8 +290,7 @@ def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
         ```
         """)
 
-
-    if st.button("🔄 Konversi"):
+   if st.button("🔄 Konversi"):
         with st.spinner("Menghitung konversi..."):
             time.sleep(1)
             hasil = konversi_satuan(kategori, nilai, satuan_dari, satuan_ke)
