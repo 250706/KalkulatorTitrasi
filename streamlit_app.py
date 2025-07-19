@@ -222,7 +222,7 @@ elif halaman == "Tentang":
     - Salin hasil konversi
 
     ### 📚 Sumber Referensi:
-    - SI (Système International d’Unités)
+    - SI (Système International d Unités)
     - NIST (National Institute of Standards and Technology)
     - *Physics for Scientists and Engineers* – Serway & Jewett
     - *Handbook of Chemistry and Physics* – CRC Press
