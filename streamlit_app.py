@@ -5,91 +5,91 @@ import altair as alt
 
 # ---------------------- DATA KONVERSI ----------------------
 konversi_data = {
-    "Suhu": {
-        "Celsius": lambda x, y: {
-            "Celsius": x,
-            "Fahrenheit": (x * 9 / 5) + 32,
-            "Kelvin": x + 273.15
-        }[y],
-        "Fahrenheit": lambda x, y: {
-            "Celsius": (x - 32) * 5 / 9,
-            "Fahrenheit": x,
-            "Kelvin": ((x - 32) * 5 / 9) + 273.15
-        }[y],
-        "Kelvin": lambda x, y: {
-            "Celsius": x - 273.15,
-            "Fahrenheit": ((x - 273.15) * 9 / 5) + 32,
-            "Kelvin": x
-        }[y]
+    "🔥 Suhu": {
+        "Celsius (°C)": "C",
+        "Fahrenheit (°F)": "F",
+        "Kelvin (K)": "K"
     },
-    "Tekanan": {
-        "Pascal": 1,
+    "🧪 Tekanan": {
         "atm": 101325,
+        "mmHg": 133.322,
+        "Pa": 1,
         "bar": 100000,
-        "psi": 6894.76
+        "kPa": 1000
     },
-    "Massa": {
-        "Gram": 1,
-        "Kilogram": 1000,
-        "Pound": 453.592,
-        "Ons": 28.3495
+    "⚖ Massa": {
+        "kg": 1000,
+        "g": 1,
+        "mg": 0.001,
+        "lb": 453.592,
+        "oz": 28.3495
     },
-    "Panjang": {
-        "Meter": 1,
-        "Kilometer": 1000,
-        "Sentimeter": 0.01,
-        "Milimeter": 0.001,
-        "Inci": 0.0254,
-        "Kaki": 0.3048
+    "📏 Panjang": {
+        "km": 1000,
+        "m": 1,
+        "cm": 0.01,
+        "mm": 0.001,
+        "μm": 1e-6,
+        "nm": 1e-9,
+        "inchi": 0.0254,
+        "kaki (ft)": 0.3048,
+        "mil": 1609.34
     },
-    "Waktu": {
-        "Detik": 1,
-        "Menit": 60,
-        "Jam": 3600,
-        "Hari": 86400
+"⏱ Waktu": {
+        "detik (s)": 1,
+        "menit": 60,
+        "jam": 3600,
+        "hari": 86400
     },
-    "Energi": {
-        "Joule": 1,
-        "Kilojoule": 1000,
-        "Kalori": 4.184,
-        "Kilokalori": 4184
+    "⚡ Energi": {
+        "joule (J)": 1,
+        "kilojoule (kJ)": 1000,
+        "kalori (cal)": 4.184,
+        "kilokalori (kcal)": 4184,
+        "elektronvolt (eV)": 1.602e-19
     },
-    "Kecepatan": {
+    "💨 Kecepatan": {
         "m/s": 1,
-        "km/jam": 0.277778,
-        "mil/jam": 0.44704
+        "km/jam": 1000/3600,
+        "mil/jam (mph)": 1609.34/3600,
+        "knot": 1852/3600
     },
-    "Daya": {
-        "Watt": 1,
-        "Kilowatt": 1000,
-        "Horsepower": 745.7
+    "💡 Daya": {
+        "watt (W)": 1,
+        "kilowatt (kW)": 1000,
+        "horsepower (HP)": 745.7
     },
-    "Volume": {
-        "Liter": 1,
-        "Mililiter": 0.001,
-        "Galon (US)": 3.78541,
-        "Pint (US)": 0.473176
+    "🧊 Volume": {
+        "liter (L)": 1,
+        "mililiter (mL)": 0.001,
+        "cm³": 0.001,
+        "m³": 1000,
+        "galon": 3.78541
     },
-    "Frekuensi": {
-        "Hertz": 1,
-        "Kilohertz": 1000,
-        "Megahertz": 1_000_000
+      },
+    "📡 Frekuensi": {
+        "Hz": 1,
+        "kHz": 1e3,
+        "MHz": 1e6,
+        "GHz": 1e9
     },
-    "Hambatan Listrik": {
-        "Ohm": 1,
-        "Kiloohm": 1000,
-        "Megaohm": 1_000_000
+    "⚡ Hambatan Listrik": {
+        "ohm (Ω)": 1,
+        "kΩ": 1e3,
+        "MΩ": 1e6
     },
-    "Tegangan": {
-        "Volt": 1,
-        "Kilovolt": 1000,
-        "Milivolt": 0.001
+    "🔋 Tegangan Listrik": {
+        "volt (V)": 1,
+        "mV": 1e-3,
+        "kV": 1e3
     },
-    "Arus Listrik": {
-        "Ampere": 1,
-        "Miliampere": 0.001
+    "🔌 Arus Listrik": {
+        "ampere (A)": 1,
+        "mA": 1e-3,
+        "μA": 1e-6
     }
 }
+
 # ---------------------- FUNGSI KONVERSI ----------------------
 def konversi_satuan(kategori, nilai, satuan_dari, satuan_ke):
     if kategori == "Suhu":
@@ -128,7 +128,7 @@ def set_custom_background(image_url):
     st.markdown(f"""
         <style>
         .stApp {{
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
                         url("{image_url}");
             background-size: cover;
             background-position: center;
