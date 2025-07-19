@@ -1,35 +1,83 @@
 import streamlit as st
+import base64
 import time
+import matplotlib.pyplot as plt
 import pandas as pd
-import altair as alt
 
-# === Background Custom ===
-def set_custom_background(image_url):
-    st.markdown(f"""
-        <style>
-        .stApp {{
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
-                        url("{image_url}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }}
-        </style>
-        """, unsafe_allow_html=True)
+# ---------------------------
+# KONFIGURASI DAN BACKGROUND
+# ---------------------------
+st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
 
-image_link = "https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp"
-set_custom_background(image_link)
+def set_background_from_url(image_url: str, opacity: float = 0.85):
+    background_style = f"""
+    <style>
+    .stApp {{
+        background: linear-gradient(rgba(255,255,255,{opacity}), rgba(255,255,255,{opacity})),
+                    url('{image_url}');
+        background-size: cover;
+        background-attachment: fixed;
+    }}
+    </style>
+    """
+    st.markdown(background_style, unsafe_allow_html=True)
 
-# === Navigasi Halaman ===
-menu = st.sidebar.radio("Navigasi", ["Beranda", "Kalkulator"])
+# Background dari URL eksternal
+set_background_from_url("https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp", 0.85)
 
-if menu == "Beranda":
+# ---------------------------
+# DATA KONVERSI (SAMPLE UNTUK MASSA DAN TEKANAN SAJA, BISA DILENGKAPI)
+# ---------------------------
+konversi_data = {
+    "massa": {
+        "gram": 1,
+        "kilogram": 1000,
+        "miligram": 0.001,
+        "pon": 453.592,
+        "ons": 28.3495
+    },
+    "tekanan": {
+        "Pa": 1,
+        "kPa": 1000,
+        "atm": 101325,
+        "bar": 100000,
+        "mmHg": 133.322
+    },
+}
+
+# ---------------------------
+# FUNGSI KONVERSI
+# ---------------------------
+def konversi(nilai, satuan_asal, satuan_tujuan, kategori):
+    faktor_asal = konversi_data[kategori][satuan_asal]
+    faktor_tujuan = konversi_data[kategori][satuan_tujuan]
+    hasil = nilai * (faktor_asal / faktor_tujuan)
+    return hasil, faktor_asal, faktor_tujuan
+
+# ---------------------------
+# SIDEBAR DAN NAVIGASI
+# ---------------------------
+st.sidebar.title("📚 Navigasi")
+halaman = st.sidebar.radio("Pilih Halaman", ["Beranda", "Kalkulator", "Grafik", "Tentang"])
+
+# ---------------------------
+# BERANDA
+# ---------------------------
+if halaman == "Beranda":
     st.title("👋 Selamat Datang di Kalkulator Konversi Satuan Fisika")
     st.markdown("""
-        Aplikasi ini membantu Anda mengonversi berbagai satuan fisika seperti suhu, massa, tekanan, energi,
-        dan lainnya secara mudah dan interaktif. Silakan pilih menu "Kalkulator" untuk memulai.
+    Aplikasi ini membantu Anda mengonversi berbagai satuan fisika lengkap dengan:
+    - Penjelasan konversi
+    - Grafik perbandingan
+    - Salin hasil
+    - Tampilan interaktif dan modern
+
+    Gunakan menu **Kalkulator** di sidebar untuk memulai 🚀
     """)
 
+# ---------------------------
+# KALKULATOR
+# ---------------------------
 elif menu == "Kalkulator":
     st.set_page_config(page_title="Kalkulator Konversi Satuan Fisika", layout="centered")
     st.title("🔬 KALKULATOR KONVERSI SATUAN FISIKA")
@@ -233,3 +281,35 @@ elif menu == "Kalkulator":
 
             except ValueError:
                 st.error("❌ Nilai harus berupa angka. Gunakan titik atau koma desimal.")
+
+# ---------------------------
+# TENTANG
+# ---------------------------
+elif halaman == "Tentang":
+    st.header("📖 Tentang Aplikasi")
+    st.markdown("""
+    Aplikasi **Kalkulator Konversi Satuan Fisika** ini dibuat untuk membantu konversi satuan-satuan penting dalam ilmu fisika seperti suhu, massa, panjang, waktu, energi, dan lainnya secara cepat dan akurat.
+
+    ### 🔍 Fitur Unggulan:
+    - Konversi berbagai satuan fisika dengan **presisi otomatis**
+    - Penjelasan **rumus konversi** secara matematis
+    - **Grafik visual interaktif**
+    - Tombol **salin hasil konversi**
+    - Tampilan dengan latar belakang yang menarik
+
+    ### 👨‍💻 Dibuat Oleh:
+    AL FATIH – 2025  
+    Dengan bantuan teknologi Python dan Streamlit.
+
+    ### 📬 Kontak:
+    Untuk saran dan masukan, hubungi: **alfatih@example.com**
+
+    ### 📚 Sumber Referensi:
+    - SI (Système International d’Unités)
+    - NIST (National Institute of Standards and Technology)
+    - Buku *Physics for Scientists and Engineers* – Serway & Jewett
+    - *Handbook of Chemistry and Physics* – CRC Press
+    - Situs resmi SI Units: [https://www.bipm.org](https://www.bipm.org)
+    - *Thermodynamics* – Yunus Cengel
+    - International Temperature Scale
+    """)
