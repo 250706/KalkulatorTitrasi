@@ -4,21 +4,59 @@ import time
 import altair as alt
 
 # ---------------------- SETUP LATAR BELAKANG ----------------------
-def set_background_from_url(image_url):
+def set_background_from_url(image_url, opacity=0.85):
     st.markdown(f"""
         <style>
-        .stApp {
-        background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
-                    url('https://i.pinimg.com/originals/4e/ac/35/4eac359bce1e49679ad98f98db7428d4.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
+        .stApp {{
+            background-image: url('{image_url}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: transparent;
+        }}
+        .stApp::before {{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, {opacity});
+            z-index: 0;
+        }}
+        </style>
+    """, unsafe_allow_html=True)
 
+# ---------------------- EFEK INTERAKTIF ----------------------
+st.markdown("""
+    <style>
+    div[data-testid="metric-container"] {
+        background-color: #001F3F;
+        padding: 20px;
+        border-radius: 15px;
+        color: white;
+        border: 2px solid #39CCCC;
+        box-shadow: 0px 0px 15px 2px #39CCCC;
+        transition: all 0.3s ease-in-out;
+    }
+    div[data-testid="metric-container"]:hover {
+        box-shadow: 0px 0px 25px 5px #7FDBFF;
+        transform: scale(1.03);
+    }
+    .stDataFrame > div > div:hover {
+        transform: scale(1.01);
+        box-shadow: 0px 0px 10px #00BFFF;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # ---------------------- SIDEBAR DAN NAVIGASI ----------------------
 st.sidebar.title("📚 Navigasi")
 halaman = st.sidebar.radio("Pilih Halaman", ["Beranda", "Kalkulator", "📖 Tentang"])
+
+# ---------------------- SET LATAR BELAKANG (setelah sidebar) ----------------------
+set_background_from_url("https://i.pinimg.com/originals/4e/ac/35/4eac359bce1e49679ad98f98db7428d4.png", 0.85)
 
 # ---------------------- DATA KONVERSI ----------------------
 konversi_data = {
@@ -143,7 +181,7 @@ elif halaman == "Kalkulator":
     satuan_tujuan = st.selectbox("🔹 Satuan Tujuan:", list(konversi_data[kategori].keys()))
     nilai_input = st.text_input("📥 Masukkan Nilai:", placeholder="Contoh: 5.5")
 
-    if st.button("🔄 Konversi"):
+if st.button("🔄 Konversi"):
         if not nilai_input:
             st.warning("⚠ Harap masukkan nilai terlebih dahulu.")
         else:
@@ -175,6 +213,8 @@ elif halaman == "Kalkulator":
 6. *Kelvin → Fahrenheit*  
  F = (K - 273.15) × 9/5 + 32
 """ 
+
+                        """
                     else:
                         hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
 
@@ -213,9 +253,11 @@ elif halaman == "Kalkulator":
             except ValueError:
                 st.error("❌ Nilai harus berupa angka.")
 
+
 # ---------------------- HALAMAN: TENTANG ----------------------
 elif halaman == "📖 Tentang":
     st.markdown("## ℹ Tentang Aplikasi")
+
     st.markdown("""
 Aplikasi *Kalkulator Konversi Satuan Fisika* dibuat untuk membantu pelajar, mahasiswa, dan profesional 
 melakukan konversi satuan fisika secara *akurat, cepat, dan interaktif*.
@@ -232,13 +274,12 @@ melakukan konversi satuan fisika secara *akurat, cepat, dan interaktif*.
 ---
 
 ### Sumber Referensi:
-- SI Units — https://www.bipm.org
-- NIST — National Institute of Standards and Technology
-- Physics for Scientists and Engineers — Serway & Jewett
+- SI Units  https://www.bipm.org
+- NIST  National Institute of Standards and Technology
+- Physics for Scientists and Engineers  Serway & Jewett
 - CRC Handbook of Chemistry and Physics
-- Thermodynamics — Yunus A. Çengel
+- Thermodynamics  Yunus A. Çengel
 
 ---
 
-Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda!
-""")
+Terima kasih telah menggunakan aplikasi ini. Semoga bermanfaat dalam studi maupun pekerjaan Anda! """)
