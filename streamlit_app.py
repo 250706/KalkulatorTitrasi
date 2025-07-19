@@ -129,7 +129,7 @@ def set_background():
         f"""
         <style>
         .stApp {{
-            background-image: url('https://images.unsplash.com/photo-1604079628043-94317f1b7981?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-image: url('https://cdn.bhdw.net/im/chemistry-and-physics-symbols-on-black-board-wallpaper-108136_w635.webp');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -137,7 +137,7 @@ def set_background():
         }}
         .main .block-container {{
             backdrop-filter: blur(8px);
-            background-color: rgba(255, 255, 255, 0.80);
+            background-color: rgba(255, 255, 255, 0.50);
             border-radius: 10px;
             padding: 2rem;
         }}
