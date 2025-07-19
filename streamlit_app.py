@@ -181,6 +181,34 @@ def tampilkan_rumus(kategori, nilai, satuan_dari, satuan_ke, hasil):
               = {hasil:.5f}
         ```
         """)
+def tampilkan_penjelasan_rumus(kategori, satuan_dari, satuan_ke):
+    st.markdown("### 📘 Penjelasan Rumus Konversi")
+    
+    if kategori == "Suhu":
+        rumus = ""
+        if satuan_dari == "Celsius (°C)" and satuan_ke == "Fahrenheit (°F)":
+            rumus = r"$F = \frac{9}{5} \times C + 32$"
+        elif satuan_dari == "Fahrenheit (°F)" and satuan_ke == "Celsius (°C)":
+            rumus = r"$C = \frac{5}{9} \times (F - 32)$"
+        elif satuan_dari == "Celsius (°C)" and satuan_ke == "Kelvin (K)":
+            rumus = r"$K = C + 273.15$"
+        elif satuan_dari == "Kelvin (K)" and satuan_ke == "Celsius (°C)":
+            rumus = r"$C = K - 273.15$"
+        elif satuan_dari == "Fahrenheit (°F)" and satuan_ke == "Kelvin (K)":
+            rumus = r"$K = \frac{5}{9} \times (F - 32) + 273.15$"
+        elif satuan_dari == "Kelvin (K)" and satuan_ke == "Fahrenheit (°F)":
+            rumus = r"$F = \frac{9}{5} \times (K - 273.15) + 32$"
+        else:
+            rumus = "*Tidak tersedia untuk kombinasi ini.*"
+
+        st.latex(rumus)
+    else:
+        st.markdown(f"""
+        Rumus konversi untuk kategori **{kategori}**:
+        ```text
+        Nilai akhir = Nilai awal × (Faktor {satuan_dari} ÷ Faktor {satuan_ke})
+        ```
+        """)
 
 
 # ---------------------- TEMA & BACKGROUND ----------------------
