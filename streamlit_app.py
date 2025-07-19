@@ -174,21 +174,20 @@ elif halaman == "Kalkulator":
                 with st.spinner("⏳ Menghitung..."):
                     time.sleep(1)
 
-                    if kategori == "🔥 Suhu":
-              def konversi_suhu(n, dari, ke):
-                    if dari == ke:
-                        return n
-                    if dari == "Celsius (°C)":
-                        if ke == "Fahrenheit (°F)": return n * 9/5 + 32
-                        elif ke == "Kelvin (K)": return n + 273.15
-                    if dari == "Fahrenheit (°F)":
-                        if ke == "Celsius (°C)": return (n - 32) * 5/9
-                        elif ke == "Kelvin (K)": return (n - 32) * 5/9 + 273.15
-                    if dari == "Kelvin (K)":
-                        if ke == "Celsius (°C)": return n - 273.15
-                        elif ke == "Fahrenheit (°F)": return (n - 273.15) * 9/5 + 32
-                    return None
-
+ if kategori == "🔥 Suhu":
+    def konversi_suhu(n, dari, ke):
+        if dari == ke:
+            return n
+        if dari == "Celsius (°C)":
+            if ke == "Fahrenheit (°F)": return n * 9/5 + 32
+            elif ke == "Kelvin (K)": return n + 273.15
+        if dari == "Fahrenheit (°F)":
+            if ke == "Celsius (°C)": return (n - 32) * 5/9
+            elif ke == "Kelvin (K)": return (n - 32) * 5/9 + 273.15
+        if dari == "Kelvin (K)":
+            if ke == "Celsius (°C)": return n - 273.15
+            elif ke == "Fahrenheit (°F)": return (n - 273.15) * 9/5 + 32
+        return None
                         hasil = konversi_suhu(nilai, satuan_asal, satuan_tujuan)
                     else:
                         hasil = nilai * konversi_data[kategori][satuan_asal] / konversi_data[kategori][satuan_tujuan]
