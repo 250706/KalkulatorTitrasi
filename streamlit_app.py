@@ -212,12 +212,6 @@ elif halaman == "ℹ️ Tentang":
 
 ---
 
-🧠 **Teknologi yang digunakan:**
-- Python
-- [Streamlit](https://streamlit.io/)
-- Pandas
-- Altair & Matplotlib
-
 📚 **Sumber Referensi Konversi:**
 - NIST (National Institute of Standards and Technology)
 - SI Units Handbook
