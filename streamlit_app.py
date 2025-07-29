@@ -150,23 +150,57 @@ halaman = st.sidebar.radio("Pilih Halaman", ["🏠 Beranda", "📐 Kalkulator", 
 
 # ---------------------- BERANDA ----------------------
 if halaman == "🏠 Beranda":
-    st.title("🧠 Selamat Datang di Kalkulator Konversi Satuan Fisika 🧠")
+    st.markdown("# 🌟 Selamat Datang di Kalkulator Konversi Satuan Fisika 🌟")
+    
     st.markdown("""
-    Aplikasi ini merupakan hasil proyek dari mata kuliah **Logika Pemrograman Komputer** dalam Program Studi **D3 Analisis Kimia**.
+    Aplikasi ini merupakan hasil proyek dari mata kuliah **Logika Pemrograman Komputer**,  
+    Program Studi **D3 Analisis Kimia – POLITEKNIK AKA BOGOR**.
 
-💡 Dirancang untuk membantu pengguna dalam mengonversi berbagai satuan fisika secara **cepat**, **praktis**, dan **akurat**, seperti:
+    💡 Aplikasi ini dirancang untuk membantu pengguna dalam melakukan **konversi berbagai satuan fisika** secara:
+    - ✅ Cepat  
+    - ✅ Praktis  
+    - ✅ Akurat
 
-- 🔥 Suhu
-- ⚖ Massa
-- 📏 Panjang
-- 💨 Kecepatan
-- 💡 Daya, dan masih banyak lagi.
+    Aplikasi ini mendukung konversi satuan untuk:
+    - 🔥 Suhu
+    - ⚖️ Massa
+    - 📏 Panjang
+    - ⏱️ Waktu
+    - 💡 Daya
+    - 💨 Kecepatan
+    - ⚡ Tegangan & Arus
+    - 📦 Volume, dan lainnya.
 
-Dengan tampilan interaktif dan penjelasan visual yang mudah dipahami, aplikasi ini tidak hanya membantu dalam perhitungan, tapi juga mendukung **pembelajaran konsep satuan fisika** secara menyenangkan.
+    👉 Silakan pilih menu di sebelah kiri untuk mulai menggunakan kalkulator konversi satuan!
+    """)
 
----
+    st.markdown("---")
+    st.markdown("## 📚 Dasar Teori")
+    st.markdown("""
+    Konversi satuan adalah proses penting dalam ilmu fisika dan kimia untuk menyamakan besaran,  
+    sehingga dapat dilakukan penghitungan dan analisis secara **konsisten** dan **benar**.
 
-👉 Silakan pilih menu di sebelah kiri untuk mulai menggunakan kalkulator!
+    Dalam praktiknya, kita sering menjumpai satuan-satuan yang berbeda tergantung sistem yang digunakan,  
+    seperti Sistem Internasional (SI), Imperial, atau CGS. Oleh karena itu, kemampuan mengonversi antar satuan  
+    sangat dibutuhkan, baik dalam dunia pendidikan maupun industri.
+
+    ### ⚙️ Prinsip Dasar Konversi:
+    - Menggunakan **faktor konversi** yang sesuai antara satuan awal dan satuan tujuan.
+    - Untuk satuan linier seperti panjang, massa, waktu → cukup dengan perkalian/pembagian.
+    - Untuk satuan non-linier seperti suhu → dibutuhkan **rumus konversi khusus**, karena melibatkan pergeseran titik nol.
+
+    ### 🔁 Contoh Rumus Konversi Suhu:
+    - Celsius ke Fahrenheit:
+      \n\\[ F = (C \\times \\frac{9}{5}) + 32 \\]
+    - Fahrenheit ke Celsius:
+      \n\\[ C = (F - 32) \\times \\frac{5}{9} \\]
+    - Celsius ke Kelvin:
+      \n\\[ K = C + 273.15 \\]
+    - Fahrenheit ke Kelvin:
+      \n\\[ K = (F - 32) \\times \\frac{5}{9} + 273.15 \\]
+
+    Dengan menggunakan dasar teori ini, aplikasi dikembangkan menggunakan bahasa pemrograman **Python**  
+    dan framework **Streamlit**, agar dapat membantu pengguna memahami dan menghitung konversi satuan secara interaktif.
     """)
 
 # ---------------------- KALKULATOR ----------------------
