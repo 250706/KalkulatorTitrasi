@@ -1,4 +1,4 @@
-import streamlit s st
+import streamlit as st
 import pandas as pd
 import time
 import altair as alt
